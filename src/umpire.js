@@ -4,6 +4,20 @@ const Umpire = ({ port }) => {
   let wss
   let users = new Map()
 
+  const settersGetters = {
+    addUser (user, ws) {
+      users.set(user, ws)
+    },
+
+    hasUser (user) {
+      return users.has(user)
+    },
+
+    removeUser (user) {
+      return users.delete(user)
+    }
+  }
+
   return {
 
     start () {
@@ -25,8 +39,8 @@ const Umpire = ({ port }) => {
             let [type, data] = JSON.parse(message)
 
             if (type === 'REGISTER') {
-              if (!users.has(data.name)) {
-                users.set(data.name, ws)
+              if (!settersGetters.hasUser(data.name)) {
+                settersGetters.addUser(data.name, ws)
                 currentUser = data.name
                 let response = JSON.stringify(['REGISTER-ACCEPTED'])
                 ws.send(response)
@@ -37,7 +51,7 @@ const Umpire = ({ port }) => {
             }
 
             if (type === 'LEAVE-SERVER') {
-              if (users.delete(currentUser)) {
+              if (settersGetters.removeUser(currentUser)) {
                 let response = JSON.stringify(['LEAVE-SERVER-ACCEPTED'])
                 ws.send(response, () => ws.close())
               }
