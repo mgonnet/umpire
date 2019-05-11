@@ -4,6 +4,7 @@
     "**/*[sS]pec.js"
   ],
   "helpers": [
+    "helpers/WebSocketHelpers/clientWebSocketHelpers.js",
     "helpers/**/*.js"
   ],
   "stopSpecOnExpectationFailure": false,
