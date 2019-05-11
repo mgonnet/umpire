@@ -6,20 +6,22 @@ const Umpire = ({ port }) => {
   let users = new Map()
 
   const settersGetters = {
-    addUser (user, ws) {
-      users.set(user, ws)
-    },
+    users: {
+      addUser (user, ws) {
+        users.set(user, ws)
+      },
 
-    hasUser (user) {
-      return users.has(user)
-    },
+      hasUser (user) {
+        return users.has(user)
+      },
 
-    removeUser (user) {
-      return users.delete(user)
+      removeUser (user) {
+        return users.delete(user)
+      }
     }
   }
 
-  const userHandler = UserHandlerFactory({ settersGetters })
+  const userHandler = UserHandlerFactory({ settersGetters: settersGetters.users })
 
   return {
 
