@@ -1,4 +1,5 @@
 const WebSocket = require('ws')
+const UserHandlerFactory = require('./UserHandler')
 
 const Umpire = ({ port }) => {
   let wss
@@ -17,6 +18,8 @@ const Umpire = ({ port }) => {
       return users.delete(user)
     }
   }
+
+  const userHandler = UserHandlerFactory({ settersGetters })
 
   return {
 
@@ -39,22 +42,12 @@ const Umpire = ({ port }) => {
             let [type, data] = JSON.parse(message)
 
             if (type === 'REGISTER') {
-              if (!settersGetters.hasUser(data.name)) {
-                settersGetters.addUser(data.name, ws)
-                currentUser = data.name
-                let response = JSON.stringify(['REGISTER-ACCEPTED'])
-                ws.send(response)
-              } else {
-                let response = JSON.stringify(['REGISTER-REJECTED'])
-                ws.send(response)
-              }
+              currentUser = data.name
+              userHandler.register(data.name, ws)
             }
 
             if (type === 'LEAVE-SERVER') {
-              if (settersGetters.removeUser(currentUser)) {
-                let response = JSON.stringify(['LEAVE-SERVER-ACCEPTED'])
-                ws.send(response, () => ws.close())
-              }
+              userHandler.leaveServer(currentUser, ws)
             }
           })
         })
