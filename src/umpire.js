@@ -25,6 +25,7 @@ const Umpire = ({ port }) => {
     close () {
       return new Promise(function (resolve, reject) {
         wss.close(() => {
+          console.log(`Umpire server closed`)
           resolve()
         })
       })

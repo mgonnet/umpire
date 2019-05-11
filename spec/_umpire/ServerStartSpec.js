@@ -27,4 +27,11 @@ describe('umpire server start', function () {
     })
     await umpire.close()
   })
+
+  it('should show a message in console when closed', async function () {
+    spyOn(console, 'log')
+    await umpire.start()
+    await umpire.close()
+    expect(console.log).toHaveBeenCalledWith(`Umpire server closed`)
+  })
 })
