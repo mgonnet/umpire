@@ -27,6 +27,9 @@ const Umpire = ({ port }) => {
                 users.set(data.name, ws)
                 let response = JSON.stringify(['REGISTER-ACCEPTED'])
                 ws.send(response)
+              } else {
+                let response = JSON.stringify(['REGISTER-REJECTED'])
+                ws.send(response)
               }
             }
           })
