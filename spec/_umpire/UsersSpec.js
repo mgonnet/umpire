@@ -59,10 +59,14 @@ describe('umpire server start', function () {
 
     expect(received).toBe(`["REGISTER-ACCEPTED"]`)
 
-    ws.send(message)
+    const ws2 = new WebSocket('ws://localhost:8080')
+
+    ws2.on('open', function open () {
+      ws2.send(message)
+    })
 
     received = await new Promise(function (resolve, reject) {
-      ws.on('message', function messageReceived (message) {
+      ws2.on('message', function messageReceived (message) {
         resolve(message)
       })
     })
