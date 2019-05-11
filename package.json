@@ -1,6 +1,6 @@
 {
-  "name": "umpire",
-  "version": "0.0.0",
+  "name": "useloom.umpire",
+  "version": "0.1.0",
   "description": "A node.js / websocket multiplayer umpire",
   "main": "index.js",
   "scripts": {
