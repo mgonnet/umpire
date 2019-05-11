@@ -39,7 +39,7 @@ const Umpire = ({ port }) => {
             if (type === 'LEAVE-SERVER') {
               if (users.delete(currentUser)) {
                 let response = JSON.stringify(['LEAVE-SERVER-ACCEPTED'])
-                ws.send(response)
+                ws.send(response, () => ws.close())
               }
             }
           })

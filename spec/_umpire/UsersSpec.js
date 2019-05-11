@@ -139,15 +139,63 @@ describe('umpire server start', function () {
 
     expect(received).toBe(`["LEAVE-SERVER-ACCEPTED"]`)
 
-    ws.send(message)
+    const ws2 = new WebSocket('ws://localhost:8080')
+
+    ws2.on('open', function open () {
+      ws2.send(message)
+    })
 
     received = await new Promise(function (resolve, reject) {
+      ws2.on('message', function messageReceived (message) {
+        resolve(message)
+      })
+    })
+
+    expect(received).toBe(`["REGISTER-ACCEPTED"]`)
+
+    await umpire.close()
+  })
+
+  it('should close the connection when a user leaves', async function () {
+    spyOn(console, 'log')
+    await umpire.start()
+    let message = JSON.stringify([ 'REGISTER', { name: 'useloom' } ])
+
+    const ws = new WebSocket('ws://localhost:8080')
+
+    ws.on('open', function open () {
+      ws.send(message)
+    })
+
+    let received = await new Promise(function (resolve, reject) {
       ws.on('message', function messageReceived (message) {
         resolve(message)
       })
     })
 
     expect(received).toBe(`["REGISTER-ACCEPTED"]`)
+
+    let leaveMessage = JSON.stringify(['LEAVE-SERVER'])
+
+    let terminated = new Promise(function (resolve, reject) {
+      ws.on('close', function (code, reason) {
+        resolve('closed')
+      })
+    })
+
+    received = new Promise(function (resolve, reject) {
+      ws.on('message', function messageReceived (message) {
+        resolve(message)
+      })
+    })
+
+    ws.send(leaveMessage)
+
+    received = await received
+    terminated = await terminated
+
+    expect(received).toBe(`["LEAVE-SERVER-ACCEPTED"]`)
+    expect(terminated).toBe('closed')
 
     await umpire.close()
   })
