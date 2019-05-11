@@ -108,4 +108,47 @@ describe('umpire server start', function () {
 
     await umpire.close()
   })
+
+  it('should allow a user to register again', async function () {
+    spyOn(console, 'log')
+    await umpire.start()
+    let message = JSON.stringify([ 'REGISTER', { name: 'useloom' } ])
+
+    const ws = new WebSocket('ws://localhost:8080')
+
+    ws.on('open', function open () {
+      ws.send(message)
+    })
+
+    let received = await new Promise(function (resolve, reject) {
+      ws.on('message', function messageReceived (message) {
+        resolve(message)
+      })
+    })
+
+    expect(received).toBe(`["REGISTER-ACCEPTED"]`)
+
+    let leaveMessage = JSON.stringify(['LEAVE-SERVER'])
+    ws.send(leaveMessage)
+
+    received = await new Promise(function (resolve, reject) {
+      ws.on('message', function messageReceived (message) {
+        resolve(message)
+      })
+    })
+
+    expect(received).toBe(`["LEAVE-SERVER-ACCEPTED"]`)
+
+    ws.send(message)
+
+    received = await new Promise(function (resolve, reject) {
+      ws.on('message', function messageReceived (message) {
+        resolve(message)
+      })
+    })
+
+    expect(received).toBe(`["REGISTER-ACCEPTED"]`)
+
+    await umpire.close()
+  })
 })
