@@ -8,6 +8,15 @@ describe('umpire server start', function () {
     umpire = Umpire({ port })
   })
 
+  afterEach(async function () {
+    // Try to close in case something failed in the test case
+    try {
+      await umpire.close()
+    } catch (e) {
+
+    }
+  })
+
   it('should show message in console when started', async function () {
     spyOn(console, 'log')
     await umpire.start()
@@ -18,10 +27,10 @@ describe('umpire server start', function () {
   it('should show a message in console when receives any message', async function () {
     spyOn(console, 'log')
     await umpire.start()
-    this.sendWsClientMessage({ url: 'ws://localhost', message: 'hola' })
+    this.sendWsClientMessage({ url: 'ws://localhost', message: JSON.stringify(['HOLA']) })
     await new Promise(function (resolve, reject) {
       setTimeout(async () => {
-        expect(console.log).toHaveBeenCalledWith(`Received: hola`)
+        expect(console.log).toHaveBeenCalledWith(`Received: ["HOLA"]`)
         resolve()
       }, 1000)
     })

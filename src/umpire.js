@@ -2,6 +2,8 @@ const WebSocket = require('ws')
 
 const Umpire = ({ port }) => {
   let wss
+  let users = new Map()
+
   return {
 
     start () {
@@ -17,6 +19,16 @@ const Umpire = ({ port }) => {
         wss.on('connection', function connection (ws) {
           ws.on('message', function incoming (message) {
             console.log(`Received: ${message}`)
+
+            let [type, data] = JSON.parse(message)
+
+            if (type === 'REGISTER') {
+              if (!users.has(data.name)) {
+                users.set(data.name, ws)
+                let response = JSON.stringify(['REGISTER-ACCEPTED'])
+                ws.send(response)
+              }
+            }
           })
         })
       })
