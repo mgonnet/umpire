@@ -17,6 +17,8 @@ const Umpire = ({ port }) => {
         )
 
         wss.on('connection', function connection (ws) {
+          let currentUser
+
           ws.on('message', function incoming (message) {
             console.log(`Received: ${message}`)
 
@@ -25,10 +27,18 @@ const Umpire = ({ port }) => {
             if (type === 'REGISTER') {
               if (!users.has(data.name)) {
                 users.set(data.name, ws)
+                currentUser = data.name
                 let response = JSON.stringify(['REGISTER-ACCEPTED'])
                 ws.send(response)
               } else {
                 let response = JSON.stringify(['REGISTER-REJECTED'])
+                ws.send(response)
+              }
+            }
+
+            if (type === 'LEAVE-SERVER') {
+              if (users.delete(currentUser)) {
+                let response = JSON.stringify(['LEAVE-SERVER-ACCEPTED'])
                 ws.send(response)
               }
             }
