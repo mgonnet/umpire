@@ -1,0 +1,16 @@
+sequenceDiagram
+  participant ClientA
+  participant UmpireServer
+  note over ClientA,UmpireServer: ClientA is already succesfully registered
+  ClientA->>UmpireServer: CREATE-LOBBY
+  alt is name free
+    UmpireServer->>ClientA: CREATE-LOBBY-REJECTED
+  else user already in lobby
+    UmpireServer->>ClientA: CREATE-LOBBY-REJECTED
+  else all ok
+    UmpireServer->>ClientA: CREATE-LOBBY-ACCEPTED
+    ClientA->>UmpireServer: CLOSE-LOBBY
+    UmpireServer->>ClientA: CLOSE-LOBBY-ACCEPTED
+  end  
+
+  

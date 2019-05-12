@@ -1,13 +1,13 @@
 {
   "name": "useloom.umpire",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "A node.js / websocket multiplayer umpire",
   "main": "index.js",
   "scripts": {
     "lint": "esw \"**/*.js\" --clear",
     "lint-fix": "esw \"**/*.js\" --fix",
     "test": "npm run lint-fix && jasmine",
-    "build-doc": "mmdc -i doc/sequenceDiagramsMmd/userConnection.mmd -o doc/sequenceDiagramsPng/userConnection.png -t neutral"
+    "build-doc": "mmdc -i doc/sequenceDiagramsMmd/userConnection.mmd -o doc/sequenceDiagramsPng/userConnection.png -t neutral && mmdc -i doc/sequenceDiagramsMmd/lobbyCreation.mmd -o doc/sequenceDiagramsPng/lobbyCreation.png -t neutral"
   },
   "repository": {
     "type": "git",
