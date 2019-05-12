@@ -19,7 +19,7 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
 
   const wsFunctions = {
     sendMessage (message, callback) {
-      ws.send(message, callback)
+      ws.send(JSON.stringify(message), callback)
     }
   }
 

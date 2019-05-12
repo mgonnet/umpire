@@ -1,19 +1,24 @@
 const LobbyHandlerFactory = ({ sendMessage, getCurrentUser, hasCurrentLobby, setCurrentLobby, hasLobby, addLobby }) => {
   return {
+
     createLobby (lobbyName) {
       if (hasCurrentLobby()) {
-        let response = JSON.stringify(['CREATE-LOBBY-REJECTED', { reason: 'User already in lobby' }])
-        sendMessage(response)
+        sendMessage([
+          'CREATE-LOBBY-REJECTED',
+          { reason: 'User already in lobby' }
+        ])
       } else if (hasLobby(lobbyName)) {
-        let response = JSON.stringify(['CREATE-LOBBY-REJECTED', { reason: 'Lobby name already exists' }])
-        sendMessage(response)
+        sendMessage([
+          'CREATE-LOBBY-REJECTED',
+          { reason: 'Lobby name already exists' }
+        ])
       } else {
         addLobby({ lobbyName: lobbyName, creator: getCurrentUser() })
         setCurrentLobby(lobbyName)
-        let response = JSON.stringify(['CREATE-LOBBY-ACCEPTED'])
-        sendMessage(response)
+        sendMessage(['CREATE-LOBBY-ACCEPTED'])
       }
     }
+
   }
 }
 
