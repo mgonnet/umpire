@@ -1,10 +1,37 @@
 const UserHandlerFactory = require('./UserHandler')
+const LobbyHandlerFactory = require('./LobbyHandler')
 
 const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
   let currentUser
   let currentLobby = void (0)
 
+  const connectionStatus = {
+    hasCurrentLobby () {
+      return currentLobby !== void (0)
+    },
+    setCurrentLobby (lobby) {
+      currentLobby = lobby
+    },
+    getCurrentUser () {
+      return currentUser
+    }
+  }
+
+  const wsFunctions = {
+    sendMessage (message, callback) {
+      ws.send(message, callback)
+    }
+  }
+
   const userHandler = UserHandlerFactory(settersGetters.users)
+  const lobbyHandler = LobbyHandlerFactory(
+    Object.assign(
+      {},
+      connectionStatus,
+      settersGetters.lobbies,
+      wsFunctions
+    )
+  )
 
   ws.on('message', function incoming (message) {
     console.log(`Received: ${message}`)
@@ -21,18 +48,7 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
     }
 
     if (type === 'CREATE-LOBBY') {
-      if (currentLobby !== void (0)) {
-        let response = JSON.stringify(['CREATE-LOBBY-REJECTED', { reason: 'User already in lobby' }])
-        ws.send(response)
-      } else if (settersGetters.lobbies.hasLobby(data.name)) {
-        let response = JSON.stringify(['CREATE-LOBBY-REJECTED', { reason: 'Lobby name already exists' }])
-        ws.send(response)
-      } else {
-        settersGetters.lobbies.addLobby({ lobbyName: data.name, creator: currentUser })
-        currentLobby = data.name
-        let response = JSON.stringify(['CREATE-LOBBY-ACCEPTED'])
-        ws.send(response)
-      }
+      lobbyHandler.createLobby(data.name)
     }
 
     if (type === 'CLOSE-LOBBY') {
