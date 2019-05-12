@@ -1,7 +1,7 @@
 const Umpire = require('../../src/umpire')
 const WebSocket = require('ws')
 
-describe('umpire server start', function () {
+describe('user connections', function () {
   let port = 8080
   let umpire
 
@@ -29,11 +29,7 @@ describe('umpire server start', function () {
       ws.send(message)
     })
 
-    let received = await new Promise(function (resolve, reject) {
-      ws.on('message', function messageReceived (message) {
-        resolve(message)
-      })
-    })
+    let received = await this.waitForMessage(ws)
 
     expect(received).toBe(`["REGISTER-ACCEPTED"]`)
 
@@ -51,11 +47,7 @@ describe('umpire server start', function () {
       ws.send(message)
     })
 
-    let received = await new Promise(function (resolve, reject) {
-      ws.on('message', function messageReceived (message) {
-        resolve(message)
-      })
-    })
+    let received = await this.waitForMessage(ws)
 
     expect(received).toBe(`["REGISTER-ACCEPTED"]`)
 
@@ -65,11 +57,7 @@ describe('umpire server start', function () {
       ws2.send(message)
     })
 
-    received = await new Promise(function (resolve, reject) {
-      ws2.on('message', function messageReceived (message) {
-        resolve(message)
-      })
-    })
+    received = await this.waitForMessage(ws2)
 
     expect(received).toBe(`["REGISTER-REJECTED"]`)
 
@@ -87,22 +75,14 @@ describe('umpire server start', function () {
       ws.send(message)
     })
 
-    let received = await new Promise(function (resolve, reject) {
-      ws.on('message', function messageReceived (message) {
-        resolve(message)
-      })
-    })
+    let received = await this.waitForMessage(ws)
 
     expect(received).toBe(`["REGISTER-ACCEPTED"]`)
 
     let leaveMessage = JSON.stringify(['LEAVE-SERVER'])
     ws.send(leaveMessage)
 
-    received = await new Promise(function (resolve, reject) {
-      ws.on('message', function messageReceived (message) {
-        resolve(message)
-      })
-    })
+    received = await this.waitForMessage(ws)
 
     expect(received).toBe(`["LEAVE-SERVER-ACCEPTED"]`)
 
@@ -120,22 +100,14 @@ describe('umpire server start', function () {
       ws.send(message)
     })
 
-    let received = await new Promise(function (resolve, reject) {
-      ws.on('message', function messageReceived (message) {
-        resolve(message)
-      })
-    })
+    let received = await this.waitForMessage(ws)
 
     expect(received).toBe(`["REGISTER-ACCEPTED"]`)
 
     let leaveMessage = JSON.stringify(['LEAVE-SERVER'])
     ws.send(leaveMessage)
 
-    received = await new Promise(function (resolve, reject) {
-      ws.on('message', function messageReceived (message) {
-        resolve(message)
-      })
-    })
+    received = await this.waitForMessage(ws)
 
     expect(received).toBe(`["LEAVE-SERVER-ACCEPTED"]`)
 
@@ -145,11 +117,7 @@ describe('umpire server start', function () {
       ws2.send(message)
     })
 
-    received = await new Promise(function (resolve, reject) {
-      ws2.on('message', function messageReceived (message) {
-        resolve(message)
-      })
-    })
+    received = await this.waitForMessage(ws2)
 
     expect(received).toBe(`["REGISTER-ACCEPTED"]`)
 
@@ -167,11 +135,7 @@ describe('umpire server start', function () {
       ws.send(message)
     })
 
-    let received = await new Promise(function (resolve, reject) {
-      ws.on('message', function messageReceived (message) {
-        resolve(message)
-      })
-    })
+    let received = await this.waitForMessage(ws)
 
     expect(received).toBe(`["REGISTER-ACCEPTED"]`)
 
@@ -183,11 +147,7 @@ describe('umpire server start', function () {
       })
     })
 
-    received = new Promise(function (resolve, reject) {
-      ws.on('message', function messageReceived (message) {
-        resolve(message)
-      })
-    })
+    received = this.waitForMessage(ws)
 
     ws.send(leaveMessage)
 

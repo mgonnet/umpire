@@ -8,6 +8,15 @@ function sendWsClientMessage ({ url, message }) {
   })
 }
 
+function waitForMessage (ws) {
+  return new Promise(function (resolve, reject) {
+    ws.on('message', function messageReceived (message) {
+      resolve(message)
+    })
+  })
+}
+
 beforeEach(function () {
   this.sendWsClientMessage = sendWsClientMessage
+  this.waitForMessage = waitForMessage
 })
