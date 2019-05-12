@@ -47,4 +47,20 @@ describe('lobby creation', function () {
 
     expect(received).toBe(`["CREATE-LOBBY-REJECTED",{"reason":"Lobby name already exists"}]`)
   })
+
+  it('should not allow to create a lobby if the player is already in a lobby', async function () {
+    spyOn(console, 'log')
+    await umpire.start()
+    const ws = await this.registerUser({ url: 'ws://localhost', port, userName: 'useloom' })
+
+    let createLobbyMessage = JSON.stringify(['CREATE-LOBBY', { name: 'myLobby' }])
+    ws.send(createLobbyMessage)
+    let received = await this.waitForMessage(ws)
+    expect(received).toBe(`["CREATE-LOBBY-ACCEPTED"]`)
+
+    let createOtherLobbyMessage = JSON.stringify(['CREATE-LOBBY', { name: 'myOtherLobby' }])
+    ws.send(createOtherLobbyMessage)
+    received = await this.waitForMessage(ws)
+    expect(received).toBe(`["CREATE-LOBBY-REJECTED",{"reason":"User already in lobby"}]`)
+  })
 })
