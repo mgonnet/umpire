@@ -12,6 +12,9 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
     setCurrentLobby (lobby) {
       currentLobby = lobby
     },
+    getCurrentLobby () {
+      return currentLobby
+    },
     getCurrentUser () {
       return currentUser
     }
@@ -52,24 +55,7 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
     }
 
     if (type === 'CLOSE-LOBBY') {
-      if (currentLobby === void (0)) {
-        let response = JSON.stringify(['CLOSE-LOBBY-REJECTED', { reason: 'User is not in a lobby' }])
-        ws.send(response)
-      } else {
-        let lobby = settersGetters.lobbies.getLobby(currentLobby)
-        if (!lobby) {
-
-        } else {
-          if (lobby.creator !== currentUser) {
-            let response = JSON.stringify(['CLOSE-LOBBY-REJECTED', { reason: 'Player is not the lobby creator' }])
-            ws.send(response)
-          } else if (settersGetters.lobbies.removeLobby(currentLobby)) {
-            currentLobby = void (0)
-            let response = JSON.stringify(['CLOSE-LOBBY-ACCEPTED'])
-            ws.send(response)
-          }
-        }
-      }
+      lobbyHandler.closeLobby()
     }
 
     if (type === 'JOIN-LOBBY') {
