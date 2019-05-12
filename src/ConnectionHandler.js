@@ -45,6 +45,15 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
         ws.send(response)
       }
     }
+
+    if (type === 'JOIN-LOBBY') {
+      let lobby = settersGetters.lobbies.getLobby(data.name)
+      if (lobby) {
+        lobby.players.push(currentUser)
+        let response = JSON.stringify(['JOIN-LOBBY-ACCEPTED'])
+        ws.send(response)
+      }
+    }
   })
 }
 

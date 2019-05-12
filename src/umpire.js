@@ -23,7 +23,7 @@ const Umpire = ({ port }) => {
 
     lobbies: {
       addLobby ({ lobbyName, creator }) {
-        lobbies.set(lobbyName, { creator })
+        lobbies.set(lobbyName, { creator, players: [creator] })
       },
 
       hasLobby (lobbyName) {
@@ -32,6 +32,10 @@ const Umpire = ({ port }) => {
 
       removeLobby (lobbyName) {
         return lobbies.delete(lobbyName)
+      },
+
+      getLobby (lobbyName) {
+        return lobbies.get(lobbyName)
       }
     }
   }
