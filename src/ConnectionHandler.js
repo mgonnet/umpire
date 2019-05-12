@@ -18,6 +18,14 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
     if (type === 'LEAVE-SERVER') {
       userHandler.leaveServer(currentUser, ws)
     }
+
+    if (type === 'CREATE-LOBBY') {
+      if (!settersGetters.lobbies.hasLobby(data.name)) {
+        settersGetters.lobbies.addLobby({ lobbyName: data.name, creator: currentUser })
+        let response = JSON.stringify(['CREATE-LOBBY-ACCEPTED'])
+        ws.send(response)
+      }
+    }
   })
 }
 

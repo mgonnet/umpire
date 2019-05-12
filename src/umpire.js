@@ -4,6 +4,7 @@ const ConnectionHandlerFactory = require('./ConnectionHandler')
 const Umpire = ({ port }) => {
   let wss
   let users = new Map()
+  let lobbies = new Map()
 
   const settersGetters = {
     users: {
@@ -17,6 +18,16 @@ const Umpire = ({ port }) => {
 
       removeUser (user) {
         return users.delete(user)
+      }
+    },
+
+    lobbies: {
+      addLobby ({ lobbyName, creator }) {
+        lobbies.set(lobbyName, { creator })
+      },
+
+      hasLobby (lobbyName) {
+        lobbies.has(lobbyName)
       }
     }
   }
