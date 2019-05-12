@@ -128,4 +128,15 @@ describe('lobby creation', function () {
     received = await this.waitForMessage(ws2)
     expect(received).toBe(`["JOIN-LOBBY-REJECTED",{"reason":"User is already in a lobby"}]`)
   })
+
+  it('should not allow users to join an unexisting lobby', async function () {
+    spyOn(console, 'log')
+    await umpire.start()
+
+    const ws = await this.registerUser({ url: 'ws://localhost', port, userName: 'rataplan' })
+    let joinLobbyMessage = JSON.stringify(['JOIN-LOBBY', { name: 'myLobby' }])
+    ws.send(joinLobbyMessage)
+    let received = await this.waitForMessage(ws)
+    expect(received).toBe(`["JOIN-LOBBY-REJECTED",{"reason":"Lobby does not exist"}]`)
+  })
 })

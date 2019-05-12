@@ -57,6 +57,9 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
           currentLobby = data.name
           let response = JSON.stringify(['JOIN-LOBBY-ACCEPTED'])
           ws.send(response)
+        } else {
+          let response = JSON.stringify(['JOIN-LOBBY-REJECTED', { reason: 'Lobby does not exist' }])
+          ws.send(response)
         }
       }
     }
