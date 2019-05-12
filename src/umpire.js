@@ -27,7 +27,7 @@ const Umpire = ({ port }) => {
       },
 
       hasLobby (lobbyName) {
-        lobbies.has(lobbyName)
+        return lobbies.has(lobbyName)
       }
     }
   }

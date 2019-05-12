@@ -24,6 +24,9 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
         settersGetters.lobbies.addLobby({ lobbyName: data.name, creator: currentUser })
         let response = JSON.stringify(['CREATE-LOBBY-ACCEPTED'])
         ws.send(response)
+      } else {
+        let response = JSON.stringify(['CREATE-LOBBY-REJECTED', { reason: 'Lobby name already exists' }])
+        ws.send(response)
       }
     }
   })
