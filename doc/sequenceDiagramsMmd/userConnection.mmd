@@ -4,9 +4,9 @@ sequenceDiagram
   Client->>UmpireServer: REGISTER
 	alt is name free?
     UmpireServer->>Client: REGISTER-ACCEPTED
+    Client->>UmpireServer: LEAVE-SERVER
+    UmpireServer->>Client: LEAVE-SERVER-ACCEPTED
   else is name taken?
     UmpireServer->>Client: REGISTER-REJECTED
-  end
-  Client->>UmpireServer: LEAVE-SERVER
-  UmpireServer->>Client: LEAVE-SERVER-ACCEPTED
+  end  
     
