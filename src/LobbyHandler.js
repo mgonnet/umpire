@@ -1,4 +1,13 @@
-const LobbyHandlerFactory = ({ sendMessage, getCurrentUser, hasCurrentLobby, setCurrentLobby, getCurrentLobby, hasLobby, addLobby, getLobby, removeLobby }) => {
+const LobbyHandlerFactory = ({
+  sendMessage,
+  getCurrentUser,
+  hasCurrentLobby,
+  setCurrentLobby,
+  getCurrentLobby,
+  hasLobby,
+  addLobby,
+  getLobby,
+  removeLobby }) => {
   return {
 
     createLobby (lobbyName) {
@@ -38,6 +47,27 @@ const LobbyHandlerFactory = ({ sendMessage, getCurrentUser, hasCurrentLobby, set
           } else if (removeLobby(getCurrentLobby())) {
             sendMessage(['CLOSE-LOBBY-ACCEPTED'])
           }
+        }
+      }
+    },
+
+    joinLobby (lobbyName) {
+      if (hasCurrentLobby()) {
+        sendMessage([
+          'JOIN-LOBBY-REJECTED',
+          { reason: 'User is already in a lobby' }
+        ])
+      } else {
+        let lobby = getLobby(lobbyName)
+        if (lobby) {
+          lobby.players.push(getCurrentUser())
+          setCurrentLobby(lobbyName)
+          sendMessage(['JOIN-LOBBY-ACCEPTED'])
+        } else {
+          sendMessage([
+            'JOIN-LOBBY-REJECTED',
+            { reason: 'Lobby does not exist' }
+          ])
         }
       }
     }

@@ -59,21 +59,7 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
     }
 
     if (type === 'JOIN-LOBBY') {
-      if (currentLobby !== void (0)) {
-        let response = JSON.stringify(['JOIN-LOBBY-REJECTED', { reason: 'User is already in a lobby' }])
-        ws.send(response)
-      } else {
-        let lobby = settersGetters.lobbies.getLobby(data.name)
-        if (lobby) {
-          lobby.players.push(currentUser)
-          currentLobby = data.name
-          let response = JSON.stringify(['JOIN-LOBBY-ACCEPTED'])
-          ws.send(response)
-        } else {
-          let response = JSON.stringify(['JOIN-LOBBY-REJECTED', { reason: 'Lobby does not exist' }])
-          ws.send(response)
-        }
-      }
+      lobbyHandler.joinLobby(data.name)
     }
   })
 }
