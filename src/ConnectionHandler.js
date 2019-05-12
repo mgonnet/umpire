@@ -36,7 +36,10 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
     }
 
     if (type === 'CLOSE-LOBBY') {
-      if (settersGetters.lobbies.removeLobby(currentLobby)) {
+      if (currentLobby === void (0)) {
+        let response = JSON.stringify(['CLOSE-LOBBY-REJECTED', { reason: 'User is not in a lobby' }])
+        ws.send(response)
+      } else if (settersGetters.lobbies.removeLobby(currentLobby)) {
         currentLobby = void (0)
         let response = JSON.stringify(['CLOSE-LOBBY-ACCEPTED'])
         ws.send(response)
