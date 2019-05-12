@@ -1,8 +1,8 @@
-const UserHandlerFactory = ({ settersGetters }) => {
+const UserHandlerFactory = ({ addUser, removeUser, hasUser }) => {
   return {
     register (user, ws) {
-      if (!settersGetters.hasUser(user)) {
-        settersGetters.addUser(user, ws)
+      if (!hasUser(user)) {
+        addUser(user, ws)
         let response = JSON.stringify(['REGISTER-ACCEPTED'])
         ws.send(response)
       } else {
@@ -12,7 +12,7 @@ const UserHandlerFactory = ({ settersGetters }) => {
     },
 
     leaveServer (user, ws) {
-      if (settersGetters.removeUser(user)) {
+      if (removeUser(user)) {
         let response = JSON.stringify(['LEAVE-SERVER-ACCEPTED'])
         ws.send(response, () => ws.close())
       }
