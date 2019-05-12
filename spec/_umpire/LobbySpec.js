@@ -63,4 +63,20 @@ describe('lobby creation', function () {
     received = await this.waitForMessage(ws)
     expect(received).toBe(`["CREATE-LOBBY-REJECTED",{"reason":"User already in lobby"}]`)
   })
+
+  it('should allow the creator to close the lobby', async function () {
+    spyOn(console, 'log')
+    await umpire.start()
+    const ws = await this.registerUser({ url: 'ws://localhost', port, userName: 'useloom' })
+
+    let createLobbyMessage = JSON.stringify(['CREATE-LOBBY', { name: 'myLobby' }])
+    ws.send(createLobbyMessage)
+    let received = await this.waitForMessage(ws)
+    expect(received).toBe(`["CREATE-LOBBY-ACCEPTED"]`)
+
+    let closeLobbyMessage = JSON.stringify(['CLOSE-LOBBY'])
+    ws.send(closeLobbyMessage)
+    received = await this.waitForMessage(ws)
+    expect(received).toBe(`["CLOSE-LOBBY-ACCEPTED"]`)
+  })
 })

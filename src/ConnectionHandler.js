@@ -34,6 +34,14 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
         ws.send(response)
       }
     }
+
+    if (type === 'CLOSE-LOBBY') {
+      if (settersGetters.lobbies.removeLobby(currentLobby)) {
+        currentLobby = void (0)
+        let response = JSON.stringify(['CLOSE-LOBBY-ACCEPTED'])
+        ws.send(response)
+      }
+    }
   })
 }
 

@@ -28,6 +28,10 @@ const Umpire = ({ port }) => {
 
       hasLobby (lobbyName) {
         return lobbies.has(lobbyName)
+      },
+
+      removeLobby (lobbyName) {
+        return lobbies.delete(lobbyName)
       }
     }
   }
