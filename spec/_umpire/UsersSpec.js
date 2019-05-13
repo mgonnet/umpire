@@ -159,4 +159,26 @@ describe('user connections', function () {
 
     await umpire.close()
   })
+
+  it('should not allow a user to register with a different name while still connected', async function () {
+    spyOn(console, 'log')
+    await umpire.start()
+    let message = JSON.stringify([ 'REGISTER', { name: 'useloom' } ])
+
+    const ws = new WebSocket('ws://localhost:8080')
+
+    ws.on('open', function open () {
+      ws.send(message)
+    })
+
+    let received = await this.waitForMessage(ws)
+    expect(received).toBe(`["REGISTER-ACCEPTED"]`)
+
+    let message2 = JSON.stringify([ 'REGISTER', { name: 'rataplan' } ])
+    ws.send(message2)
+    received = await this.waitForMessage(ws)
+    expect(received).toBe('["REGISTER-REJECTED",{"reason":"User already registered"}]')
+
+    await umpire.close()
+  })
 })

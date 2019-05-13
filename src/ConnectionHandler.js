@@ -2,7 +2,7 @@ const UserHandlerFactory = require('./UserHandler')
 const LobbyHandlerFactory = require('./LobbyHandler')
 
 const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
-  let currentUser
+  let currentUser = void (0)
   let currentLobby = void (0)
 
   const connectionStatus = {
@@ -23,6 +23,9 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
     },
     setCurrentUser (user) {
       currentUser = user
+    },
+    hasCurrentUser () {
+      return currentUser !== void (0)
     }
   }
 
@@ -39,7 +42,7 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
       {},
       settersGetters.users,
       { sendMessage, sendMessageAndClose },
-      { setCurrentUser: connectionStatus.setCurrentUser }
+      { setCurrentUser: connectionStatus.setCurrentUser, hasCurrentUser: connectionStatus.hasCurrentUser }
     )
   )
   const lobbyHandler = LobbyHandlerFactory(

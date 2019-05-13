@@ -1,7 +1,12 @@
-const UserHandlerFactory = ({ setCurrentUser, sendMessage, sendMessageAndClose, addUser, removeUser, hasUser }) => {
+const UserHandlerFactory = ({ hasCurrentUser, setCurrentUser, sendMessage, sendMessageAndClose, addUser, removeUser, hasUser }) => {
   return {
     register (user, ws) {
-      if (!hasUser(user)) {
+      if (hasCurrentUser()) {
+        sendMessage([
+          'REGISTER-REJECTED',
+          { reason: 'User already registered' }
+        ])
+      } else if (!hasUser(user)) {
         addUser(user, ws)
         setCurrentUser(user)
         sendMessage(['REGISTER-ACCEPTED'])

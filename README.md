@@ -14,6 +14,7 @@
 | ------------- | -------------   |-----------------------|---------------|
 | REGISTER      | {name: 'pepe'}  | REGISTER-ACCEPTED     |               |
 |               |                 | REGISTER-REJECTED     |               |
+|               |                 | REGISTER-REJECTED     | { reason: 'User already registered' } |
 | LEAVE-SERVER  |                 | LEAVE-SERVER-ACCEPTED |               |
 | CREATE-LOBBY  | {name: 'lobby'} | CREATE-LOBBY-REJECTED | { reason: 'User already in lobby' } |
 |               |                 | CREATE-LOBBY-REJECTED | { reason: 'Lobby name already exists' } |
