@@ -7,7 +7,8 @@
     "lint": "esw \"**/*.js\" --clear",
     "lint-fix": "esw \"**/*.js\" --fix",
     "test": "npm run lint && jasmine",
-    "build-doc": "mmdc -i doc/sequenceDiagramsMmd/userConnection.mmd -o doc/sequenceDiagramsPng/userConnection.png -t neutral && mmdc -i doc/sequenceDiagramsMmd/lobbyCreation.mmd -o doc/sequenceDiagramsPng/lobbyCreation.png -t neutral"
+    "spec-status": "jasmine --reporter=jasmine-spec-status-md > ./doc/specStatus.md",
+    "build-doc": "npm run --silent spec-status && mmdc -i doc/sequenceDiagramsMmd/userConnection.mmd -o doc/sequenceDiagramsPng/userConnection.png -t neutral && mmdc -i doc/sequenceDiagramsMmd/lobbyCreation.mmd -o doc/sequenceDiagramsPng/lobbyCreation.png -t neutral"    
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,7 @@
     "eslint-plugin-standard": "^4.0.0",
     "eslint-watch": "^5.1.2",
     "jasmine": "^3.4.0",
+    "jasmine-spec-status-md": "^0.1.0",
     "mermaid.cli": "^0.5.1"
   },
   "dependencies": {
