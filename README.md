@@ -25,6 +25,7 @@
 |               |                 | JOIN-LOBBY-REJECTED   | { reason: 'Lobby does not exist' } |
 |               |                 | JOIN-LOBBY-ACCEPTED   |               |
 | LEAVE-LOBBY   |                 | LEAVE-LOBBY-ACCEPTED  |               |
+|               |                 | LEAVE-LOBBY-REJECTED  | { reason: 'Player is not the inside a lobby' } |
 
 
 ## [Specification status](doc/specStatus.md)

@@ -79,6 +79,11 @@ const LobbyHandlerFactory = ({
         lobby.players.splice(lobby.players.indexOf(getCurrentUser()))
         notCurrentlyInALobby()
         sendMessage(['LEAVE-LOBBY-ACCEPTED'])
+      } else {
+        sendMessage([
+          'LEAVE-LOBBY-REJECTED',
+          { reason: 'Player is not the inside a lobby' }
+        ])
       }
     }
 

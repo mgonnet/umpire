@@ -209,4 +209,15 @@ describe('lobby creation', function () {
     received = await this.waitForMessage(ws2)
     expect(received).toBe(`["JOIN-LOBBY-ACCEPTED"]`)
   })
+
+  it('should not allow a user to leave a lobby if they are not in one', async function () {
+    spyOn(console, 'log')
+    await umpire.start()
+    const ws = await this.registerUser({ url: 'ws://localhost', port, userName: 'useloom' })
+
+    let leaveLobbyMessage = JSON.stringify(['LEAVE-LOBBY'])
+    ws.send(leaveLobbyMessage)
+    let received = await this.waitForMessage(ws)
+    expect(received).toBe(`["LEAVE-LOBBY-REJECTED",{"reason":"Player is not the inside a lobby"}]`)
+  })
 })
