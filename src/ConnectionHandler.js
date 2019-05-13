@@ -20,6 +20,9 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
     },
     getCurrentUser () {
       return currentUser
+    },
+    setCurrentUser (user) {
+      currentUser = user
     }
   }
 
@@ -35,7 +38,8 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
     Object.assign(
       {},
       settersGetters.users,
-      { sendMessage, sendMessageAndClose }
+      { sendMessage, sendMessageAndClose },
+      { setCurrentUser: connectionStatus.setCurrentUser }
     )
   )
   const lobbyHandler = LobbyHandlerFactory(
@@ -54,7 +58,6 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
     let [type, data] = JSON.parse(message)
 
     if (type === 'REGISTER') {
-      currentUser = data.name
       userHandler.register(data.name, ws)
     }
 
