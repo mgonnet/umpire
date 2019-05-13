@@ -12,6 +12,9 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
     setCurrentLobby (lobby) {
       currentLobby = lobby
     },
+    notCurrentlyInALobby () {
+      currentLobby = void (0)
+    },
     getCurrentLobby () {
       return currentLobby
     },
@@ -68,6 +71,10 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
 
     if (type === 'JOIN-LOBBY') {
       lobbyHandler.joinLobby(data.name)
+    }
+
+    if (type === 'LEAVE-LOBBY') {
+      lobbyHandler.leaveLobby()
     }
   })
 }

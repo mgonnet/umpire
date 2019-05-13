@@ -4,11 +4,11 @@
   "description": "A node.js / websocket multiplayer umpire",
   "main": "index.js",
   "scripts": {
-    "lint": "esw \"**/*.js\" --clear",
+    "lint": "esw \"**/*.js\"",
     "lint-fix": "esw \"**/*.js\" --fix",
     "test": "npm run lint && jasmine",
     "spec-status": "jasmine --reporter=jasmine-spec-status-md > ./doc/specStatus.md",
-    "build-doc": "npm run --silent spec-status && mmdc -i doc/sequenceDiagramsMmd/userConnection.mmd -o doc/sequenceDiagramsPng/userConnection.png -t neutral && mmdc -i doc/sequenceDiagramsMmd/lobbyCreation.mmd -o doc/sequenceDiagramsPng/lobbyCreation.png -t neutral"    
+    "build-doc": "npm run spec-status && mmdc -i doc/sequenceDiagramsMmd/userConnection.mmd -o doc/sequenceDiagramsPng/userConnection.png -t neutral && mmdc -i doc/sequenceDiagramsMmd/lobbyCreation.mmd -o doc/sequenceDiagramsPng/lobbyCreation.png -t neutral"    
   },
   "repository": {
     "type": "git",

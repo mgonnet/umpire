@@ -3,6 +3,7 @@ const LobbyHandlerFactory = ({
   getCurrentUser,
   hasCurrentLobby,
   setCurrentLobby,
+  notCurrentlyInALobby,
   getCurrentLobby,
   hasLobby,
   addLobby,
@@ -69,6 +70,15 @@ const LobbyHandlerFactory = ({
             { reason: 'Lobby does not exist' }
           ])
         }
+      }
+    },
+
+    leaveLobby () {
+      if (hasCurrentLobby()) {
+        let lobby = getLobby(getCurrentLobby())
+        lobby.players.splice(lobby.players.indexOf(getCurrentUser()))
+        notCurrentlyInALobby()
+        sendMessage(['LEAVE-LOBBY-ACCEPTED'])
       }
     }
 

@@ -24,6 +24,7 @@
 | JOIN-LOBBY    | {name: 'lobby'} | JOIN-LOBBY-REJECTED   | { reason: 'User is already in a lobby' } |
 |               |                 | JOIN-LOBBY-REJECTED   | { reason: 'Lobby does not exist' } |
 |               |                 | JOIN-LOBBY-ACCEPTED   |               |
+| LEAVE-LOBBY   |                 | LEAVE-LOBBY-ACCEPTED  |               |
 
 
 ## [Specification status](doc/specStatus.md)

@@ -161,4 +161,52 @@ describe('lobby creation', function () {
     received = await this.waitForMessage(ws2)
     expect(received).toBe(`["CLOSE-LOBBY-REJECTED",{"reason":"Player is not the lobby creator"}]`)
   })
+
+  it('should allow users to leave the lobby they are in', async function () {
+    spyOn(console, 'log')
+    await umpire.start()
+    const ws = await this.registerUser({ url: 'ws://localhost', port, userName: 'useloom' })
+
+    let createLobbyMessage = JSON.stringify(['CREATE-LOBBY', { name: 'myLobby' }])
+    ws.send(createLobbyMessage)
+    let received = await this.waitForMessage(ws)
+    expect(received).toBe(`["CREATE-LOBBY-ACCEPTED"]`)
+
+    const ws2 = await this.registerUser({ url: 'ws://localhost', port, userName: 'rataplan' })
+    let joinLobbyMessage = JSON.stringify(['JOIN-LOBBY', { name: 'myLobby' }])
+    ws2.send(joinLobbyMessage)
+    received = await this.waitForMessage(ws2)
+    expect(received).toBe(`["JOIN-LOBBY-ACCEPTED"]`)
+
+    let leaveLobbyMessage = JSON.stringify(['LEAVE-LOBBY'])
+    ws2.send(leaveLobbyMessage)
+    received = await this.waitForMessage(ws2)
+    expect(received).toBe(`["LEAVE-LOBBY-ACCEPTED"]`)
+  })
+
+  it('should allow users to join a lobby if they were inside one, but then left', async function () {
+    spyOn(console, 'log')
+    await umpire.start()
+    const ws = await this.registerUser({ url: 'ws://localhost', port, userName: 'useloom' })
+
+    let createLobbyMessage = JSON.stringify(['CREATE-LOBBY', { name: 'myLobby' }])
+    ws.send(createLobbyMessage)
+    let received = await this.waitForMessage(ws)
+    expect(received).toBe(`["CREATE-LOBBY-ACCEPTED"]`)
+
+    const ws2 = await this.registerUser({ url: 'ws://localhost', port, userName: 'rataplan' })
+    let joinLobbyMessage = JSON.stringify(['JOIN-LOBBY', { name: 'myLobby' }])
+    ws2.send(joinLobbyMessage)
+    received = await this.waitForMessage(ws2)
+    expect(received).toBe(`["JOIN-LOBBY-ACCEPTED"]`)
+
+    let leaveLobbyMessage = JSON.stringify(['LEAVE-LOBBY'])
+    ws2.send(leaveLobbyMessage)
+    received = await this.waitForMessage(ws2)
+    expect(received).toBe(`["LEAVE-LOBBY-ACCEPTED"]`)
+
+    ws2.send(joinLobbyMessage)
+    received = await this.waitForMessage(ws2)
+    expect(received).toBe(`["JOIN-LOBBY-ACCEPTED"]`)
+  })
 })
