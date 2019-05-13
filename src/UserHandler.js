@@ -1,20 +1,17 @@
-const UserHandlerFactory = ({ addUser, removeUser, hasUser }) => {
+const UserHandlerFactory = ({ sendMessage, sendMessageAndClose, addUser, removeUser, hasUser }) => {
   return {
     register (user, ws) {
       if (!hasUser(user)) {
         addUser(user, ws)
-        let response = JSON.stringify(['REGISTER-ACCEPTED'])
-        ws.send(response)
+        sendMessage(['REGISTER-ACCEPTED'])
       } else {
-        let response = JSON.stringify(['REGISTER-REJECTED'])
-        ws.send(response)
+        sendMessage(['REGISTER-REJECTED'])
       }
     },
 
-    leaveServer (user, ws) {
+    leaveServer (user) {
       if (removeUser(user)) {
-        let response = JSON.stringify(['LEAVE-SERVER-ACCEPTED'])
-        ws.send(response, () => ws.close())
+        sendMessageAndClose(['LEAVE-SERVER-ACCEPTED'])
       }
     }
   }

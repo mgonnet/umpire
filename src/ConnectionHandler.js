@@ -20,19 +20,27 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
     }
   }
 
-  const wsFunctions = {
-    sendMessage (message, callback) {
-      ws.send(JSON.stringify(message), callback)
-    }
+  function sendMessage (message, callback) {
+    ws.send(JSON.stringify(message), callback)
   }
 
-  const userHandler = UserHandlerFactory(settersGetters.users)
+  function sendMessageAndClose (message) {
+    sendMessage(message, () => ws.close())
+  }
+
+  const userHandler = UserHandlerFactory(
+    Object.assign(
+      {},
+      settersGetters.users,
+      { sendMessage, sendMessageAndClose }
+    )
+  )
   const lobbyHandler = LobbyHandlerFactory(
     Object.assign(
       {},
       connectionStatus,
       settersGetters.lobbies,
-      wsFunctions
+      { sendMessage }
     )
   )
 
@@ -47,7 +55,7 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
     }
 
     if (type === 'LEAVE-SERVER') {
-      userHandler.leaveServer(currentUser, ws)
+      userHandler.leaveServer(currentUser)
     }
 
     if (type === 'CREATE-LOBBY') {
