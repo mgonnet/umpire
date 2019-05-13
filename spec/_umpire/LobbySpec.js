@@ -22,11 +22,7 @@ describe('lobby creation', function () {
     await umpire.start()
     const ws = await this.registerUser({ url: 'ws://localhost', port, userName: 'useloom' })
 
-    let createLobbyMessage = JSON.stringify(['CREATE-LOBBY', { name: 'myLobby' }])
-    ws.send(createLobbyMessage)
-    let received = await this.waitForMessage(ws)
-
-    expect(received).toBe(`["CREATE-LOBBY-ACCEPTED"]`)
+    await this.createLobby({ ws, lobbyName: 'myLobby' })
   })
 
   it('should not allow to create a lobby if another exists with same name', async function () {
@@ -34,18 +30,14 @@ describe('lobby creation', function () {
     await umpire.start()
     const ws = await this.registerUser({ url: 'ws://localhost', port, userName: 'useloom' })
 
-    let createLobbyMessage = JSON.stringify(['CREATE-LOBBY', { name: 'myLobby' }])
-    ws.send(createLobbyMessage)
-    let received = await this.waitForMessage(ws)
-
-    expect(received).toBe(`["CREATE-LOBBY-ACCEPTED"]`)
+    await this.createLobby({ ws, lobbyName: 'myLobby' })
 
     const ws2 = await this.registerUser({ url: 'ws://localhost', port, userName: 'rataplan' })
-
-    ws2.send(createLobbyMessage)
-    received = await this.waitForMessage(ws2)
-
-    expect(received).toBe(`["CREATE-LOBBY-REJECTED",{"reason":"Lobby name already exists"}]`)
+    await this.createLobby({
+      ws: ws2,
+      lobbyName: 'myLobby',
+      expectedMessage: '["CREATE-LOBBY-REJECTED",{"reason":"Lobby name already exists"}]'
+    })
   })
 
   it('should not allow to create a lobby if the player is already in a lobby', async function () {
