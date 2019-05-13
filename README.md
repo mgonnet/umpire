@@ -27,6 +27,11 @@
 | LEAVE-LOBBY   |                 | LEAVE-LOBBY-ACCEPTED  |               |
 |               |                 | LEAVE-LOBBY-REJECTED  | { reason: 'Player is not the inside a lobby' } |
 
+## Emitted Messages
+| Message      | Message data           | Trigger             |
+|--------------|------------------------|---------------------|
+| JOINED-LOBBY | { player: 'rataplan' } | JOIN-LOBBY-ACCEPTED |
+
 
 ## [Specification status](doc/specStatus.md)
 

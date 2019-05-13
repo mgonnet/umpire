@@ -8,6 +8,7 @@ const LobbyHandlerFactory = ({
   hasLobby,
   addLobby,
   getLobby,
+  sendMessageToUser,
   removeLobby }) => {
   return {
 
@@ -64,6 +65,14 @@ const LobbyHandlerFactory = ({
           lobby.players.push(getCurrentUser())
           setCurrentLobby(lobbyName)
           sendMessage(['JOIN-LOBBY-ACCEPTED'])
+          lobby.players.forEach((player) => {
+            if (player !== getCurrentUser()) {
+              sendMessageToUser(player, [
+                'JOINED-LOBBY',
+                { player: getCurrentUser() }
+              ])
+            }
+          })
         } else {
           sendMessage([
             'JOIN-LOBBY-REJECTED',

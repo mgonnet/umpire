@@ -18,6 +18,10 @@ const Umpire = ({ port }) => {
 
       removeUser (user) {
         return users.delete(user)
+      },
+
+      sendMessageToUser (user, message) {
+        users.get(user).send(JSON.stringify(message))
       }
     },
 

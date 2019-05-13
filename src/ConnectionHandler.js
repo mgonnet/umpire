@@ -43,7 +43,8 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
       {},
       connectionStatus,
       settersGetters.lobbies,
-      { sendMessage }
+      { sendMessage },
+      { sendMessageToUser: settersGetters.users.sendMessageToUser }
     )
   )
 

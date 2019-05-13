@@ -220,4 +220,22 @@ describe('lobby creation', function () {
     let received = await this.waitForMessage(ws)
     expect(received).toBe(`["LEAVE-LOBBY-REJECTED",{"reason":"Player is not the inside a lobby"}]`)
   })
+
+  it('should notify to all the players of a lobby when a new player joins', async function () {
+    spyOn(console, 'log')
+    await umpire.start()
+    const ws = await this.registerUser({ url: 'ws://localhost', port, userName: 'useloom' })
+
+    let createLobbyMessage = JSON.stringify(['CREATE-LOBBY', { name: 'myLobby' }])
+    ws.send(createLobbyMessage)
+    let received = await this.waitForMessage(ws)
+    expect(received).toBe(`["CREATE-LOBBY-ACCEPTED"]`)
+
+    const ws2 = await this.registerUser({ url: 'ws://localhost', port, userName: 'rataplan' })
+    let joinLobbyMessage = JSON.stringify(['JOIN-LOBBY', { name: 'myLobby' }])
+    ws2.send(joinLobbyMessage)
+    let [msgP1, msgP2] = await Promise.all([this.waitForMessage(ws), this.waitForMessage(ws2)])
+    expect(msgP2).toBe(`["JOIN-LOBBY-ACCEPTED"]`)
+    expect(msgP1).toBe(`["JOINED-LOBBY",{"player":"rataplan"}]`)
+  })
 })
