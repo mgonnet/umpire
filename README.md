@@ -25,5 +25,8 @@
 |               |                 | JOIN-LOBBY-REJECTED   | { reason: 'Lobby does not exist' } |
 |               |                 | JOIN-LOBBY-ACCEPTED   |               |
 
+
+## [Specification status](doc/specStatus.md)
+
 ## References
 1- Factory functions: https://medium.com/@vapurrmaid/should-you-use-classes-in-javascript-82f3b3df6195 
