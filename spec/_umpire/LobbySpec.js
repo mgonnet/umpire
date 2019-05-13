@@ -86,10 +86,7 @@ describe('lobby creation', function () {
     await this.createLobby({ ws, lobbyName: 'myLobby' })
 
     const ws2 = await this.registerUser({ url: 'ws://localhost', port, userName: 'rataplan' })
-    let joinLobbyMessage = JSON.stringify(['JOIN-LOBBY', { name: 'myLobby' }])
-    ws2.send(joinLobbyMessage)
-    let received = await this.waitForMessage(ws2)
-    expect(received).toBe(`["JOIN-LOBBY-ACCEPTED"]`)
+    await this.joinLobby({ ws: ws2, lobbyName: 'myLobby' })
   })
 
   it('should not allow users to join a lobby while on another lobby', async function () {
@@ -100,14 +97,12 @@ describe('lobby creation', function () {
     await this.createLobby({ ws, lobbyName: 'myLobby' })
 
     const ws2 = await this.registerUser({ url: 'ws://localhost', port, userName: 'rataplan' })
-    let joinLobbyMessage = JSON.stringify(['JOIN-LOBBY', { name: 'myLobby' }])
-    ws2.send(joinLobbyMessage)
-    let received = await this.waitForMessage(ws2)
-    expect(received).toBe(`["JOIN-LOBBY-ACCEPTED"]`)
+    await this.joinLobby({ ws: ws2, lobbyName: 'myLobby' })
 
-    ws2.send(joinLobbyMessage)
-    received = await this.waitForMessage(ws2)
-    expect(received).toBe(`["JOIN-LOBBY-REJECTED",{"reason":"User is already in a lobby"}]`)
+    await this.joinLobby({
+      ws: ws2,
+      lobbyName: 'myLobby',
+      expectedMessage: `["JOIN-LOBBY-REJECTED",{"reason":"User is already in a lobby"}]` })
   })
 
   it('should not allow users to join an unexisting lobby', async function () {
@@ -115,10 +110,10 @@ describe('lobby creation', function () {
     await umpire.start()
 
     const ws = await this.registerUser({ url: 'ws://localhost', port, userName: 'rataplan' })
-    let joinLobbyMessage = JSON.stringify(['JOIN-LOBBY', { name: 'myLobby' }])
-    ws.send(joinLobbyMessage)
-    let received = await this.waitForMessage(ws)
-    expect(received).toBe(`["JOIN-LOBBY-REJECTED",{"reason":"Lobby does not exist"}]`)
+    await this.joinLobby({
+      ws,
+      lobbyName: 'myLobby',
+      expectedMessage: `["JOIN-LOBBY-REJECTED",{"reason":"Lobby does not exist"}]` })
   })
 
   it('should not allow users other than the creator to close the lobby', async function () {
@@ -129,14 +124,11 @@ describe('lobby creation', function () {
     await this.createLobby({ ws, lobbyName: 'myLobby' })
 
     const ws2 = await this.registerUser({ url: 'ws://localhost', port, userName: 'rataplan' })
-    let joinLobbyMessage = JSON.stringify(['JOIN-LOBBY', { name: 'myLobby' }])
-    ws2.send(joinLobbyMessage)
-    let received = await this.waitForMessage(ws2)
-    expect(received).toBe(`["JOIN-LOBBY-ACCEPTED"]`)
+    await this.joinLobby({ ws: ws2, lobbyName: 'myLobby' })
 
     let closeLobbyMessage = JSON.stringify(['CLOSE-LOBBY'])
     ws2.send(closeLobbyMessage)
-    received = await this.waitForMessage(ws2)
+    let received = await this.waitForMessage(ws2)
     expect(received).toBe(`["CLOSE-LOBBY-REJECTED",{"reason":"Player is not the lobby creator"}]`)
   })
 
@@ -148,14 +140,11 @@ describe('lobby creation', function () {
     await this.createLobby({ ws, lobbyName: 'myLobby' })
 
     const ws2 = await this.registerUser({ url: 'ws://localhost', port, userName: 'rataplan' })
-    let joinLobbyMessage = JSON.stringify(['JOIN-LOBBY', { name: 'myLobby' }])
-    ws2.send(joinLobbyMessage)
-    let received = await this.waitForMessage(ws2)
-    expect(received).toBe(`["JOIN-LOBBY-ACCEPTED"]`)
+    await this.joinLobby({ ws: ws2, lobbyName: 'myLobby' })
 
     let leaveLobbyMessage = JSON.stringify(['LEAVE-LOBBY'])
     ws2.send(leaveLobbyMessage)
-    received = await this.waitForMessage(ws2)
+    let received = await this.waitForMessage(ws2)
     expect(received).toBe(`["LEAVE-LOBBY-ACCEPTED"]`)
   })
 
@@ -167,19 +156,14 @@ describe('lobby creation', function () {
     await this.createLobby({ ws, lobbyName: 'myLobby' })
 
     const ws2 = await this.registerUser({ url: 'ws://localhost', port, userName: 'rataplan' })
-    let joinLobbyMessage = JSON.stringify(['JOIN-LOBBY', { name: 'myLobby' }])
-    ws2.send(joinLobbyMessage)
-    let received = await this.waitForMessage(ws2)
-    expect(received).toBe(`["JOIN-LOBBY-ACCEPTED"]`)
+    await this.joinLobby({ ws: ws2, lobbyName: 'myLobby' })
 
     let leaveLobbyMessage = JSON.stringify(['LEAVE-LOBBY'])
     ws2.send(leaveLobbyMessage)
-    received = await this.waitForMessage(ws2)
+    let received = await this.waitForMessage(ws2)
     expect(received).toBe(`["LEAVE-LOBBY-ACCEPTED"]`)
 
-    ws2.send(joinLobbyMessage)
-    received = await this.waitForMessage(ws2)
-    expect(received).toBe(`["JOIN-LOBBY-ACCEPTED"]`)
+    await this.joinLobby({ ws: ws2, lobbyName: 'myLobby' })
   })
 
   it('should not allow a user to leave a lobby if they are not in one', async function () {
