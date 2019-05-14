@@ -22,6 +22,10 @@ const LobbyFactory = ({ lobbyName, creator }) => {
       players.forEach((player) => {
         player.sendMessage(message)
       })
+    },
+
+    forEachPlayer (customFunction) {
+      players.forEach(customFunction)
     }
   }
 }

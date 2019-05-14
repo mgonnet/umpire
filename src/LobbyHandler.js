@@ -34,7 +34,6 @@ const LobbyHandlerFactory = (
         ])
       } else {
         let lobby = getLobby(currentUser.getLobby())
-        console.log(lobby)
         if (!lobby) {
 
         } else {
@@ -44,7 +43,10 @@ const LobbyHandlerFactory = (
               { reason: 'Player is not the lobby creator' }
             ])
           } else if (removeLobby(lobby)) {
-            currentUser.sendMessage(['CLOSE-LOBBY-ACCEPTED'])
+            lobby.broadcast(['CLOSE-LOBBY-ACCEPTED'])
+            lobby.forEachPlayer((player) => {
+              player.leaveLobby()
+            })
           }
         }
       }

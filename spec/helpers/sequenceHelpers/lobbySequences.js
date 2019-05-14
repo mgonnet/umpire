@@ -21,7 +21,20 @@ async function joinLobby ({ ws, lobbyName, expectedMessage }) {
   expect(received).toBe(expectedMessage)
 }
 
+async function closeLobby ({ ws, expectedMessage }) {
+  let closeLobbyMessage = JSON.stringify(['CLOSE-LOBBY'])
+  ws.send(closeLobbyMessage)
+  let received = await this.waitForMessage(ws)
+
+  if (!expectedMessage) {
+    expectedMessage = `["CLOSE-LOBBY-ACCEPTED"]`
+  }
+
+  expect(received).toBe(expectedMessage)
+}
+
 beforeEach(function () {
   this.createLobby = createLobby
   this.joinLobby = joinLobby
+  this.closeLobby = closeLobby
 })

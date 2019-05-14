@@ -61,10 +61,7 @@ describe('lobby creation', function () {
 
     await this.createLobby({ ws, lobbyName: 'myLobby' })
 
-    let closeLobbyMessage = JSON.stringify(['CLOSE-LOBBY'])
-    ws.send(closeLobbyMessage)
-    let received = await this.waitForMessage(ws)
-    expect(received).toBe(`["CLOSE-LOBBY-ACCEPTED"]`)
+    await this.closeLobby({ ws })
   })
 
   it('should not allow to close a lobby if the user is not in one', async function () {
@@ -190,5 +187,25 @@ describe('lobby creation', function () {
     let [msgP1, msgP2] = await Promise.all([this.waitForMessage(ws), this.waitForMessage(ws2)])
     expect(msgP2).toBe(`["JOIN-LOBBY-ACCEPTED"]`)
     expect(msgP1).toBe(`["JOINED-LOBBY",{"player":"rataplan"}]`)
+  })
+
+  it('should allow players to join other lobbies after the one they were in was closed', async function () {
+    spyOn(console, 'log')
+    await umpire.start()
+    const ws = await this.registerUser({ url: 'ws://localhost', port, userName: 'useloom' })
+    const ws2 = await this.registerUser({ url: 'ws://localhost', port, userName: 'rataplan' })
+    const ws3 = await this.registerUser({ url: 'ws://localhost', port, userName: 'ElgoLazo' })
+
+    await this.createLobby({ ws, lobbyName: 'myLobby' })
+    await this.createLobby({ ws: ws3, lobbyName: 'myOtherLobby' })
+
+    await this.joinLobby({ ws: ws2, lobbyName: 'myLobby' })
+
+    await this.closeLobby({ ws: ws })
+    let received = await this.waitForMessage(ws2) // Joined players also receive a notification
+    expect(received).toBe('["CLOSE-LOBBY-ACCEPTED"]')
+
+    await this.joinLobby({ ws: ws2, lobbyName: 'myOtherLobby' })
+    await this.joinLobby({ ws: ws, lobbyName: 'myOtherLobby' })
   })
 })
