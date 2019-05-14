@@ -4,54 +4,9 @@ const UserFactory = require('./entities/User')
 
 const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
   let currentUser = UserFactory({ ws })
-  let currentLobby = void (0)
 
-  const connectionStatus = {
-    hasCurrentLobby () {
-      return currentLobby !== void (0)
-    },
-    setCurrentLobby (lobby) {
-      currentLobby = lobby
-    },
-    notCurrentlyInALobby () {
-      currentLobby = void (0)
-    },
-    getCurrentLobby () {
-      return currentLobby
-    },
-    getCurrentUser () {
-      return currentUser
-    },
-    setCurrentUser (user) {
-      currentUser.setName(user)
-    },
-    hasCurrentUser () {
-      return currentUser.hasName()
-    }
-  }
-
-  function sendMessage (message, callback) {
-    ws.send(JSON.stringify(message), callback)
-  }
-
-  const userHandler = UserHandlerFactory(
-    currentUser,
-    Object.assign(
-      {},
-      settersGetters.users,
-      connectionStatus
-    )
-  )
-  const lobbyHandler = LobbyHandlerFactory(
-    currentUser,
-    Object.assign(
-      {},
-      connectionStatus,
-      settersGetters.lobbies,
-      { sendMessage },
-      { sendMessageToUser: settersGetters.users.sendMessageToUser }
-    )
-  )
+  const userHandler = UserHandlerFactory(currentUser, settersGetters.users)
+  const lobbyHandler = LobbyHandlerFactory(currentUser, settersGetters.lobbies)
 
   ws.on('message', function incoming (message) {
     console.log(`Received: ${message}`)
