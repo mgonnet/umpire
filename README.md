@@ -1,4 +1,5 @@
 [![npm version](https://badge.fury.io/js/%40mgonnet%2Fumpire.svg)](https://badge.fury.io/js/%40mgonnet%2Fumpire)
+[![codecov](https://codecov.io/gh/mgonnet/umpire/branch/master/graph/badge.svg)](https://codecov.io/gh/mgonnet/umpire)
 # @mgonnet/umpire
 
 ## Sequence Diagrams

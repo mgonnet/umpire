@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "esw \"**/*.js\"",
     "lint-fix": "esw \"**/*.js\" --fix",
-    "test": "npm run lint && jasmine",
+    "test": "npm run lint && nyc jasmine",
     "coverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json",
     "spec-status": "jasmine --reporter=jasmine-spec-status-md > ./doc/specStatus.md",
     "build-doc": "npm run spec-status && mmdc -i doc/sequenceDiagramsMmd/userConnection.mmd -o doc/sequenceDiagramsPng/userConnection.png -t neutral && mmdc -i doc/sequenceDiagramsMmd/lobbyCreation.mmd -o doc/sequenceDiagramsPng/lobbyCreation.png -t neutral"
@@ -34,7 +34,6 @@
     "eslint-plugin-promise": "^4.1.1",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-watch": "^5.1.2",
-    "istanbul": "^0.4.5",
     "jasmine": "^3.4.0",
     "jasmine-spec-status-md": "^0.1.0",
     "mermaid.cli": "^0.5.1",
