@@ -1,4 +1,5 @@
-# umpire
+[![npm version](https://badge.fury.io/js/%40mgonnet%2Fumpire.svg)](https://badge.fury.io/js/%40mgonnet%2Fumpire)
+# @mgonnet/umpire
 
 ## Sequence Diagrams
 
