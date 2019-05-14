@@ -35,7 +35,7 @@ const Umpire = ({ port }) => {
       },
 
       removeLobby (lobby) {
-        return lobbies.delete(lobby)
+        return lobbies.delete(lobby.getLobbyName())
       },
 
       getLobby (lobbyName) {
