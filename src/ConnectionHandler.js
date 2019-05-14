@@ -1,8 +1,9 @@
 const UserHandlerFactory = require('./UserHandler')
 const LobbyHandlerFactory = require('./LobbyHandler')
+const UserFactory = require('./entities/User')
 
 const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
-  let currentUser = void (0)
+  let currentUser = UserFactory({ ws })
   let currentLobby = void (0)
 
   const connectionStatus = {
@@ -22,10 +23,10 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
       return currentUser
     },
     setCurrentUser (user) {
-      currentUser = user
+      currentUser.setName(user)
     },
     hasCurrentUser () {
-      return currentUser !== void (0)
+      return currentUser.hasName()
     }
   }
 
@@ -33,19 +34,16 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
     ws.send(JSON.stringify(message), callback)
   }
 
-  function sendMessageAndClose (message) {
-    sendMessage(message, () => ws.close())
-  }
-
   const userHandler = UserHandlerFactory(
+    currentUser,
     Object.assign(
       {},
       settersGetters.users,
-      { sendMessage, sendMessageAndClose },
-      { setCurrentUser: connectionStatus.setCurrentUser, hasCurrentUser: connectionStatus.hasCurrentUser }
+      connectionStatus
     )
   )
   const lobbyHandler = LobbyHandlerFactory(
+    currentUser,
     Object.assign(
       {},
       connectionStatus,

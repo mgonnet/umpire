@@ -8,8 +8,8 @@ const Umpire = ({ port }) => {
 
   const settersGetters = {
     users: {
-      addUser (user, ws) {
-        users.set(user, ws)
+      addUser (user) {
+        users.set(user.getName(), user)
       },
 
       hasUser (user) {
@@ -17,25 +17,25 @@ const Umpire = ({ port }) => {
       },
 
       removeUser (user) {
-        return users.delete(user)
+        return users.delete(user.getName())
       },
 
       sendMessageToUser (user, message) {
-        users.get(user).send(JSON.stringify(message))
+        user.sendMessage(message)
       }
     },
 
     lobbies: {
-      addLobby ({ lobbyName, creator }) {
-        lobbies.set(lobbyName, { creator, players: [creator] })
+      addLobby (lobby) {
+        lobbies.set(lobby.getLobbyName(), lobby)
       },
 
       hasLobby (lobbyName) {
         return lobbies.has(lobbyName)
       },
 
-      removeLobby (lobbyName) {
-        return lobbies.delete(lobbyName)
+      removeLobby (lobby) {
+        return lobbies.delete(lobby)
       },
 
       getLobby (lobbyName) {

@@ -1,80 +1,72 @@
-const LobbyHandlerFactory = ({
-  sendMessage,
-  getCurrentUser,
-  hasCurrentLobby,
-  setCurrentLobby,
-  notCurrentlyInALobby,
-  getCurrentLobby,
-  hasLobby,
-  addLobby,
-  getLobby,
-  sendMessageToUser,
-  removeLobby }) => {
+const LobbyFactory = require('./entities/Lobby')
+
+const LobbyHandlerFactory = (
+  currentUser,
+  { hasLobby,
+    addLobby,
+    getLobby,
+    removeLobby }) => {
   return {
 
     createLobby (lobbyName) {
-      if (hasCurrentLobby()) {
-        sendMessage([
+      if (currentUser.isInLobby()) {
+        currentUser.sendMessage([
           'CREATE-LOBBY-REJECTED',
           { reason: 'User already in lobby' }
         ])
       } else if (hasLobby(lobbyName)) {
-        sendMessage([
+        currentUser.sendMessage([
           'CREATE-LOBBY-REJECTED',
           { reason: 'Lobby name already exists' }
         ])
       } else {
-        addLobby({ lobbyName: lobbyName, creator: getCurrentUser() })
-        setCurrentLobby(lobbyName)
-        sendMessage(['CREATE-LOBBY-ACCEPTED'])
+        addLobby(LobbyFactory({ lobbyName, creator: currentUser }))
+        currentUser.setLobby(lobbyName)
+        currentUser.sendMessage(['CREATE-LOBBY-ACCEPTED'])
       }
     },
 
     closeLobby () {
-      if (!hasCurrentLobby()) {
-        sendMessage([
+      if (!currentUser.isInLobby()) {
+        currentUser.sendMessage([
           'CLOSE-LOBBY-REJECTED',
           { reason: 'User is not in a lobby' }
         ])
       } else {
-        let lobby = getLobby(getCurrentLobby())
+        let lobby = getLobby(currentUser.getLobby())
         if (!lobby) {
 
         } else {
-          if (lobby.creator !== getCurrentUser()) {
-            sendMessage([
+          if (lobby.getCreator() !== currentUser) {
+            currentUser.sendMessage([
               'CLOSE-LOBBY-REJECTED',
               { reason: 'Player is not the lobby creator' }
             ])
-          } else if (removeLobby(getCurrentLobby())) {
-            sendMessage(['CLOSE-LOBBY-ACCEPTED'])
+          } else if (removeLobby(currentUser.getLobby())) {
+            currentUser.sendMessage(['CLOSE-LOBBY-ACCEPTED'])
           }
         }
       }
     },
 
     joinLobby (lobbyName) {
-      if (hasCurrentLobby()) {
-        sendMessage([
+      if (currentUser.isInLobby()) {
+        currentUser.sendMessage([
           'JOIN-LOBBY-REJECTED',
           { reason: 'User is already in a lobby' }
         ])
       } else {
         let lobby = getLobby(lobbyName)
         if (lobby) {
-          lobby.players.push(getCurrentUser())
-          setCurrentLobby(lobbyName)
-          sendMessage(['JOIN-LOBBY-ACCEPTED'])
-          lobby.players.forEach((player) => {
-            if (player !== getCurrentUser()) {
-              sendMessageToUser(player, [
-                'JOINED-LOBBY',
-                { player: getCurrentUser() }
-              ])
-            }
-          })
+          lobby.broadcast([
+            'JOINED-LOBBY',
+            { player: currentUser.getName() }
+          ])
+          lobby.addPlayer(currentUser)
+          currentUser.setLobby(lobbyName)
+          currentUser.sendMessage(['JOIN-LOBBY-ACCEPTED'])
         } else {
-          sendMessage([
+          currentUser.sendMessage([
             'JOIN-LOBBY-REJECTED',
             { reason: 'Lobby does not exist' }
           ])
@@ -83,13 +75,13 @@ const LobbyHandlerFactory = ({
     },
 
     leaveLobby () {
-      if (hasCurrentLobby()) {
-        let lobby = getLobby(getCurrentLobby())
-        lobby.players.splice(lobby.players.indexOf(getCurrentUser()))
-        notCurrentlyInALobby()
-        sendMessage(['LEAVE-LOBBY-ACCEPTED'])
+      if (currentUser.isInLobby()) {
+        let lobby = getLobby(currentUser.getLobby())
+        lobby.removePlayer(currentUser)
+        currentUser.leaveLobby()
+        currentUser.sendMessage(['LEAVE-LOBBY-ACCEPTED'])
       } else {
-        sendMessage([
+        currentUser.sendMessage([
           'LEAVE-LOBBY-REJECTED',
           { reason: 'Player is not the inside a lobby' }
         ])
