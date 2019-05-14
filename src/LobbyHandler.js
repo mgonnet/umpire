@@ -34,20 +34,16 @@ const LobbyHandlerFactory = (
         ])
       } else {
         let lobby = getLobby(currentUser.getLobby())
-        if (!lobby) {
-
-        } else {
-          if (lobby.getCreator() !== currentUser) {
-            currentUser.sendMessage([
-              'CLOSE-LOBBY-REJECTED',
-              { reason: 'Player is not the lobby creator' }
-            ])
-          } else if (removeLobby(lobby)) {
-            lobby.broadcast(['CLOSE-LOBBY-ACCEPTED'])
-            lobby.forEachPlayer((player) => {
-              player.leaveLobby()
-            })
-          }
+        if (lobby.getCreator() !== currentUser) {
+          currentUser.sendMessage([
+            'CLOSE-LOBBY-REJECTED',
+            { reason: 'Player is not the lobby creator' }
+          ])
+        } else if (removeLobby(lobby)) {
+          lobby.broadcast(['CLOSE-LOBBY-ACCEPTED'])
+          lobby.forEachPlayer((player) => {
+            player.leaveLobby()
+          })
         }
       }
     },
