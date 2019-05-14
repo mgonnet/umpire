@@ -1,5 +1,5 @@
 {
-  "name": "useloom.umpire",
+  "name": "@mgonnet/umpire",
   "version": "0.3.5",
   "description": "A node.js / websocket multiplayer umpire",
   "main": "index.js",
