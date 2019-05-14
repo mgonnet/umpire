@@ -2,7 +2,7 @@ coverage:
   status:
     project: yes
     patch: off
-    
+
 parsers:
   javascript:
     enable_partials: yes
