@@ -3,3 +3,9 @@ env:
   es6: true
   node: true
   jasmine: true
+
+rules:
+  camelcase: error
+  quotes:
+    - error
+    - backtick

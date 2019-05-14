@@ -1,6 +1,6 @@
-const Umpire = require('../../src/umpire')
+const Umpire = require(`../../src/umpire`)
 
-describe('umpire server start', function () {
+describe(`umpire server start`, function () {
   let port = 8080
   let umpire
 
@@ -17,17 +17,17 @@ describe('umpire server start', function () {
     }
   })
 
-  it('should show message in console when started', async function () {
-    spyOn(console, 'log')
+  it(`should show message in console when started`, async function () {
+    spyOn(console, `log`)
     await umpire.start()
     await umpire.close()
     expect(console.log).toHaveBeenCalledWith(`Umpire server listening at port ${port}`)
   })
 
-  it('should show a message in console when receives any message', async function () {
-    spyOn(console, 'log')
+  it(`should show a message in console when receives any message`, async function () {
+    spyOn(console, `log`)
     await umpire.start()
-    this.sendWsClientMessage({ url: 'ws://localhost', message: JSON.stringify(['HOLA']) })
+    this.sendWsClientMessage({ url: `ws://localhost`, message: JSON.stringify([`HOLA`]) })
     await new Promise(function (resolve, reject) {
       setTimeout(async () => {
         expect(console.log).toHaveBeenCalledWith(`Received: ["HOLA"]`)
@@ -37,8 +37,8 @@ describe('umpire server start', function () {
     await umpire.close()
   })
 
-  it('should show a message in console when closed', async function () {
-    spyOn(console, 'log')
+  it(`should show a message in console when closed`, async function () {
+    spyOn(console, `log`)
     await umpire.start()
     await umpire.close()
     expect(console.log).toHaveBeenCalledWith(`Umpire server closed`)

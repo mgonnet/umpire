@@ -1,5 +1,5 @@
-const WebSocket = require('ws')
-const ConnectionHandlerFactory = require('./ConnectionHandler')
+const WebSocket = require(`ws`)
+const ConnectionHandlerFactory = require(`./ConnectionHandler`)
 
 const Umpire = ({ port }) => {
   let wss
@@ -52,7 +52,7 @@ const Umpire = ({ port }) => {
           }
         )
 
-        wss.on('connection', ConnectionHandlerFactory({ settersGetters }))
+        wss.on(`connection`, ConnectionHandlerFactory({ settersGetters }))
       })
     },
 

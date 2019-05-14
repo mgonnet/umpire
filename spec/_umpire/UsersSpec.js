@@ -1,7 +1,7 @@
-const Umpire = require('../../src/umpire')
-const WebSocket = require('ws')
+const Umpire = require(`../../src/umpire`)
+const WebSocket = require(`ws`)
 
-describe('user connections', function () {
+describe(`user connections`, function () {
   let port = 8080
   let umpire
 
@@ -18,14 +18,14 @@ describe('user connections', function () {
     }
   })
 
-  it('should accept a user that had not been used before', async function () {
-    spyOn(console, 'log')
+  it(`should accept a user that had not been used before`, async function () {
+    spyOn(console, `log`)
     await umpire.start()
-    let message = JSON.stringify([ 'REGISTER', { name: 'useloom' } ])
+    let message = JSON.stringify([ `REGISTER`, { name: `useloom` } ])
 
-    const ws = new WebSocket('ws://localhost:8080')
+    const ws = new WebSocket(`ws://localhost:8080`)
 
-    ws.on('open', function open () {
+    ws.on(`open`, function open () {
       ws.send(message)
     })
 
@@ -36,14 +36,14 @@ describe('user connections', function () {
     await umpire.close()
   })
 
-  it('should reject a user that is already in use', async function () {
-    spyOn(console, 'log')
+  it(`should reject a user that is already in use`, async function () {
+    spyOn(console, `log`)
     await umpire.start()
-    let message = JSON.stringify([ 'REGISTER', { name: 'useloom' } ])
+    let message = JSON.stringify([ `REGISTER`, { name: `useloom` } ])
 
-    const ws = new WebSocket('ws://localhost:8080')
+    const ws = new WebSocket(`ws://localhost:8080`)
 
-    ws.on('open', function open () {
+    ws.on(`open`, function open () {
       ws.send(message)
     })
 
@@ -51,9 +51,9 @@ describe('user connections', function () {
 
     expect(received).toBe(`["REGISTER-ACCEPTED"]`)
 
-    const ws2 = new WebSocket('ws://localhost:8080')
+    const ws2 = new WebSocket(`ws://localhost:8080`)
 
-    ws2.on('open', function open () {
+    ws2.on(`open`, function open () {
       ws2.send(message)
     })
 
@@ -64,14 +64,14 @@ describe('user connections', function () {
     await umpire.close()
   })
 
-  it('should allow a user to leave', async function () {
-    spyOn(console, 'log')
+  it(`should allow a user to leave`, async function () {
+    spyOn(console, `log`)
     await umpire.start()
-    let message = JSON.stringify([ 'REGISTER', { name: 'useloom' } ])
+    let message = JSON.stringify([ `REGISTER`, { name: `useloom` } ])
 
-    const ws = new WebSocket('ws://localhost:8080')
+    const ws = new WebSocket(`ws://localhost:8080`)
 
-    ws.on('open', function open () {
+    ws.on(`open`, function open () {
       ws.send(message)
     })
 
@@ -79,7 +79,7 @@ describe('user connections', function () {
 
     expect(received).toBe(`["REGISTER-ACCEPTED"]`)
 
-    let leaveMessage = JSON.stringify(['LEAVE-SERVER'])
+    let leaveMessage = JSON.stringify([`LEAVE-SERVER`])
     ws.send(leaveMessage)
 
     received = await this.waitForMessage(ws)
@@ -89,14 +89,14 @@ describe('user connections', function () {
     await umpire.close()
   })
 
-  it('should allow a user to register again', async function () {
-    spyOn(console, 'log')
+  it(`should allow a user to register again`, async function () {
+    spyOn(console, `log`)
     await umpire.start()
-    let message = JSON.stringify([ 'REGISTER', { name: 'useloom' } ])
+    let message = JSON.stringify([ `REGISTER`, { name: `useloom` } ])
 
-    const ws = new WebSocket('ws://localhost:8080')
+    const ws = new WebSocket(`ws://localhost:8080`)
 
-    ws.on('open', function open () {
+    ws.on(`open`, function open () {
       ws.send(message)
     })
 
@@ -104,16 +104,16 @@ describe('user connections', function () {
 
     expect(received).toBe(`["REGISTER-ACCEPTED"]`)
 
-    let leaveMessage = JSON.stringify(['LEAVE-SERVER'])
+    let leaveMessage = JSON.stringify([`LEAVE-SERVER`])
     ws.send(leaveMessage)
 
     received = await this.waitForMessage(ws)
 
     expect(received).toBe(`["LEAVE-SERVER-ACCEPTED"]`)
 
-    const ws2 = new WebSocket('ws://localhost:8080')
+    const ws2 = new WebSocket(`ws://localhost:8080`)
 
-    ws2.on('open', function open () {
+    ws2.on(`open`, function open () {
       ws2.send(message)
     })
 
@@ -124,14 +124,14 @@ describe('user connections', function () {
     await umpire.close()
   })
 
-  it('should close the connection when a user leaves', async function () {
-    spyOn(console, 'log')
+  it(`should close the connection when a user leaves`, async function () {
+    spyOn(console, `log`)
     await umpire.start()
-    let message = JSON.stringify([ 'REGISTER', { name: 'useloom' } ])
+    let message = JSON.stringify([ `REGISTER`, { name: `useloom` } ])
 
-    const ws = new WebSocket('ws://localhost:8080')
+    const ws = new WebSocket(`ws://localhost:8080`)
 
-    ws.on('open', function open () {
+    ws.on(`open`, function open () {
       ws.send(message)
     })
 
@@ -139,11 +139,11 @@ describe('user connections', function () {
 
     expect(received).toBe(`["REGISTER-ACCEPTED"]`)
 
-    let leaveMessage = JSON.stringify(['LEAVE-SERVER'])
+    let leaveMessage = JSON.stringify([`LEAVE-SERVER`])
 
     let terminated = new Promise(function (resolve, reject) {
-      ws.on('close', function (code, reason) {
-        resolve('closed')
+      ws.on(`close`, function (code, reason) {
+        resolve(`closed`)
       })
     })
 
@@ -155,29 +155,29 @@ describe('user connections', function () {
     terminated = await terminated
 
     expect(received).toBe(`["LEAVE-SERVER-ACCEPTED"]`)
-    expect(terminated).toBe('closed')
+    expect(terminated).toBe(`closed`)
 
     await umpire.close()
   })
 
-  it('should not allow a user to register with a different name while still connected', async function () {
-    spyOn(console, 'log')
+  it(`should not allow a user to register with a different name while still connected`, async function () {
+    spyOn(console, `log`)
     await umpire.start()
-    let message = JSON.stringify([ 'REGISTER', { name: 'useloom' } ])
+    let message = JSON.stringify([ `REGISTER`, { name: `useloom` } ])
 
-    const ws = new WebSocket('ws://localhost:8080')
+    const ws = new WebSocket(`ws://localhost:8080`)
 
-    ws.on('open', function open () {
+    ws.on(`open`, function open () {
       ws.send(message)
     })
 
     let received = await this.waitForMessage(ws)
     expect(received).toBe(`["REGISTER-ACCEPTED"]`)
 
-    let message2 = JSON.stringify([ 'REGISTER', { name: 'rataplan' } ])
+    let message2 = JSON.stringify([ `REGISTER`, { name: `rataplan` } ])
     ws.send(message2)
     received = await this.waitForMessage(ws)
-    expect(received).toBe('["REGISTER-REJECTED",{"reason":"User already registered"}]')
+    expect(received).toBe(`["REGISTER-REJECTED",{"reason":"User already registered"}]`)
 
     await umpire.close()
   })

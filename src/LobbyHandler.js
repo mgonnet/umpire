@@ -1,4 +1,4 @@
-const LobbyFactory = require('./entities/Lobby')
+const LobbyFactory = require(`./entities/Lobby`)
 
 const LobbyHandlerFactory = (
   currentUser,
@@ -11,36 +11,36 @@ const LobbyHandlerFactory = (
     createLobby (lobbyName) {
       if (currentUser.isInLobby()) {
         currentUser.sendMessage([
-          'CREATE-LOBBY-REJECTED',
-          { reason: 'User already in lobby' }
+          `CREATE-LOBBY-REJECTED`,
+          { reason: `User already in lobby` }
         ])
       } else if (hasLobby(lobbyName)) {
         currentUser.sendMessage([
-          'CREATE-LOBBY-REJECTED',
-          { reason: 'Lobby name already exists' }
+          `CREATE-LOBBY-REJECTED`,
+          { reason: `Lobby name already exists` }
         ])
       } else {
         addLobby(LobbyFactory({ lobbyName, creator: currentUser }))
         currentUser.setLobby(lobbyName)
-        currentUser.sendMessage(['CREATE-LOBBY-ACCEPTED'])
+        currentUser.sendMessage([`CREATE-LOBBY-ACCEPTED`])
       }
     },
 
     closeLobby () {
       if (!currentUser.isInLobby()) {
         currentUser.sendMessage([
-          'CLOSE-LOBBY-REJECTED',
-          { reason: 'User is not in a lobby' }
+          `CLOSE-LOBBY-REJECTED`,
+          { reason: `User is not in a lobby` }
         ])
       } else {
         let lobby = getLobby(currentUser.getLobby())
         if (lobby.getCreator() !== currentUser) {
           currentUser.sendMessage([
-            'CLOSE-LOBBY-REJECTED',
-            { reason: 'Player is not the lobby creator' }
+            `CLOSE-LOBBY-REJECTED`,
+            { reason: `Player is not the lobby creator` }
           ])
         } else if (removeLobby(lobby)) {
-          lobby.broadcast(['CLOSE-LOBBY-ACCEPTED'])
+          lobby.broadcast([`CLOSE-LOBBY-ACCEPTED`])
           lobby.forEachPlayer((player) => {
             player.leaveLobby()
           })
@@ -51,23 +51,23 @@ const LobbyHandlerFactory = (
     joinLobby (lobbyName) {
       if (currentUser.isInLobby()) {
         currentUser.sendMessage([
-          'JOIN-LOBBY-REJECTED',
-          { reason: 'User is already in a lobby' }
+          `JOIN-LOBBY-REJECTED`,
+          { reason: `User is already in a lobby` }
         ])
       } else {
         let lobby = getLobby(lobbyName)
         if (lobby) {
           lobby.broadcast([
-            'JOINED-LOBBY',
+            `JOINED-LOBBY`,
             { player: currentUser.getName() }
           ])
           lobby.addPlayer(currentUser)
           currentUser.setLobby(lobbyName)
-          currentUser.sendMessage(['JOIN-LOBBY-ACCEPTED'])
+          currentUser.sendMessage([`JOIN-LOBBY-ACCEPTED`])
         } else {
           currentUser.sendMessage([
-            'JOIN-LOBBY-REJECTED',
-            { reason: 'Lobby does not exist' }
+            `JOIN-LOBBY-REJECTED`,
+            { reason: `Lobby does not exist` }
           ])
         }
       }
@@ -78,11 +78,11 @@ const LobbyHandlerFactory = (
         let lobby = getLobby(currentUser.getLobby())
         lobby.removePlayer(currentUser)
         currentUser.leaveLobby()
-        currentUser.sendMessage(['LEAVE-LOBBY-ACCEPTED'])
+        currentUser.sendMessage([`LEAVE-LOBBY-ACCEPTED`])
       } else {
         currentUser.sendMessage([
-          'LEAVE-LOBBY-REJECTED',
-          { reason: 'Player is not the inside a lobby' }
+          `LEAVE-LOBBY-REJECTED`,
+          { reason: `Player is not the inside a lobby` }
         ])
       }
     }

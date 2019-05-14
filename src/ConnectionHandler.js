@@ -1,6 +1,6 @@
-const UserHandlerFactory = require('./UserHandler')
-const LobbyHandlerFactory = require('./LobbyHandler')
-const UserFactory = require('./entities/User')
+const UserHandlerFactory = require(`./UserHandler`)
+const LobbyHandlerFactory = require(`./LobbyHandler`)
+const UserFactory = require(`./entities/User`)
 
 const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
   let currentUser = UserFactory({ ws })
@@ -8,32 +8,32 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
   const userHandler = UserHandlerFactory(currentUser, settersGetters.users)
   const lobbyHandler = LobbyHandlerFactory(currentUser, settersGetters.lobbies)
 
-  ws.on('message', function incoming (message) {
+  ws.on(`message`, function incoming (message) {
     console.log(`Received: ${message}`)
 
     let [type, data] = JSON.parse(message)
 
-    if (type === 'REGISTER') {
+    if (type === `REGISTER`) {
       userHandler.register(data.name, ws)
     }
 
-    if (type === 'LEAVE-SERVER') {
+    if (type === `LEAVE-SERVER`) {
       userHandler.leaveServer(currentUser)
     }
 
-    if (type === 'CREATE-LOBBY') {
+    if (type === `CREATE-LOBBY`) {
       lobbyHandler.createLobby(data.name)
     }
 
-    if (type === 'CLOSE-LOBBY') {
+    if (type === `CLOSE-LOBBY`) {
       lobbyHandler.closeLobby()
     }
 
-    if (type === 'JOIN-LOBBY') {
+    if (type === `JOIN-LOBBY`) {
       lobbyHandler.joinLobby(data.name)
     }
 
-    if (type === 'LEAVE-LOBBY') {
+    if (type === `LEAVE-LOBBY`) {
       lobbyHandler.leaveLobby()
     }
   })

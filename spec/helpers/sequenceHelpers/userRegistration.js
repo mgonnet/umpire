@@ -1,10 +1,10 @@
-const WebSocket = require('ws')
+const WebSocket = require(`ws`)
 
 async function registerUser ({ url, port, userName }) {
-  let registerMessage = JSON.stringify([ 'REGISTER', { name: userName } ])
+  let registerMessage = JSON.stringify([ `REGISTER`, { name: userName } ])
   const ws = new WebSocket(`${url}:${port}`)
 
-  ws.on('open', function open () {
+  ws.on(`open`, function open () {
     ws.send(registerMessage)
   })
 
