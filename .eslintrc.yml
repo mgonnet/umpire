@@ -9,3 +9,5 @@ rules:
   quotes:
     - error
     - backtick
+  max-depth: warn
+  prefer-const: error

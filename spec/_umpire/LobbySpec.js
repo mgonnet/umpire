@@ -1,7 +1,7 @@
 const Umpire = require(`../../src/umpire`)
 
 describe(`lobby creation`, function () {
-  let port = 8080
+  const port = 8080
   let umpire
 
   beforeEach(function () {
@@ -69,9 +69,9 @@ describe(`lobby creation`, function () {
     await umpire.start()
     const ws = await this.registerUser({ url: `ws://localhost`, port, userName: `useloom` })
 
-    let closeLobbyMessage = JSON.stringify([`CLOSE-LOBBY`])
+    const closeLobbyMessage = JSON.stringify([`CLOSE-LOBBY`])
     ws.send(closeLobbyMessage)
-    let received = await this.waitForMessage(ws)
+    const received = await this.waitForMessage(ws)
     expect(received).toBe(`["CLOSE-LOBBY-REJECTED",{"reason":"User is not in a lobby"}]`)
   })
 
@@ -123,9 +123,9 @@ describe(`lobby creation`, function () {
     const ws2 = await this.registerUser({ url: `ws://localhost`, port, userName: `rataplan` })
     await this.joinLobby({ ws: ws2, lobbyName: `myLobby` })
 
-    let closeLobbyMessage = JSON.stringify([`CLOSE-LOBBY`])
+    const closeLobbyMessage = JSON.stringify([`CLOSE-LOBBY`])
     ws2.send(closeLobbyMessage)
-    let received = await this.waitForMessage(ws2)
+    const received = await this.waitForMessage(ws2)
     expect(received).toBe(`["CLOSE-LOBBY-REJECTED",{"reason":"Player is not the lobby creator"}]`)
   })
 
@@ -139,9 +139,9 @@ describe(`lobby creation`, function () {
     const ws2 = await this.registerUser({ url: `ws://localhost`, port, userName: `rataplan` })
     await this.joinLobby({ ws: ws2, lobbyName: `myLobby` })
 
-    let leaveLobbyMessage = JSON.stringify([`LEAVE-LOBBY`])
+    const leaveLobbyMessage = JSON.stringify([`LEAVE-LOBBY`])
     ws2.send(leaveLobbyMessage)
-    let received = await this.waitForMessage(ws2)
+    const received = await this.waitForMessage(ws2)
     expect(received).toBe(`["LEAVE-LOBBY-ACCEPTED"]`)
   })
 
@@ -155,9 +155,9 @@ describe(`lobby creation`, function () {
     const ws2 = await this.registerUser({ url: `ws://localhost`, port, userName: `rataplan` })
     await this.joinLobby({ ws: ws2, lobbyName: `myLobby` })
 
-    let leaveLobbyMessage = JSON.stringify([`LEAVE-LOBBY`])
+    const leaveLobbyMessage = JSON.stringify([`LEAVE-LOBBY`])
     ws2.send(leaveLobbyMessage)
-    let received = await this.waitForMessage(ws2)
+    const received = await this.waitForMessage(ws2)
     expect(received).toBe(`["LEAVE-LOBBY-ACCEPTED"]`)
 
     await this.joinLobby({ ws: ws2, lobbyName: `myLobby` })
@@ -168,9 +168,9 @@ describe(`lobby creation`, function () {
     await umpire.start()
     const ws = await this.registerUser({ url: `ws://localhost`, port, userName: `useloom` })
 
-    let leaveLobbyMessage = JSON.stringify([`LEAVE-LOBBY`])
+    const leaveLobbyMessage = JSON.stringify([`LEAVE-LOBBY`])
     ws.send(leaveLobbyMessage)
-    let received = await this.waitForMessage(ws)
+    const received = await this.waitForMessage(ws)
     expect(received).toBe(`["LEAVE-LOBBY-REJECTED",{"reason":"Player is not the inside a lobby"}]`)
   })
 
@@ -182,9 +182,9 @@ describe(`lobby creation`, function () {
     await this.createLobby({ ws, lobbyName: `myLobby` })
 
     const ws2 = await this.registerUser({ url: `ws://localhost`, port, userName: `rataplan` })
-    let joinLobbyMessage = JSON.stringify([`JOIN-LOBBY`, { name: `myLobby` }])
+    const joinLobbyMessage = JSON.stringify([`JOIN-LOBBY`, { name: `myLobby` }])
     ws2.send(joinLobbyMessage)
-    let [msgP1, msgP2] = await Promise.all([this.waitForMessage(ws), this.waitForMessage(ws2)])
+    const [msgP1, msgP2] = await Promise.all([this.waitForMessage(ws), this.waitForMessage(ws2)])
     expect(msgP2).toBe(`["JOIN-LOBBY-ACCEPTED"]`)
     expect(msgP1).toBe(`["JOINED-LOBBY",{"player":"rataplan"}]`)
   })
@@ -202,7 +202,7 @@ describe(`lobby creation`, function () {
     await this.joinLobby({ ws: ws2, lobbyName: `myLobby` })
 
     await this.closeLobby({ ws: ws })
-    let received = await this.waitForMessage(ws2) // Joined players also receive a notification
+    const received = await this.waitForMessage(ws2) // Joined players also receive a notification
     expect(received).toBe(`["CLOSE-LOBBY-ACCEPTED"]`)
 
     await this.joinLobby({ ws: ws2, lobbyName: `myOtherLobby` })

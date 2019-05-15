@@ -1,5 +1,5 @@
 const LobbyFactory = ({ lobbyName, creator }) => {
-  let players = [creator]
+  const players = [creator]
 
   return {
     getLobbyName () {

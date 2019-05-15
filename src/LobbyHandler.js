@@ -33,7 +33,7 @@ const LobbyHandlerFactory = (
           { reason: `User is not in a lobby` }
         ])
       } else {
-        let lobby = getLobby(currentUser.getLobby())
+        const lobby = getLobby(currentUser.getLobby())
         if (lobby.getCreator() !== currentUser) {
           currentUser.sendMessage([
             `CLOSE-LOBBY-REJECTED`,
@@ -55,7 +55,7 @@ const LobbyHandlerFactory = (
           { reason: `User is already in a lobby` }
         ])
       } else {
-        let lobby = getLobby(lobbyName)
+        const lobby = getLobby(lobbyName)
         if (lobby) {
           lobby.broadcast([
             `JOINED-LOBBY`,
@@ -75,7 +75,7 @@ const LobbyHandlerFactory = (
 
     leaveLobby () {
       if (currentUser.isInLobby()) {
-        let lobby = getLobby(currentUser.getLobby())
+        const lobby = getLobby(currentUser.getLobby())
         lobby.removePlayer(currentUser)
         currentUser.leaveLobby()
         currentUser.sendMessage([`LEAVE-LOBBY-ACCEPTED`])

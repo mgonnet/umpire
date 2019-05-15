@@ -1,7 +1,7 @@
 const Umpire = require(`../../src/umpire`)
 
 describe(`umpire server start`, function () {
-  let port = 8080
+  const port = 8080
   let umpire
 
   beforeEach(function () {

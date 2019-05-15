@@ -3,7 +3,7 @@ const LobbyHandlerFactory = require(`./LobbyHandler`)
 const UserFactory = require(`./entities/User`)
 
 const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
-  let currentUser = UserFactory({ ws })
+  const currentUser = UserFactory({ ws })
 
   const userHandler = UserHandlerFactory(currentUser, settersGetters.users)
   const lobbyHandler = LobbyHandlerFactory(currentUser, settersGetters.lobbies)
@@ -11,7 +11,7 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
   ws.on(`message`, function incoming (message) {
     console.log(`Received: ${message}`)
 
-    let [type, data] = JSON.parse(message)
+    const [type, data] = JSON.parse(message)
 
     if (type === `REGISTER`) {
       userHandler.register(data.name, ws)

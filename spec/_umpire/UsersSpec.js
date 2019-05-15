@@ -2,7 +2,7 @@ const Umpire = require(`../../src/umpire`)
 const WebSocket = require(`ws`)
 
 describe(`user connections`, function () {
-  let port = 8080
+  const port = 8080
   let umpire
 
   beforeEach(function () {
@@ -21,7 +21,7 @@ describe(`user connections`, function () {
   it(`should accept a user that had not been used before`, async function () {
     spyOn(console, `log`)
     await umpire.start()
-    let message = JSON.stringify([ `REGISTER`, { name: `useloom` } ])
+    const message = JSON.stringify([ `REGISTER`, { name: `useloom` } ])
 
     const ws = new WebSocket(`ws://localhost:8080`)
 
@@ -29,7 +29,7 @@ describe(`user connections`, function () {
       ws.send(message)
     })
 
-    let received = await this.waitForMessage(ws)
+    const received = await this.waitForMessage(ws)
 
     expect(received).toBe(`["REGISTER-ACCEPTED"]`)
 
@@ -39,7 +39,7 @@ describe(`user connections`, function () {
   it(`should reject a user that is already in use`, async function () {
     spyOn(console, `log`)
     await umpire.start()
-    let message = JSON.stringify([ `REGISTER`, { name: `useloom` } ])
+    const message = JSON.stringify([ `REGISTER`, { name: `useloom` } ])
 
     const ws = new WebSocket(`ws://localhost:8080`)
 
@@ -67,7 +67,7 @@ describe(`user connections`, function () {
   it(`should allow a user to leave`, async function () {
     spyOn(console, `log`)
     await umpire.start()
-    let message = JSON.stringify([ `REGISTER`, { name: `useloom` } ])
+    const message = JSON.stringify([ `REGISTER`, { name: `useloom` } ])
 
     const ws = new WebSocket(`ws://localhost:8080`)
 
@@ -79,7 +79,7 @@ describe(`user connections`, function () {
 
     expect(received).toBe(`["REGISTER-ACCEPTED"]`)
 
-    let leaveMessage = JSON.stringify([`LEAVE-SERVER`])
+    const leaveMessage = JSON.stringify([`LEAVE-SERVER`])
     ws.send(leaveMessage)
 
     received = await this.waitForMessage(ws)
@@ -92,7 +92,7 @@ describe(`user connections`, function () {
   it(`should allow a user to register again`, async function () {
     spyOn(console, `log`)
     await umpire.start()
-    let message = JSON.stringify([ `REGISTER`, { name: `useloom` } ])
+    const message = JSON.stringify([ `REGISTER`, { name: `useloom` } ])
 
     const ws = new WebSocket(`ws://localhost:8080`)
 
@@ -104,7 +104,7 @@ describe(`user connections`, function () {
 
     expect(received).toBe(`["REGISTER-ACCEPTED"]`)
 
-    let leaveMessage = JSON.stringify([`LEAVE-SERVER`])
+    const leaveMessage = JSON.stringify([`LEAVE-SERVER`])
     ws.send(leaveMessage)
 
     received = await this.waitForMessage(ws)
@@ -127,7 +127,7 @@ describe(`user connections`, function () {
   it(`should close the connection when a user leaves`, async function () {
     spyOn(console, `log`)
     await umpire.start()
-    let message = JSON.stringify([ `REGISTER`, { name: `useloom` } ])
+    const message = JSON.stringify([ `REGISTER`, { name: `useloom` } ])
 
     const ws = new WebSocket(`ws://localhost:8080`)
 
@@ -139,7 +139,7 @@ describe(`user connections`, function () {
 
     expect(received).toBe(`["REGISTER-ACCEPTED"]`)
 
-    let leaveMessage = JSON.stringify([`LEAVE-SERVER`])
+    const leaveMessage = JSON.stringify([`LEAVE-SERVER`])
 
     let terminated = new Promise(function (resolve, reject) {
       ws.on(`close`, function (code, reason) {
@@ -163,7 +163,7 @@ describe(`user connections`, function () {
   it(`should not allow a user to register with a different name while still connected`, async function () {
     spyOn(console, `log`)
     await umpire.start()
-    let message = JSON.stringify([ `REGISTER`, { name: `useloom` } ])
+    const message = JSON.stringify([ `REGISTER`, { name: `useloom` } ])
 
     const ws = new WebSocket(`ws://localhost:8080`)
 
@@ -174,7 +174,7 @@ describe(`user connections`, function () {
     let received = await this.waitForMessage(ws)
     expect(received).toBe(`["REGISTER-ACCEPTED"]`)
 
-    let message2 = JSON.stringify([ `REGISTER`, { name: `rataplan` } ])
+    const message2 = JSON.stringify([ `REGISTER`, { name: `rataplan` } ])
     ws.send(message2)
     received = await this.waitForMessage(ws)
     expect(received).toBe(`["REGISTER-REJECTED",{"reason":"User already registered"}]`)

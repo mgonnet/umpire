@@ -3,8 +3,8 @@ const ConnectionHandlerFactory = require(`./ConnectionHandler`)
 
 const Umpire = ({ port }) => {
   let wss
-  let users = new Map()
-  let lobbies = new Map()
+  const users = new Map()
+  const lobbies = new Map()
 
   const settersGetters = {
     users: {
