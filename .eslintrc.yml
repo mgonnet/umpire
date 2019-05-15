@@ -11,3 +11,4 @@ rules:
     - backtick
   max-depth: warn
   prefer-const: error
+  no-shadow: error
