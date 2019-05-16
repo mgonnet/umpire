@@ -1,11 +1,12 @@
 const Umpire = require(`../../src/umpire`)
+const Chess = require(`chess.js`).Chess
 
 describe(`umpire server start`, function () {
   const port = 8080
   let umpire
 
   beforeEach(function () {
-    umpire = Umpire({ port })
+    umpire = Umpire({ port, game: Chess })
   })
 
   afterEach(async function () {
@@ -42,5 +43,9 @@ describe(`umpire server start`, function () {
     await umpire.start()
     await umpire.close()
     expect(console.log).toHaveBeenCalledWith(`Umpire server closed`)
+  })
+
+  it(`should throw an exception if not provided with a game constructor`, function () {
+    expect(() => Umpire({ port })).toThrow()
   })
 })

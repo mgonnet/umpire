@@ -1,10 +1,14 @@
 const WebSocket = require(`ws`)
 const ConnectionHandlerFactory = require(`./ConnectionHandler`)
 
-const Umpire = ({ port }) => {
+const Umpire = ({ port, game }) => {
   let wss
   const users = new Map()
   const lobbies = new Map()
+
+  if (typeof (game) === `undefined`) {
+    throw new Error(`Game constructor was not provided`)
+  }
 
   const settersGetters = {
     users: {

@@ -1,12 +1,13 @@
 const Umpire = require(`../../src/umpire`)
 const WebSocket = require(`ws`)
+const Chess = require(`chess.js`).Chess
 
 describe(`user connections`, function () {
   const port = 8080
   let umpire
 
   beforeEach(function () {
-    umpire = Umpire({ port })
+    umpire = Umpire({ port, game: Chess })
   })
 
   afterEach(async function () {

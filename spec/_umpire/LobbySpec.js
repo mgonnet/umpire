@@ -1,11 +1,12 @@
 const Umpire = require(`../../src/umpire`)
+const Chess = require(`chess.js`).Chess
 
 describe(`lobby creation`, function () {
   const port = 8080
   let umpire
 
   beforeEach(function () {
-    umpire = Umpire({ port })
+    umpire = Umpire({ port, game: Chess })
   })
 
   afterEach(async function () {
