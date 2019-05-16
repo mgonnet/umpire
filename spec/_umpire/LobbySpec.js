@@ -219,10 +219,7 @@ describe(`lobby creation`, function () {
     await this.createLobby({ ws, lobbyName: `myLobby` })
     await this.joinLobby({ ws: ws2, lobbyName: `myLobby` })
 
-    const chooseRolMessage = JSON.stringify([`CHOOSE-ROL`, { rol: `b` }])
-    ws2.send(chooseRolMessage)
-    const received = await this.waitForMessage(ws2)
-    expect(received).toBe(`["CHOOSE-ROL-ACCEPTED",{"player":"rataplan","rol":"b"}]`)
+    await this.chooseRol({ ws: ws2, rol: `b`, playerName: `rataplan` })
   })
 
   it(`should not allow a player that is not in a lobby to choose a rol`, async function () {
@@ -233,9 +230,10 @@ describe(`lobby creation`, function () {
 
     await this.createLobby({ ws, lobbyName: `myLobby` })
 
-    const chooseRolMessage = JSON.stringify([`CHOOSE-ROL`, { rol: `b` }])
-    ws2.send(chooseRolMessage)
-    const received = await this.waitForMessage(ws2)
-    expect(received).toBe(`["CHOOSE-ROL-REJECTED",{"reason":"Player is not inside a lobby"}]`)
+    await this.chooseRol({
+      ws: ws2,
+      rol: `b`,
+      expectedMessage: `["CHOOSE-ROL-REJECTED",{"reason":"Player is not inside a lobby"}]`
+    })
   })
 })

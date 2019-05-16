@@ -33,8 +33,21 @@ async function closeLobby ({ ws, expectedMessage }) {
   expect(received).toBe(expectedMessage)
 }
 
+async function chooseRol ({ ws, rol, playerName, expectedMessage }) {
+  const chooseRolMessage = JSON.stringify([`CHOOSE-ROL`, { rol }])
+  ws.send(chooseRolMessage)
+  const received = await this.waitForMessage(ws)
+
+  if (!expectedMessage) {
+    expectedMessage = `["CHOOSE-ROL-ACCEPTED",{"player":"${playerName}","rol":"${rol}"}]`
+  }
+
+  expect(received).toBe(expectedMessage)
+}
+
 beforeEach(function () {
   this.createLobby = createLobby
   this.joinLobby = joinLobby
   this.closeLobby = closeLobby
+  this.chooseRol = chooseRol
 })
