@@ -30,7 +30,7 @@
 |               |                 | JOIN-LOBBY-REJECTED   | { reason: 'Lobby does not exist' } |
 |               |                 | JOIN-LOBBY-ACCEPTED   |               |
 | LEAVE-LOBBY   |                 | LEAVE-LOBBY-ACCEPTED  |               |
-|               |                 | LEAVE-LOBBY-REJECTED  | { reason: 'Player is not the inside a lobby' } |
+|               |                 | LEAVE-LOBBY-REJECTED  | { reason: 'Player is not inside a lobby' } |
 | CHOOSE-ROL    | {rol: 'b'}      | CHOOSE-ROL-ACCEPTED   | { player: 'rataplan', rol: 'b' } |
 
 ## Emitted Messages

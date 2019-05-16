@@ -172,7 +172,7 @@ describe(`lobby creation`, function () {
     const leaveLobbyMessage = JSON.stringify([`LEAVE-LOBBY`])
     ws.send(leaveLobbyMessage)
     const received = await this.waitForMessage(ws)
-    expect(received).toBe(`["LEAVE-LOBBY-REJECTED",{"reason":"Player is not the inside a lobby"}]`)
+    expect(received).toBe(`["LEAVE-LOBBY-REJECTED",{"reason":"Player is not inside a lobby"}]`)
   })
 
   it(`should notify to all the players of a lobby when a new player joins`, async function () {
@@ -223,5 +223,19 @@ describe(`lobby creation`, function () {
     ws2.send(chooseRolMessage)
     const received = await this.waitForMessage(ws2)
     expect(received).toBe(`["CHOOSE-ROL-ACCEPTED",{"player":"rataplan","rol":"b"}]`)
+  })
+
+  it(`should not allow a player that is not in a lobby to choose a rol`, async function () {
+    spyOn(console, `log`)
+    await umpire.start()
+    const ws = await this.registerUser({ url: `ws://localhost`, port, userName: `useloom` })
+    const ws2 = await this.registerUser({ url: `ws://localhost`, port, userName: `rataplan` })
+
+    await this.createLobby({ ws, lobbyName: `myLobby` })
+
+    const chooseRolMessage = JSON.stringify([`CHOOSE-ROL`, { rol: `b` }])
+    ws2.send(chooseRolMessage)
+    const received = await this.waitForMessage(ws2)
+    expect(received).toBe(`["CHOOSE-ROL-REJECTED",{"reason":"Player is not inside a lobby"}]`)
   })
 })

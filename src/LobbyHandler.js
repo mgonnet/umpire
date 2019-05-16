@@ -82,7 +82,7 @@ const LobbyHandlerFactory = (
       } else {
         currentUser.sendMessage([
           `LEAVE-LOBBY-REJECTED`,
-          { reason: `Player is not the inside a lobby` }
+          { reason: `Player is not inside a lobby` }
         ])
       }
     },
@@ -101,6 +101,11 @@ const LobbyHandlerFactory = (
             player: currentUser.getName(),
             rol: rol
           }
+        ])
+      } else {
+        currentUser.sendMessage([
+          `CHOOSE-ROL-REJECTED`,
+          { reason: `Player is not inside a lobby` }
         ])
       }
     }
