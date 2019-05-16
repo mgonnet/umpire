@@ -29,7 +29,7 @@ const LobbyFactory = ({ lobbyName, creator }) => {
     },
 
     /**
-     * Searches for myPlayer, assigns the rol and marks that myPlayer choosed a rol 
+     * Searches for myPlayer, assigns the rol and marks that myPlayer choosed a rol
      * @param {Player} myPlayer
      * @param {string} rol
      */
