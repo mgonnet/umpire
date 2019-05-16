@@ -33,9 +33,10 @@
 |               |                 | LEAVE-LOBBY-REJECTED  | { reason: 'Player is not the inside a lobby' } |
 
 ## Emitted Messages
-| Message      | Message data           | Trigger             |
-|--------------|------------------------|---------------------|
-| JOINED-LOBBY | { player: 'rataplan' } | JOIN-LOBBY-ACCEPTED |
+| Message              | Message data           | Trigger              | Notes |
+|----------------------|------------------------|----------------------|-------|
+| JOINED-LOBBY         | { player: 'rataplan' } | JOIN-LOBBY-ACCEPTED  | Broadcasted to lobby when someone joins      |
+| CLOSE-LOBBY-ACCEPTED |                        | CLOSE-LOBBY-ACCEPTED | Broadcasted to lobby when the creator closes it |
 
 
 ## [Specification status](doc/specStatus.md)
