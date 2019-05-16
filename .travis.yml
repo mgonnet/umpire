@@ -4,4 +4,7 @@ node_js:
   - stable
   - 8
 
+git:
+  depth: false
+  
 after_success: npm run coverage
