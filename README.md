@@ -31,12 +31,14 @@
 |               |                 | JOIN-LOBBY-ACCEPTED   |               |
 | LEAVE-LOBBY   |                 | LEAVE-LOBBY-ACCEPTED  |               |
 |               |                 | LEAVE-LOBBY-REJECTED  | { reason: 'Player is not the inside a lobby' } |
+| CHOOSE-ROL    | {rol: 'b'}      | CHOOSE-ROL-ACCEPTED   | { player: 'rataplan', rol: 'b' } |
 
 ## Emitted Messages
-| Message              | Message data           | Trigger              | Notes |
-|----------------------|------------------------|----------------------|-------|
-| JOINED-LOBBY         | { player: 'rataplan' } | JOIN-LOBBY-ACCEPTED  | Broadcasted to lobby when someone joins      |
-| CLOSE-LOBBY-ACCEPTED |                        | CLOSE-LOBBY-ACCEPTED | Broadcasted to lobby when the creator closes it |
+| Message              | Message data                     | Trigger              | Notes |
+|----------------------|----------------------------------|----------------------|-------|
+| JOINED-LOBBY         | { player: 'rataplan' }           | JOIN-LOBBY-ACCEPTED  | Broadcasted to lobby when someone joins      |
+| CLOSE-LOBBY-ACCEPTED |                                  | CLOSE-LOBBY          | Broadcasted to lobby when the creator closes it |
+| CHOOSE-ROL-ACCEPTED  | { player: 'rataplan', rol: 'b' } | CHOOSE-ROL           | Broadcasted to lobby when a player chooses a rol |
 
 
 ## [Specification status](doc/specStatus.md)

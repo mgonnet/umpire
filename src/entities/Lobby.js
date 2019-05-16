@@ -1,5 +1,5 @@
 const LobbyFactory = ({ lobbyName, creator }) => {
-  const players = [creator]
+  const lobbyPlayers = [{ player: creator, rolSpecified: false, rol: undefined }]
 
   return {
     getLobbyName () {
@@ -11,21 +11,32 @@ const LobbyFactory = ({ lobbyName, creator }) => {
     },
 
     addPlayer (player) {
-      players.push(player)
+      lobbyPlayers.push({ player, rolSpecified: false, rol: undefined })
     },
 
     removePlayer (player) {
-      players.splice(players.indexOf(player))
+      lobbyPlayers.splice(lobbyPlayers.indexOf(player))
     },
 
     broadcast (message) {
-      players.forEach((player) => {
+      lobbyPlayers.forEach(({ player }) => {
         player.sendMessage(message)
       })
     },
 
     forEachPlayer (customFunction) {
-      players.forEach(customFunction)
+      lobbyPlayers.forEach(({ player }) => customFunction(player))
+    },
+
+    /**
+     * Searches for myPlayer, assigns the rol and marks that myPlayer choosed a rol 
+     * @param {Player} myPlayer
+     * @param {string} rol
+     */
+    setPlayerRol (myPlayer, rol) {
+      const lobbyPlayer = lobbyPlayers.find(({ player }) => player === myPlayer)
+      lobbyPlayer.rolSpecified = true
+      lobbyPlayer.rol = rol
     }
   }
 }

@@ -209,4 +209,19 @@ describe(`lobby creation`, function () {
     await this.joinLobby({ ws: ws2, lobbyName: `myOtherLobby` })
     await this.joinLobby({ ws: ws, lobbyName: `myOtherLobby` })
   })
+
+  it(`should allow a player inside a lobby to choose a rol`, async function () {
+    spyOn(console, `log`)
+    await umpire.start()
+    const ws = await this.registerUser({ url: `ws://localhost`, port, userName: `useloom` })
+    const ws2 = await this.registerUser({ url: `ws://localhost`, port, userName: `rataplan` })
+
+    await this.createLobby({ ws, lobbyName: `myLobby` })
+    await this.joinLobby({ ws: ws2, lobbyName: `myLobby` })
+
+    const chooseRolMessage = JSON.stringify([`CHOOSE-ROL`, { rol: `b` }])
+    ws2.send(chooseRolMessage)
+    const received = await this.waitForMessage(ws2)
+    expect(received).toBe(`["CHOOSE-ROL-ACCEPTED",{"player":"rataplan","rol":"b"}]`)
+  })
 })

@@ -36,6 +36,10 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
     if (type === `LEAVE-LOBBY`) {
       lobbyHandler.leaveLobby()
     }
+
+    if (type === `CHOOSE-ROL`) {
+      lobbyHandler.chooseRol(data.rol)
+    }
   })
 }
 

@@ -85,6 +85,24 @@ const LobbyHandlerFactory = (
           { reason: `Player is not the inside a lobby` }
         ])
       }
+    },
+
+    /**
+     *
+     * @param {string} rol
+     */
+    chooseRol (rol) {
+      if (currentUser.isInLobby()) {
+        const lobby = getLobby(currentUser.getLobby())
+        lobby.setPlayerRol(currentUser, rol)
+        lobby.broadcast([
+          `CHOOSE-ROL-ACCEPTED`,
+          {
+            player: currentUser.getName(),
+            rol: rol
+          }
+        ])
+      }
     }
 
   }
