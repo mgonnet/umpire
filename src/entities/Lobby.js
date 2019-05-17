@@ -1,13 +1,14 @@
 const LobbyFactory = ({ lobbyName, creator }) => {
   const lobbyPlayers = [{ player: creator, rolSpecified: false, rol: undefined }]
+  let game
 
   return {
     getLobbyName () {
       return lobbyName
     },
 
-    getCreator () {
-      return creator
+    isTheCreator (user) {
+      return creator.getName() === user.getName()
     },
 
     addPlayer (player) {
@@ -30,13 +31,32 @@ const LobbyFactory = ({ lobbyName, creator }) => {
 
     /**
      * Searches for myPlayer, assigns the rol and marks that myPlayer choosed a rol
-     * @param {Player} myPlayer
+     * @param {User} myPlayer
      * @param {string} rol
      */
     setPlayerRol (myPlayer, rol) {
       const lobbyPlayer = lobbyPlayers.find(({ player }) => player === myPlayer)
       lobbyPlayer.rolSpecified = true
       lobbyPlayer.rol = rol
+    },
+
+    getPlayersInfo () {
+      return lobbyPlayers.map((lobbyPlayer) => {
+        return {
+          name: `${lobbyPlayer.player.getName()}`,
+          rol: lobbyPlayer.rol
+        }
+      })
+    },
+
+    /**
+     *
+     * @param {*} gameConstructor
+     * @returns {string} The rol that moves next
+     */
+    startGame (GameConstructor) {
+      game = new GameConstructor()
+      return game.turn()
     }
   }
 }

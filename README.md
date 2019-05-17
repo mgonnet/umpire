@@ -32,14 +32,15 @@
 | LEAVE-LOBBY   |                 | LEAVE-LOBBY-ACCEPTED  |               |
 |               |                 | LEAVE-LOBBY-REJECTED  | { reason: 'Player is not inside a lobby' } |
 | CHOOSE-ROL    | {rol: 'b'}      | CHOOSE-ROL-ACCEPTED   | { player: 'rataplan', rol: 'b' } |
+| START-GAME    |                 | START-GAME-ACCEPTED   | { players: [{ name: 'useloom', rol: 'b' },{ name: 'rataplan', rol: 'w' } ],turn: 'w'} |
 
 ## Emitted Messages
-| Message              | Message data                     | Trigger              | Notes |
-|----------------------|----------------------------------|----------------------|-------|
-| JOINED-LOBBY         | { player: 'rataplan' }           | JOIN-LOBBY-ACCEPTED  | Broadcasted to lobby when someone joins      |
-| CLOSE-LOBBY-ACCEPTED |                                  | CLOSE-LOBBY          | Broadcasted to lobby when the creator closes it |
-| CHOOSE-ROL-ACCEPTED  | { player: 'rataplan', rol: 'b' } | CHOOSE-ROL           | Broadcasted to lobby when a player chooses a rol |
-
+| Message              | Message data                                                                          | Trigger              | Notes |
+|----------------------|---------------------------------------------------------------------------------------|----------------------|-------|
+| JOINED-LOBBY         | { player: 'rataplan' }                                                                | JOIN-LOBBY-ACCEPTED  | Broadcasted to lobby when someone joins      |
+| CLOSE-LOBBY-ACCEPTED |                                                                                       | CLOSE-LOBBY          | Broadcasted to lobby when the creator closes it |
+| CHOOSE-ROL-ACCEPTED  | { player: 'rataplan', rol: 'b' }                                                      | CHOOSE-ROL           | Broadcasted to lobby when a player chooses a rol |
+| START-GAME-ACCEPTED  | { players: [{ name: 'useloom', rol: 'b' },{ name: 'rataplan', rol: 'w' } ],turn: 'w'} | START-GAME           | Broadcasted to lobby when the creator starts the game |
 
 ## [Specification status](doc/specStatus.md)
 

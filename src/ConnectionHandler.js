@@ -40,6 +40,10 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
     if (type === `CHOOSE-ROL`) {
       lobbyHandler.chooseRol(data.rol)
     }
+
+    if (type === `START-GAME`) {
+      lobbyHandler.startGame(settersGetters.game.getGameConstructor())
+    }
   })
 }
 

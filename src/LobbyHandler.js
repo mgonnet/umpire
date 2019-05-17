@@ -34,7 +34,7 @@ const LobbyHandlerFactory = (
         ])
       } else {
         const lobby = getLobby(currentUser.getLobby())
-        if (lobby.getCreator() !== currentUser) {
+        if (!lobby.isTheCreator(currentUser)) {
           currentUser.sendMessage([
             `CLOSE-LOBBY-REJECTED`,
             { reason: `Player is not the lobby creator` }
@@ -107,6 +107,26 @@ const LobbyHandlerFactory = (
           `CHOOSE-ROL-REJECTED`,
           { reason: `Player is not inside a lobby` }
         ])
+      }
+    },
+
+    /**
+     *
+     * @param {*} GameConstructor
+     */
+    startGame (GameConstructor) {
+      if (currentUser.isInLobby()) {
+        const lobby = getLobby(currentUser.getLobby())
+        if (lobby.isTheCreator(currentUser)) {
+          const turn = lobby.startGame(GameConstructor)
+          lobby.broadcast([
+            `START-GAME-ACCEPTED`,
+            {
+              players: lobby.getPlayersInfo(),
+              turn
+            }
+          ])
+        }
       }
     }
 

@@ -41,6 +41,12 @@ const Umpire = ({ port, game }) => {
       getLobby (lobbyName) {
         return lobbies.get(lobbyName)
       }
+    },
+
+    game: {
+      getGameConstructor () {
+        return game
+      }
     }
   }
 
