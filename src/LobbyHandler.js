@@ -20,8 +20,9 @@ const LobbyHandlerFactory = (
           { reason: `Lobby name already exists` }
         ])
       } else {
-        addLobby(LobbyFactory({ lobbyName, creator: currentUser }))
-        currentUser.setLobby(lobbyName)
+        const newLobby = LobbyFactory({ lobbyName, creator: currentUser })
+        addLobby(newLobby)
+        currentUser.setLobby(newLobby)
         currentUser.sendMessage([`CREATE-LOBBY-ACCEPTED`])
       }
     },
@@ -33,7 +34,7 @@ const LobbyHandlerFactory = (
           { reason: `User is not in a lobby` }
         ])
       } else {
-        const lobby = getLobby(currentUser.getLobby())
+        const lobby = currentUser.getLobby()
         if (!lobby.isTheCreator(currentUser)) {
           currentUser.sendMessage([
             `CLOSE-LOBBY-REJECTED`,
@@ -62,7 +63,7 @@ const LobbyHandlerFactory = (
             { player: currentUser.getName() }
           ])
           lobby.addPlayer(currentUser)
-          currentUser.setLobby(lobbyName)
+          currentUser.setLobby(lobby)
           currentUser.sendMessage([`JOIN-LOBBY-ACCEPTED`])
         } else {
           currentUser.sendMessage([
@@ -75,7 +76,7 @@ const LobbyHandlerFactory = (
 
     leaveLobby () {
       if (currentUser.isInLobby()) {
-        const lobby = getLobby(currentUser.getLobby())
+        const lobby = currentUser.getLobby()
         lobby.removePlayer(currentUser)
         currentUser.leaveLobby()
         currentUser.sendMessage([`LEAVE-LOBBY-ACCEPTED`])
@@ -93,7 +94,7 @@ const LobbyHandlerFactory = (
      */
     chooseRol (rol) {
       if (currentUser.isInLobby()) {
-        const lobby = getLobby(currentUser.getLobby())
+        const lobby = currentUser.getLobby()
         lobby.setPlayerRol(currentUser, rol)
         lobby.broadcast([
           `CHOOSE-ROL-ACCEPTED`,
@@ -116,7 +117,7 @@ const LobbyHandlerFactory = (
      */
     startGame (GameConstructor) {
       if (currentUser.isInLobby()) {
-        const lobby = getLobby(currentUser.getLobby())
+        const lobby = currentUser.getLobby()
         if (lobby.isTheCreator(currentUser)) {
           const turn = lobby.startGame(GameConstructor)
           lobby.broadcast([

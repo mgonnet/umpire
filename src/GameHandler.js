@@ -1,7 +1,7 @@
 const GameHandlerFactory = (currentUser, { getLobby }) => {
   return {
     move (move) {
-      const lobby = getLobby(currentUser.getLobby())
+      const lobby = currentUser.getLobby()
       if (!lobby.isPlayerTurn(currentUser)) {
         currentUser.sendMessage([
           `MOVE-REJECTED`,
