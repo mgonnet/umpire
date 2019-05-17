@@ -126,6 +126,11 @@ const LobbyHandlerFactory = (
               turn
             }
           ])
+        } else {
+          currentUser.sendMessage([
+            `START-GAME-REJECTED`,
+            { reason: `Player is not the lobby creator` }
+          ])
         }
       }
     }

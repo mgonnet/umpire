@@ -56,4 +56,29 @@ describe(`game starting`, function () {
     expect(receivedCreator).toBe(startedMessage)
     expect(receivedJoiner).toBe(startedMessage)
   })
+
+  it(`should not allow the joiner to start the game`, async function () {
+    spyOn(console, `log`)
+    await umpire.start()
+
+    const creator = await this.registerUser({ url: `ws://localhost`, port, userName: `useloom` })
+    const joiner = await this.registerUser({ url: `ws://localhost`, port, userName: `rataplan` })
+
+    await this.createLobby({ ws: creator, lobbyName: `myLobby` })
+    await this.joinLobby({ ws: joiner, lobbyName: `myLobby` })
+    await Promise.all([
+      this.chooseRol({ ws: creator, rol: `b`, playerName: `useloom` }),
+      this.waitForMessage(joiner) // The joiner is notified that the creator choosed rol
+    ])
+    await Promise.all([
+      this.chooseRol({ ws: joiner, rol: `w`, playerName: `rataplan` }),
+      this.waitForMessage(creator) // The creator is notified that the joiner choosed rol
+    ])
+
+    const startGameMessage = JSON.stringify([`START-GAME`])
+    joiner.send(startGameMessage)
+    const received = await this.waitForMessage(joiner)
+
+    expect(received).toBe(`["START-GAME-REJECTED",{"reason":"Player is not the lobby creator"}]`)
+  })
 })

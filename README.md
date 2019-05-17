@@ -32,7 +32,9 @@
 | LEAVE-LOBBY   |                 | LEAVE-LOBBY-ACCEPTED  |               |
 |               |                 | LEAVE-LOBBY-REJECTED  | { reason: 'Player is not inside a lobby' } |
 | CHOOSE-ROL    | {rol: 'b'}      | CHOOSE-ROL-ACCEPTED   | { player: 'rataplan', rol: 'b' } |
+|               |                 | CHOOSE-ROL-REJECTED   | { reason: 'Player is not inside a lobby' } |
 | START-GAME    |                 | START-GAME-ACCEPTED   | { players: [{ name: 'useloom', rol: 'b' },{ name: 'rataplan', rol: 'w' } ],turn: 'w'} |
+|               |                 | START-GAME-REJECTED   | { reason: 'Player is not the lobby creator' }
 
 ## Emitted Messages
 | Message              | Message data                                                                          | Trigger              | Notes |
