@@ -7,6 +7,7 @@
     "helpers/WebSocketHelpers/clientWebSocketHelpers.js",
     "helpers/sequenceHelpers/userRegistration.js",
     "helpers/sequenceHelpers/lobbySequences.js",
+    "helpers/sequenceHelpers/gameSequences.js",
     "helpers/**/*.js"
   ],
   "stopSpecOnExpectationFailure": false,
