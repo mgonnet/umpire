@@ -1,5 +1,6 @@
 const UserHandlerFactory = require(`./UserHandler`)
 const LobbyHandlerFactory = require(`./LobbyHandler`)
+const GameHandlerFactory = require(`./GameHandler`)
 const UserFactory = require(`./entities/User`)
 
 const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
@@ -7,6 +8,7 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
 
   const userHandler = UserHandlerFactory(currentUser, settersGetters.users)
   const lobbyHandler = LobbyHandlerFactory(currentUser, settersGetters.lobbies)
+  const gameHandler = GameHandlerFactory(currentUser, settersGetters.lobbies)
 
   ws.on(`message`, function incoming (message) {
     console.log(`Received: ${message}`)
@@ -43,6 +45,10 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
 
     if (type === `START-GAME`) {
       lobbyHandler.startGame(settersGetters.game.getGameConstructor())
+    }
+
+    if (type === `MOVE`) {
+      gameHandler.move(data.move)
     }
   })
 }

@@ -57,6 +57,11 @@ const LobbyFactory = ({ lobbyName, creator }) => {
     startGame (GameConstructor) {
       game = new GameConstructor()
       return game.turn()
+    },
+
+    isPlayerTurn (myPlayer) {
+      const lobbyPlayer = lobbyPlayers.find(({ player }) => player.getName() === myPlayer.getName())
+      return lobbyPlayer.rol === game.turn()
     }
   }
 }

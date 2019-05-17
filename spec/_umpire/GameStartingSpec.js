@@ -54,4 +54,21 @@ describe(`game starting`, function () {
 
     expect(received).toBe(`["START-GAME-REJECTED",{"reason":"Player is not the lobby creator"}]`)
   })
+
+  it(`should not allow a player to move if it is not his turn`, async function () {
+    spyOn(console, `log`)
+    await umpire.start()
+    const { creator } = await this.startTwoPlayersGame({
+      creatorName: `useloom`,
+      creatorRol: `b`,
+      joinerName: `rataplan`,
+      joinerRol: `w`,
+      port
+    })
+
+    creator.send(JSON.stringify([`MOVE`, { move: `e4` }]))
+    const received = await this.waitForMessage(creator)
+
+    expect(received).toBe(`["MOVE-REJECTED",{"reason":"Not your turn"}]`)
+  })
 })
