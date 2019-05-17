@@ -8,3 +8,5 @@ git:
   depth: false
   
 after_success: npm run coverage
+
+cache: npm
