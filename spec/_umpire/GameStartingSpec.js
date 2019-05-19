@@ -102,4 +102,20 @@ describe(`game starting`, function () {
 
     await this.makeMove(joiner, creator, `rataplan`, `e4`, `b`)
   })
+
+  it(`should allow the next player to move after the first move`, async function () {
+    spyOn(console, `log`)
+    await umpire.start()
+
+    const { creator, joiner } = await this.startTwoPlayersGame({
+      creatorName: `useloom`,
+      creatorRol: `b`,
+      joinerName: `rataplan`,
+      joinerRol: `w`,
+      port
+    })
+
+    await this.makeMove(joiner, creator, `rataplan`, `e4`, `b`)
+    await this.makeMove(creator, joiner, `useloom`, `e5`, `w`)
+  })
 })
