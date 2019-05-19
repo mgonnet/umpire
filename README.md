@@ -36,6 +36,7 @@
 | START-GAME    |                 | START-GAME-ACCEPTED   | { players: [{ name: 'useloom', rol: 'b' },{ name: 'rataplan', rol: 'w' } ],turn: 'w'} |
 |               |                 | START-GAME-REJECTED   | { reason: 'Player is not the lobby creator' }
 | MOVE          | {move: 'e4'}    | MOVE-REJECTED         | { reason: 'Not your turn' }
+|               |                 | MOVE-ACCEPTED         | { player: '${currentUser.getName()}', move: '${move}', turn: turn }
 
 ## Emitted Messages
 | Message              | Message data                                                                          | Trigger              | Notes |
@@ -44,6 +45,8 @@
 | CLOSE-LOBBY-ACCEPTED |                                                                                       | CLOSE-LOBBY          | Broadcasted to lobby when the creator closes it |
 | CHOOSE-ROL-ACCEPTED  | { player: 'rataplan', rol: 'b' }                                                      | CHOOSE-ROL           | Broadcasted to lobby when a player chooses a rol |
 | START-GAME-ACCEPTED  | { players: [{ name: 'useloom', rol: 'b' },{ name: 'rataplan', rol: 'w' } ],turn: 'w'} | START-GAME           | Broadcasted to lobby when the creator starts the game |
+| MOVE-ACCEPTED        | { player: '${currentUser.getName()}', move: '${move}', turn: turn }                   | MOVE                 | Broadcasted to lobby when the creator starst the game |
+
 
 ## [Specification status](doc/specStatus.md)
 

@@ -71,4 +71,21 @@ describe(`game starting`, function () {
 
     expect(received).toBe(`["MOVE-REJECTED",{"reason":"Not your turn"}]`)
   })
+
+  it(`should allow a player to move if it is his turn`, async function () {
+    spyOn(console, `log`)
+    await umpire.start()
+    const { joiner } = await this.startTwoPlayersGame({
+      creatorName: `useloom`,
+      creatorRol: `b`,
+      joinerName: `rataplan`,
+      joinerRol: `w`,
+      port
+    })
+
+    joiner.send(JSON.stringify([`MOVE`, { move: `e4` }]))
+    const received = await this.waitForMessage(joiner)
+
+    expect(received).toBe(`["MOVE-ACCEPTED",{"player":"rataplan","move":"e4","turn":"b"}]`)
+  })
 })

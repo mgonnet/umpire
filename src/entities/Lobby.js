@@ -62,6 +62,11 @@ const LobbyFactory = ({ lobbyName, creator }) => {
     isPlayerTurn (myPlayer) {
       const lobbyPlayer = lobbyPlayers.find(({ player }) => player.getName() === myPlayer.getName())
       return lobbyPlayer.rol === game.turn()
+    },
+
+    move (move) {
+      game.move(move)
+      return game.turn()
     }
   }
 }

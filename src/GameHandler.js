@@ -7,6 +7,16 @@ const GameHandlerFactory = (currentUser, { getLobby }) => {
           `MOVE-REJECTED`,
           { reason: `Not your turn` }
         ])
+      } else {
+        const turn = lobby.move(move)
+        lobby.broadcast([
+          `MOVE-ACCEPTED`,
+          {
+            player: `${currentUser.getName()}`,
+            move: `${move}`,
+            turn: turn
+          }
+        ])
       }
     }
   }
