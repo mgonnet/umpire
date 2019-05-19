@@ -88,4 +88,25 @@ describe(`game starting`, function () {
 
     expect(received).toBe(`["MOVE-ACCEPTED",{"player":"rataplan","move":"e4","turn":"b"}]`)
   })
+
+  it(`should notify all players when someone makes a move`, async function () {
+    spyOn(console, `log`)
+    await umpire.start()
+    const { creator, joiner } = await this.startTwoPlayersGame({
+      creatorName: `useloom`,
+      creatorRol: `b`,
+      joinerName: `rataplan`,
+      joinerRol: `w`,
+      port
+    })
+
+    joiner.send(JSON.stringify([`MOVE`, { move: `e4` }]))
+    const [creatorMessage, joinerMessage] = await Promise.all([
+      this.waitForMessage(creator),
+      this.waitForMessage(joiner)
+    ])
+
+    expect(creatorMessage).toBe(`["MOVE-ACCEPTED",{"player":"rataplan","move":"e4","turn":"b"}]`)
+    expect(joinerMessage).toBe(`["MOVE-ACCEPTED",{"player":"rataplan","move":"e4","turn":"b"}]`)
+  })
 })
