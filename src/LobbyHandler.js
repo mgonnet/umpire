@@ -1,4 +1,5 @@
 const LobbyFactory = require(`./entities/Lobby`)
+const ConditionCheckerFactory = require(`./ConditionChecker`)
 
 const LobbyHandlerFactory = (
   currentUser,
@@ -6,6 +7,8 @@ const LobbyHandlerFactory = (
     addLobby,
     getLobby,
     removeLobby }) => {
+  const checker = ConditionCheckerFactory(currentUser, { getLobby })
+
   return {
 
     createLobby (lobbyName) {
@@ -28,12 +31,7 @@ const LobbyHandlerFactory = (
     },
 
     closeLobby () {
-      if (!currentUser.isInLobby()) {
-        currentUser.sendMessage([
-          `CLOSE-LOBBY-REJECTED`,
-          { reason: `User is not in a lobby` }
-        ])
-      } else {
+      if (checker.check(`CLOSE-LOBBY`, { insideLobby: true })) {
         const lobby = currentUser.getLobby()
         if (!lobby.isTheCreator(currentUser)) {
           currentUser.sendMessage([
@@ -75,16 +73,11 @@ const LobbyHandlerFactory = (
     },
 
     leaveLobby () {
-      if (currentUser.isInLobby()) {
+      if (checker.check(`LEAVE-LOBBY`, { insideLobby: true })) {
         const lobby = currentUser.getLobby()
         lobby.removePlayer(currentUser)
         currentUser.leaveLobby()
         currentUser.sendMessage([`LEAVE-LOBBY-ACCEPTED`])
-      } else {
-        currentUser.sendMessage([
-          `LEAVE-LOBBY-REJECTED`,
-          { reason: `Player is not inside a lobby` }
-        ])
       }
     },
 
@@ -93,7 +86,7 @@ const LobbyHandlerFactory = (
      * @param {string} rol
      */
     chooseRol (rol) {
-      if (currentUser.isInLobby()) {
+      if (checker.check(`CHOOSE-ROL`, { insideLobby: true })) {
         const lobby = currentUser.getLobby()
         lobby.setPlayerRol(currentUser, rol)
         lobby.broadcast([
@@ -102,11 +95,6 @@ const LobbyHandlerFactory = (
             player: currentUser.getName(),
             rol: rol
           }
-        ])
-      } else {
-        currentUser.sendMessage([
-          `CHOOSE-ROL-REJECTED`,
-          { reason: `Player is not inside a lobby` }
         ])
       }
     },

@@ -73,7 +73,7 @@ describe(`lobby creation`, function () {
     const closeLobbyMessage = JSON.stringify([`CLOSE-LOBBY`])
     ws.send(closeLobbyMessage)
     const received = await this.waitForMessage(ws)
-    expect(received).toBe(`["CLOSE-LOBBY-REJECTED",{"reason":"User is not in a lobby"}]`)
+    expect(received).toBe(`["CLOSE-LOBBY-REJECTED",{"reason":"Player is not inside a lobby"}]`)
   })
 
   it(`should allow users to join an existing lobby`, async function () {
