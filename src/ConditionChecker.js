@@ -2,10 +2,11 @@ const ConditionCheckerFactory = (
   currentUser,
   { getLobby }) => {
   /**
-     * Sends a message to the current user, rejecting the action and providing the reason
-     * @param {string} action
-     * @param {string} reason
-     */
+   * Sends a message to the current user, rejecting the action and providing the reason
+   *
+   * @param {string} action
+   * @param {string} reason
+   */
   const reject = (action, reason) => {
     currentUser.sendMessage([
       `${action}-REJECTED`,

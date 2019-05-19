@@ -3,7 +3,7 @@
  * @property {*} player
  * @property {boolean} rolSpecified Indicates if the player choosed a rol
  * @property {string} rol
- * 
+ *
  */
 
 const LobbyFactory = ({ lobbyName, creator }) => {
@@ -40,6 +40,7 @@ const LobbyFactory = ({ lobbyName, creator }) => {
 
     /**
      * Searches for myPlayer, assigns the rol and marks that myPlayer choosed a rol
+     *
      * @param {*} myPlayer
      * @param {string} rol
      */
@@ -60,7 +61,7 @@ const LobbyFactory = ({ lobbyName, creator }) => {
 
     /**
      *
-     * @param {*} gameConstructor
+     * @param {*} GameConstructor
      * @returns {string} The rol that moves next
      */
     startGame (GameConstructor) {
