@@ -34,7 +34,8 @@
 | CHOOSE-ROL    | {rol: 'b'}      | CHOOSE-ROL-ACCEPTED   | { player: 'rataplan', rol: 'b' } |
 |               |                 | CHOOSE-ROL-REJECTED   | { reason: 'Player is not inside a lobby' } |
 | START-GAME    |                 | START-GAME-ACCEPTED   | { players: [{ name: 'useloom', rol: 'b' },{ name: 'rataplan', rol: 'w' } ],turn: 'w'} |
-|               |                 | START-GAME-REJECTED   | { reason: 'Player is not the lobby creator' }
+|               |                 | START-GAME-REJECTED   | { reason: 'Player is not the lobby creator' } |
+|               |                 | START-GAME-REJECTED   | { reason: 'Player is not inside a lobby' } |
 | MOVE          | {move: 'e4'}    | MOVE-REJECTED         | { reason: 'Not your turn' }
 |               |                 | MOVE-ACCEPTED         | { player: '${currentUser.getName()}', move: '${move}', turn: turn }
 

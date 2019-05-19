@@ -99,7 +99,7 @@ const LobbyHandlerFactory = (
      * @param {*} GameConstructor
      */
     startGame (GameConstructor) {
-      if (currentUser.isInLobby()) {
+      if (checker.check(`START-GAME`, { insideLobby: true, isLobbyCreator: true })) {
         const lobby = currentUser.getLobby()
         if (lobby.isTheCreator(currentUser)) {
           const turn = lobby.startGame(GameConstructor)
@@ -109,11 +109,6 @@ const LobbyHandlerFactory = (
               players: lobby.getPlayersInfo(),
               turn
             }
-          ])
-        } else {
-          currentUser.sendMessage([
-            `START-GAME-REJECTED`,
-            { reason: `Player is not the lobby creator` }
           ])
         }
       }
