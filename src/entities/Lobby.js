@@ -1,3 +1,7 @@
+/**
+ * @typedef {*} Move A game move
+ */
+
 const LobbyFactory = ({ lobbyName, creator }) => {
   const lobbyPlayers = [{ player: creator, rolSpecified: false, rol: undefined }]
   let game
@@ -64,9 +68,17 @@ const LobbyFactory = ({ lobbyName, creator }) => {
       return lobbyPlayer.rol === game.turn()
     },
 
+    /**
+     *
+     * @param {*} move
+     * @returns {string | null} Returns the next turn, or null if the move is invalid
+     */
     move (move) {
-      game.move(move)
-      return game.turn()
+      if (game.move(move) !== null) {
+        return game.turn()
+      } else {
+        return null
+      }
     }
   }
 }

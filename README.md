@@ -36,8 +36,9 @@
 | START-GAME    |                 | START-GAME-ACCEPTED   | { players: [{ name: 'useloom', rol: 'b' },{ name: 'rataplan', rol: 'w' } ],turn: 'w'} |
 |               |                 | START-GAME-REJECTED   | { reason: 'Player is not the lobby creator' } |
 |               |                 | START-GAME-REJECTED   | { reason: 'Player is not inside a lobby' } |
-| MOVE          | {move: 'e4'}    | MOVE-REJECTED         | { reason: 'Not your turn' }
-|               |                 | MOVE-ACCEPTED         | { player: '${currentUser.getName()}', move: '${move}', turn: turn }
+| MOVE          | {move: 'e4'}    | MOVE-REJECTED         | { reason: 'Not your turn' } |
+|               |                 | MOVE-ACCEPTED         | { player: '${currentUser.getName()}', move: '${move}', turn: turn } |
+|               |                 | MOVE-REJECTED         | { reason: 'Invalid move' } |
 
 ## Emitted Messages
 | Message              | Message data                                                                          | Trigger              | Notes |

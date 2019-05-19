@@ -9,14 +9,21 @@ const GameHandlerFactory = (currentUser, { getLobby }) => {
         ])
       } else {
         const turn = lobby.move(move)
-        lobby.broadcast([
-          `MOVE-ACCEPTED`,
-          {
-            player: `${currentUser.getName()}`,
-            move: `${move}`,
-            turn: turn
-          }
-        ])
+        if (turn === null) {
+          currentUser.sendMessage([
+            `MOVE-REJECTED`,
+            { reason: `Invalid move` }
+          ])
+        } else {
+          lobby.broadcast([
+            `MOVE-ACCEPTED`,
+            {
+              player: `${currentUser.getName()}`,
+              move: `${move}`,
+              turn: turn
+            }
+          ])
+        }
       }
     }
   }

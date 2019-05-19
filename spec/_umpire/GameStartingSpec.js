@@ -118,4 +118,22 @@ describe(`game starting`, function () {
     await this.makeMove(joiner, creator, `rataplan`, `e4`, `b`)
     await this.makeMove(creator, joiner, `useloom`, `e5`, `w`)
   })
+
+  it(`should not allow invalid moves`, async function () {
+    spyOn(console, `log`)
+    await umpire.start()
+
+    const { joiner } = await this.startTwoPlayersGame({
+      creatorName: `useloom`,
+      creatorRol: `b`,
+      joinerName: `rataplan`,
+      joinerRol: `w`,
+      port
+    })
+
+    joiner.send(JSON.stringify([`MOVE`, { move: `tu abuela` }]))
+    const received = await this.waitForMessage(joiner)
+
+    expect(received).toBe(`["MOVE-REJECTED",{"reason":"Invalid move"}]`)
+  })
 })
