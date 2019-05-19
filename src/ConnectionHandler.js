@@ -4,7 +4,7 @@ const GameHandlerFactory = require(`./GameHandler`)
 const UserFactory = require(`./entities/User`)
 
 const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
-  const currentUser = UserFactory({ ws })
+  const currentUser = UserFactory(ws)
 
   const userHandler = UserHandlerFactory(currentUser, settersGetters.users)
   const lobbyHandler = LobbyHandlerFactory(currentUser, settersGetters.lobbies)
@@ -16,11 +16,11 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
     const [type, data] = JSON.parse(message)
 
     if (type === `REGISTER`) {
-      userHandler.register(data.name, ws)
+      userHandler.register(data.name)
     }
 
     if (type === `LEAVE-SERVER`) {
-      userHandler.leaveServer(currentUser)
+      userHandler.leaveServer()
     }
 
     if (type === `CREATE-LOBBY`) {

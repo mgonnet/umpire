@@ -142,21 +142,20 @@ describe(`user connections`, function () {
 
     const leaveMessage = JSON.stringify([`LEAVE-SERVER`])
 
-    let terminated = new Promise(function (resolve, reject) {
-      ws.on(`close`, function (code, reason) {
-        resolve(`closed`)
-      })
-    })
-
     received = this.waitForMessage(ws)
 
     ws.send(leaveMessage)
+    const [messageReceived, isClosed] = await Promise.all([
+      this.waitForMessage(ws),
+      new Promise(function (resolve, reject) {
+        ws.on(`close`, function (code, reason) {
+          resolve(true)
+        })
+      })
+    ])
 
-    received = await received
-    terminated = await terminated
-
-    expect(received).toBe(`["LEAVE-SERVER-ACCEPTED"]`)
-    expect(terminated).toBe(`closed`)
+    expect(messageReceived).toBe(`["LEAVE-SERVER-ACCEPTED"]`)
+    expect(isClosed).toBe(true)
 
     await umpire.close()
   })
