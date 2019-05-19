@@ -1,6 +1,18 @@
 const ConditionCheckerFactory = (
   currentUser,
   { getLobby }) => {
+  /**
+     * Sends a message to the current user, rejecting the action and providing the reason
+     * @param {string} action
+     * @param {string} reason
+     */
+  const reject = (action, reason) => {
+    currentUser.sendMessage([
+      `${action}-REJECTED`,
+      { reason }
+    ])
+  }
+
   return {
 
     /**
@@ -13,10 +25,7 @@ const ConditionCheckerFactory = (
     check (action, { insideLobby, isLobbyCreator }) {
       if (insideLobby) {
         if (!currentUser.isInLobby()) {
-          currentUser.sendMessage([
-            `${action}-REJECTED`,
-            { reason: `Player is not inside a lobby` }
-          ])
+          reject(action, `Player is not inside a lobby`)
           return false
         }
       }
@@ -24,10 +33,7 @@ const ConditionCheckerFactory = (
       if (isLobbyCreator) {
         const lobby = currentUser.getLobby()
         if (!lobby.isTheCreator(currentUser)) {
-          currentUser.sendMessage([
-            `${action}-REJECTED`,
-            { reason: `Player is not the lobby creator` }
-          ])
+          reject(action, `Player is not the lobby creator`)
           return false
         }
       }
