@@ -17,10 +17,9 @@ const ConditionCheckerFactory = (
 
     /**
      *
-     * @param {*} action
-     * @param {*} conditions
-     * @param {boolean} conditions.insideLobby Fails if the current user is not inside a lobby
-     * @param {boolean} conditions.isLobbyCreator Fails if the current user is not the lobby creator
+     * @param {string} action
+     * @param {{insideLobby?: boolean, isLobbyCreator?: boolean}} conditions
+     * @returns {boolean} Returns true if all conditions pass
      */
     check (action, { insideLobby, isLobbyCreator }) {
       if (insideLobby) {

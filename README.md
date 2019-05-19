@@ -52,3 +52,4 @@
 
 ## References
 1- Factory functions: https://medium.com/@vapurrmaid/should-you-use-classes-in-javascript-82f3b3df6195 
+2- JsDoc: https://medium.com/@trukrs/type-safe-javascript-with-jsdoc-7a2a63209b76
