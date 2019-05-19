@@ -36,6 +36,27 @@ async function startTwoPlayersGame ({ creatorName, creatorRol, joinerName, joine
   return { creator, joiner }
 }
 
+/**
+ *
+ * @param {WebSocket} mover
+ * @param {WebSocket} otherPlayer
+ * @param {string} moverName
+ * @param {*} move
+ * @param {string} nextTurn
+ */
+async function makeMove (mover, otherPlayer, moverName, move, nextTurn) {
+  mover.send(JSON.stringify([`MOVE`, { move }]))
+  const [otherPlayerMessage, moverMessage] = await Promise.all([
+    this.waitForMessage(otherPlayer),
+    this.waitForMessage(mover)
+  ])
+
+  const expectedMessage = `["MOVE-ACCEPTED",{"player":"${moverName}","move":"${move}","turn":"${nextTurn}"}]`
+  expect(otherPlayerMessage).toBe(expectedMessage)
+  expect(moverMessage).toBe(expectedMessage)
+}
+
 beforeEach(function () {
   this.startTwoPlayersGame = startTwoPlayersGame
+  this.makeMove = makeMove
 })

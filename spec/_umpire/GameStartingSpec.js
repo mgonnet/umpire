@@ -100,13 +100,6 @@ describe(`game starting`, function () {
       port
     })
 
-    joiner.send(JSON.stringify([`MOVE`, { move: `e4` }]))
-    const [creatorMessage, joinerMessage] = await Promise.all([
-      this.waitForMessage(creator),
-      this.waitForMessage(joiner)
-    ])
-
-    expect(creatorMessage).toBe(`["MOVE-ACCEPTED",{"player":"rataplan","move":"e4","turn":"b"}]`)
-    expect(joinerMessage).toBe(`["MOVE-ACCEPTED",{"player":"rataplan","move":"e4","turn":"b"}]`)
+    await this.makeMove(joiner, creator, `rataplan`, `e4`, `b`)
   })
 })
