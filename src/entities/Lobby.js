@@ -1,8 +1,13 @@
 /**
- * @typedef {*} Move A game move
+ * @typedef {Object} LobbyPlayer
+ * @property {*} player
+ * @property {boolean} rolSpecified Indicates if the player choosed a rol
+ * @property {string} rol
+ * 
  */
 
 const LobbyFactory = ({ lobbyName, creator }) => {
+  /** @type {LobbyPlayer[]} */
   const lobbyPlayers = [{ player: creator, rolSpecified: false, rol: undefined }]
   let game
 
