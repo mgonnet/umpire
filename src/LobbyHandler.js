@@ -31,14 +31,9 @@ const LobbyHandlerFactory = (
     },
 
     closeLobby () {
-      if (checker.check(`CLOSE-LOBBY`, { insideLobby: true })) {
+      if (checker.check(`CLOSE-LOBBY`, { insideLobby: true, isLobbyCreator: true })) {
         const lobby = currentUser.getLobby()
-        if (!lobby.isTheCreator(currentUser)) {
-          currentUser.sendMessage([
-            `CLOSE-LOBBY-REJECTED`,
-            { reason: `Player is not the lobby creator` }
-          ])
-        } else if (removeLobby(lobby)) {
+        if (removeLobby(lobby)) {
           lobby.broadcast([`CLOSE-LOBBY-ACCEPTED`])
           lobby.forEachPlayer((player) => {
             player.leaveLobby()
