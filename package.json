@@ -1,8 +1,8 @@
 {
   "name": "@mgonnet/umpire",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "A node.js / websocket multiplayer umpire",
-  "main": "umpire.js",
+  "main": "src/umpire.js",
   "scripts": {
     "lint": "esw \"**/*.js\"",
     "lint-fix": "esw \"**/*.js\" --fix",
