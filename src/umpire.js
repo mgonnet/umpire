@@ -1,7 +1,19 @@
 const WebSocket = require(`ws`)
 const ConnectionHandlerFactory = require(`./ConnectionHandler`)
 
-const Umpire = ({ port, game }) => {
+/**
+ *
+ * @typedef {Object} UmpireServerOptions
+ * @property {Number} [options.port] The port where to bind the server
+ * @property {*} options.game
+ * @property {import('http').Server} [options.server] A pre-created HTTP/S server to use
+ */
+
+/**
+ *
+ * @param {UmpireServerOptions} Options
+ */
+const Umpire = ({ port, game, server }) => {
   let wss
   const users = new Map()
   const lobbies = new Map()
@@ -55,7 +67,7 @@ const Umpire = ({ port, game }) => {
     start () {
       return new Promise(function (resolve, reject) {
         wss = new WebSocket.Server(
-          { port },
+          { port, server },
           () => {
             console.log(`Umpire server listening at port ${port}`)
             resolve()
