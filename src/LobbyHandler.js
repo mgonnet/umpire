@@ -45,26 +45,28 @@ const LobbyHandlerFactory = (
     },
 
     joinLobby (lobbyName) {
-      if (currentUser.isInLobby()) {
-        currentUser.sendMessage([
-          `JOIN-LOBBY-REJECTED`,
-          { reason: `User is already in a lobby` }
-        ])
-      } else {
-        const lobby = getLobby(lobbyName)
-        if (lobby) {
-          lobby.broadcast([
-            `JOINED-LOBBY`,
-            { player: currentUser.getName() }
-          ])
-          lobby.addPlayer(currentUser)
-          currentUser.setLobby(lobby)
-          currentUser.sendMessage([`JOIN-LOBBY-ACCEPTED`])
-        } else {
+      if (checker.check(`JOIN-LOBBY`, { registeredPlayer: true })) {
+        if (currentUser.isInLobby()) {
           currentUser.sendMessage([
             `JOIN-LOBBY-REJECTED`,
-            { reason: `Lobby does not exist` }
+            { reason: `User is already in a lobby` }
           ])
+        } else {
+          const lobby = getLobby(lobbyName)
+          if (lobby) {
+            lobby.broadcast([
+              `JOINED-LOBBY`,
+              { player: currentUser.getName() }
+            ])
+            lobby.addPlayer(currentUser)
+            currentUser.setLobby(lobby)
+            currentUser.sendMessage([`JOIN-LOBBY-ACCEPTED`])
+          } else {
+            currentUser.sendMessage([
+              `JOIN-LOBBY-REJECTED`,
+              { reason: `Lobby does not exist` }
+            ])
+          }
         }
       }
     },

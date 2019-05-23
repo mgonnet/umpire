@@ -43,6 +43,7 @@ const ConditionCheckerFactory = (
       if (registeredPlayer) {
         if (!currentUser.hasName()) {
           reject(action, `Player is not registered`)
+          return false
         }
       }
 

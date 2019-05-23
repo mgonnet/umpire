@@ -259,4 +259,25 @@ describe(`lobby creation`, function () {
       expectedMessage: JSON.stringify([`CREATE-LOBBY-REJECTED`, { "reason": `Player is not registered` }])
     })
   })
+
+  it(`should not allow a user that is not connected to join a lobby`, async function () {
+    // spyOn(console, `log`)
+    await umpire.start()
+
+    const ws = await this.registerUser({ url: `ws://localhost`, port, userName: `useloom` })
+    await this.createLobby({ ws, lobbyName: `myLobby` })
+
+    const ws2 = await new Promise(function (resolve, reject) {
+      const newUser = new WebSocket(`ws://localhost:${port}`)
+      newUser.on(`open`, async function () {
+        resolve(newUser)
+      })
+    })
+
+    await this.joinLobby({
+      ws: ws2,
+      lobbyName: `myLobby`,
+      expectedMessage: JSON.stringify([`JOIN-LOBBY-REJECTED`, { "reason": `Player is not registered` }])
+    })
+  })
 })
