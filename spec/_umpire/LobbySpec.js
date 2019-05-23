@@ -261,7 +261,7 @@ describe(`lobby creation`, function () {
   })
 
   it(`should not allow a user that is not connected to join a lobby`, async function () {
-    // spyOn(console, `log`)
+    spyOn(console, `log`)
     await umpire.start()
 
     const ws = await this.registerUser({ url: `ws://localhost`, port, userName: `useloom` })
