@@ -12,21 +12,23 @@ const LobbyHandlerFactory = (
   return {
 
     createLobby (lobbyName) {
-      if (currentUser.isInLobby()) {
-        currentUser.sendMessage([
-          `CREATE-LOBBY-REJECTED`,
-          { reason: `User already in lobby` }
-        ])
-      } else if (hasLobby(lobbyName)) {
-        currentUser.sendMessage([
-          `CREATE-LOBBY-REJECTED`,
-          { reason: `Lobby name already exists` }
-        ])
-      } else {
-        const newLobby = LobbyFactory({ lobbyName, creator: currentUser })
-        addLobby(newLobby)
-        currentUser.setLobby(newLobby)
-        currentUser.sendMessage([`CREATE-LOBBY-ACCEPTED`])
+      if (checker.check(`CREATE-LOBBY`, { registeredPlayer: true })) {
+        if (currentUser.isInLobby()) {
+          currentUser.sendMessage([
+            `CREATE-LOBBY-REJECTED`,
+            { reason: `User already in lobby` }
+          ])
+        } else if (hasLobby(lobbyName)) {
+          currentUser.sendMessage([
+            `CREATE-LOBBY-REJECTED`,
+            { reason: `Lobby name already exists` }
+          ])
+        } else {
+          const newLobby = LobbyFactory({ lobbyName, creator: currentUser })
+          addLobby(newLobby)
+          currentUser.setLobby(newLobby)
+          currentUser.sendMessage([`CREATE-LOBBY-ACCEPTED`])
+        }
       }
     },
 

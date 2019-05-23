@@ -1,5 +1,6 @@
 const Umpire = require(`../../src/umpire`)
 const Chess = require(`chess.js`).Chess
+const WebSocket = require(`ws`)
 
 describe(`lobby creation`, function () {
   const port = 8080
@@ -234,6 +235,28 @@ describe(`lobby creation`, function () {
       ws: ws2,
       rol: `b`,
       expectedMessage: `["CHOOSE-ROL-REJECTED",{"reason":"Player is not inside a lobby"}]`
+    })
+  })
+
+  it(`should not allow a user that is not connected to create a lobby`, async function () {
+    spyOn(console, `log`)
+    await umpire.start()
+
+    const ws = new WebSocket(`ws://localhost:${port}`)
+
+    const createLobbyMessage = JSON.stringify([`CREATE-LOBBY`, { name: `myLobby` }])
+
+    await new Promise(function (resolve, reject) {
+      ws.on(`open`, function open () {
+        ws.send(createLobbyMessage)
+        resolve()
+      })
+    })
+
+    await this.createLobby({
+      ws,
+      lobbyName: `myLobby`,
+      expectedMessage: JSON.stringify([`CREATE-LOBBY-REJECTED`, { "reason": `Player is not registered` }])
     })
   })
 })

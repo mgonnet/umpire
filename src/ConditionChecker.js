@@ -15,14 +15,16 @@ const ConditionCheckerFactory = (
   }
 
   return {
-
     /**
      *
      * @param {string} action
-     * @param {{insideLobby?: boolean, isLobbyCreator?: boolean}} conditions
+     * @param {Object} conditions
+     * @param {boolean} [conditions.insideLobby] Rejects if the player is not inside a lobby
+     * @param {boolean} [conditions.isLobbyCreator] Rejects if the player is not the lobby creator
+     * @param {boolean} [conditions.registeredPlayer] Rejects if the player is not registerd
      * @returns {boolean} Returns true if all conditions pass
      */
-    check (action, { insideLobby, isLobbyCreator }) {
+    check (action, { insideLobby, isLobbyCreator, registeredPlayer }) {
       if (insideLobby) {
         if (!currentUser.isInLobby()) {
           reject(action, `Player is not inside a lobby`)
@@ -35,6 +37,12 @@ const ConditionCheckerFactory = (
         if (!lobby.isTheCreator(currentUser)) {
           reject(action, `Player is not the lobby creator`)
           return false
+        }
+      }
+
+      if (registeredPlayer) {
+        if (!currentUser.hasName()) {
+          reject(action, `Player is not registered`)
         }
       }
 

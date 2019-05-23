@@ -23,6 +23,7 @@
 | CREATE-LOBBY  | {name: 'lobby'} | CREATE-LOBBY-REJECTED | { reason: 'User already in lobby' } |
 |               |                 | CREATE-LOBBY-REJECTED | { reason: 'Lobby name already exists' } |
 |               |                 | CREATE-LOBBY-ACCEPTED |               |
+|               |                 | CREATE-LOBBY-REJECTED | { reason: 'Player is not registered' } |
 | CLOSE-LOBBY   |                 | CLOSE-LOBBY-REJECTED  | { reason: 'Player is not the lobby creator' } |
 |               |                 | CLOSE-LOBBY-REJECTED  | { reason: 'User is not in a lobby' } |
 |               |                 | CLOSE-LOBBY-ACCEPTED  |               |
@@ -37,7 +38,7 @@
 |               |                 | START-GAME-REJECTED   | { reason: 'Player is not the lobby creator' } |
 |               |                 | START-GAME-REJECTED   | { reason: 'Player is not inside a lobby' } |
 | MOVE          | {move: 'e4'}    | MOVE-REJECTED         | { reason: 'Not your turn' } |
-|               |                 | MOVE-ACCEPTED         | { player: '${currentUser.getName()}', move: '${move}', turn: turn } |
+|               |                 | MOVE-ACCEPTED         | { player: 'rataplan', move: 'e4', turn: b } |
 |               |                 | MOVE-REJECTED         | { reason: 'Invalid move' } |
 
 ## Emitted Messages
@@ -47,7 +48,7 @@
 | CLOSE-LOBBY-ACCEPTED |                                                                                       | CLOSE-LOBBY          | Broadcasted to lobby when the creator closes it |
 | CHOOSE-ROL-ACCEPTED  | { player: 'rataplan', rol: 'b' }                                                      | CHOOSE-ROL           | Broadcasted to lobby when a player chooses a rol |
 | START-GAME-ACCEPTED  | { players: [{ name: 'useloom', rol: 'b' },{ name: 'rataplan', rol: 'w' } ],turn: 'w'} | START-GAME           | Broadcasted to lobby when the creator starts the game |
-| MOVE-ACCEPTED        | { player: '${currentUser.getName()}', move: '${move}', turn: turn }                   | MOVE                 | Broadcasted to lobby when the creator starst the game |
+| MOVE-ACCEPTED        | { player: 'rataplan', move: 'e4', turn: b } |                                         | MOVE                 | Broadcasted to lobby when the creator starst the game |
 
 
 ## [Specification status](doc/specStatus.md)
