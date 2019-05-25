@@ -1,4 +1,4 @@
-const Umpire = require(`../../src/umpire`)
+const Umpire = require(`../../src/umpire`).Umpire
 const WebSocket = require(`ws`)
 const Chess = require(`chess.js`).Chess
 

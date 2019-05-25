@@ -1,5 +1,6 @@
 const LobbyFactory = require(`./entities/Lobby`)
 const ConditionCheckerFactory = require(`./ConditionChecker`)
+const MessageTypes = require(`./entities/MessageTypes`)
 
 const LobbyHandlerFactory = (
   currentUser,
@@ -12,31 +13,31 @@ const LobbyHandlerFactory = (
   return {
 
     createLobby (lobbyName) {
-      if (checker.check(`CREATE-LOBBY`, { registeredPlayer: true })) {
+      if (checker.check(MessageTypes.CREATE_LOBBY, { registeredPlayer: true })) {
         if (currentUser.isInLobby()) {
           currentUser.sendMessage([
-            `CREATE-LOBBY-REJECTED`,
+            `${MessageTypes.CREATE_LOBBY}-REJECTED`,
             { reason: `User already in lobby` }
           ])
         } else if (hasLobby(lobbyName)) {
           currentUser.sendMessage([
-            `CREATE-LOBBY-REJECTED`,
+            `${MessageTypes.CREATE_LOBBY}-REJECTED`,
             { reason: `Lobby name already exists` }
           ])
         } else {
           const newLobby = LobbyFactory({ lobbyName, creator: currentUser })
           addLobby(newLobby)
           currentUser.setLobby(newLobby)
-          currentUser.sendMessage([`CREATE-LOBBY-ACCEPTED`])
+          currentUser.sendMessage([`${MessageTypes.CREATE_LOBBY}-ACCEPTED`])
         }
       }
     },
 
     closeLobby () {
-      if (checker.check(`CLOSE-LOBBY`, { insideLobby: true, isLobbyCreator: true })) {
+      if (checker.check(MessageTypes.CLOSE_LOBBY, { insideLobby: true, isLobbyCreator: true })) {
         const lobby = currentUser.getLobby()
         if (removeLobby(lobby)) {
-          lobby.broadcast([`CLOSE-LOBBY-ACCEPTED`])
+          lobby.broadcast([`${MessageTypes.CLOSE_LOBBY}-ACCEPTED`])
           lobby.forEachPlayer((player) => {
             player.leaveLobby()
           })
@@ -45,10 +46,10 @@ const LobbyHandlerFactory = (
     },
 
     joinLobby (lobbyName) {
-      if (checker.check(`JOIN-LOBBY`, { registeredPlayer: true })) {
+      if (checker.check(MessageTypes.JOIN_LOBBY, { registeredPlayer: true })) {
         if (currentUser.isInLobby()) {
           currentUser.sendMessage([
-            `JOIN-LOBBY-REJECTED`,
+            `${MessageTypes.JOIN_LOBBY}-REJECTED`,
             { reason: `User is already in a lobby` }
           ])
         } else {
@@ -60,10 +61,10 @@ const LobbyHandlerFactory = (
             ])
             lobby.addPlayer(currentUser)
             currentUser.setLobby(lobby)
-            currentUser.sendMessage([`JOIN-LOBBY-ACCEPTED`])
+            currentUser.sendMessage([`${MessageTypes.JOIN_LOBBY}-ACCEPTED`])
           } else {
             currentUser.sendMessage([
-              `JOIN-LOBBY-REJECTED`,
+              `${MessageTypes.JOIN_LOBBY}-REJECTED`,
               { reason: `Lobby does not exist` }
             ])
           }
@@ -72,11 +73,11 @@ const LobbyHandlerFactory = (
     },
 
     leaveLobby () {
-      if (checker.check(`LEAVE-LOBBY`, { insideLobby: true })) {
+      if (checker.check(MessageTypes.LEAVE_LOBBY, { insideLobby: true })) {
         const lobby = currentUser.getLobby()
         lobby.removePlayer(currentUser)
         currentUser.leaveLobby()
-        currentUser.sendMessage([`LEAVE-LOBBY-ACCEPTED`])
+        currentUser.sendMessage([`${MessageTypes.LEAVE_LOBBY}-ACCEPTED`])
       }
     },
 
@@ -85,11 +86,11 @@ const LobbyHandlerFactory = (
      * @param {string} rol
      */
     chooseRol (rol) {
-      if (checker.check(`CHOOSE-ROL`, { insideLobby: true })) {
+      if (checker.check(MessageTypes.CHOOSE_ROL, { insideLobby: true })) {
         const lobby = currentUser.getLobby()
         lobby.setPlayerRol(currentUser, rol)
         lobby.broadcast([
-          `CHOOSE-ROL-ACCEPTED`,
+          `${MessageTypes.CHOOSE_ROL}-ACCEPTED`,
           {
             player: currentUser.getName(),
             rol: rol
@@ -103,12 +104,12 @@ const LobbyHandlerFactory = (
      * @param {*} GameConstructor
      */
     startGame (GameConstructor) {
-      if (checker.check(`START-GAME`, { insideLobby: true, isLobbyCreator: true })) {
+      if (checker.check(MessageTypes.START_GAME, { insideLobby: true, isLobbyCreator: true })) {
         const lobby = currentUser.getLobby()
         if (lobby.isTheCreator(currentUser)) {
           const turn = lobby.startGame(GameConstructor)
           lobby.broadcast([
-            `START-GAME-ACCEPTED`,
+            `${MessageTypes.START_GAME}-ACCEPTED`,
             {
               players: lobby.getPlayersInfo(),
               turn

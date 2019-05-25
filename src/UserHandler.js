@@ -1,23 +1,25 @@
+const MessageTypes = require(`./entities/MessageTypes`)
+
 const UserHandlerFactory = (currentUser, { addUser, removeUser, hasUser }) => {
   return {
     register (user) {
       if (currentUser.hasName()) {
         currentUser.sendMessage([
-          `REGISTER-REJECTED`,
+          `${MessageTypes.REGISTER}-REJECTED`,
           { reason: `User already registered` }
         ])
       } else if (!hasUser(user)) {
         currentUser.setName(user)
         addUser(currentUser)
-        currentUser.sendMessage([`REGISTER-ACCEPTED`])
+        currentUser.sendMessage([`${MessageTypes.REGISTER}-ACCEPTED`])
       } else {
-        currentUser.sendMessage([`REGISTER-REJECTED`])
+        currentUser.sendMessage([`${MessageTypes.REGISTER}-REJECTED`])
       }
     },
 
     leaveServer () {
       if (removeUser(currentUser)) {
-        currentUser.sendMessageAndClose([`LEAVE-SERVER-ACCEPTED`])
+        currentUser.sendMessageAndClose([`${MessageTypes.LEAVE_SERVER}-ACCEPTED`])
       }
     }
   }
