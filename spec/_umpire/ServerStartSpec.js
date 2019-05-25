@@ -46,6 +46,7 @@ describe(`umpire server start`, function () {
   })
 
   it(`should throw an exception if not provided with a game constructor`, function () {
+    // @ts-ignore Validates that the exception is raised if the game is not provided
     expect(() => Umpire({ port })).toThrow()
   })
 })
