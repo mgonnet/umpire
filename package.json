@@ -1,6 +1,6 @@
 {
   "name": "@mgonnet/umpire",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "A node.js / websocket multiplayer umpire",
   "main": "src/umpire.js",
   "scripts": {

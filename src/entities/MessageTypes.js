@@ -1,17 +1,8 @@
 /**
- * @typedef MessageTypeEnum
- * @property {string} REGISTER "REGISTER"
- * @property {string} LEAVE_SERVER "LEAVE-SERVER"
- * @property {string} CREATE_LOBBY "CREATE-LOBBY"
- * @property {string} CLOSE_LOBBY "CLOSE-LOBBY"
- * @property {string} JOIN_LOBBY "JOIN-LOBBY"
- * @property {string} LEAVE_LOBBY "LEAVE-LOBBY"
- * @property {string} CHOOSE_ROL "CHOOSE-ROL"
- * @property {string} START_GAME "START-GAME"
- * @property {string} MOVE "MOVE"
+ * @typedef {string} MessageType
  */
 
-/** @type {MessageTypeEnum} */
+/** @enum {MessageType} */
 const MessageTypes = {
   REGISTER: `REGISTER`,
   LEAVE_SERVER: `LEAVE-SERVER`,
