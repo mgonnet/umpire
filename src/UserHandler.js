@@ -13,7 +13,10 @@ const UserHandlerFactory = (currentUser, { addUser, removeUser, hasUser }) => {
         addUser(currentUser)
         currentUser.sendMessage([`${MessageTypes.REGISTER}-ACCEPTED`])
       } else {
-        currentUser.sendMessage([`${MessageTypes.REGISTER}-REJECTED`])
+        currentUser.sendMessage([
+          `${MessageTypes.REGISTER}-REJECTED`,
+          { reason: `User name taken - ${user}` }
+        ])
       }
     },
 

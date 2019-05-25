@@ -60,7 +60,7 @@ describe(`user connections`, function () {
 
     received = await this.waitForMessage(ws2)
 
-    expect(received).toBe(`["REGISTER-REJECTED"]`)
+    expect(received).toBe(`["REGISTER-REJECTED",{"reason":"User name taken - useloom"}]`)
 
     await umpire.close()
   })
