@@ -61,7 +61,10 @@ const LobbyHandlerFactory = (
             ])
             lobby.addPlayer(currentUser)
             currentUser.setLobby(lobby)
-            currentUser.sendMessage([`${MessageTypes.JOIN_LOBBY}-ACCEPTED`])
+            currentUser.sendMessage([
+              `${MessageTypes.JOIN_LOBBY}-ACCEPTED`,
+              { players: lobby.getPlayersInfo() }
+            ])
           } else {
             currentUser.sendMessage([
               `${MessageTypes.JOIN_LOBBY}-REJECTED`,

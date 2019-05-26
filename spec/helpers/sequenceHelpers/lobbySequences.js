@@ -15,10 +15,10 @@ async function joinLobby ({ ws, lobbyName, expectedMessage }) {
   const received = await this.waitForMessage(ws)
 
   if (!expectedMessage) {
-    expectedMessage = `["JOIN-LOBBY-ACCEPTED"]`
+    expectedMessage = `["JOIN-LOBBY-ACCEPTED",{"players":`
   }
 
-  expect(received).toBe(expectedMessage)
+  expect(received).toContain(expectedMessage)
 }
 
 async function closeLobby ({ ws, expectedMessage }) {

@@ -187,7 +187,7 @@ describe(`lobby creation`, function () {
     const joinLobbyMessage = JSON.stringify([`JOIN-LOBBY`, { name: `myLobby` }])
     ws2.send(joinLobbyMessage)
     const [msgP1, msgP2] = await Promise.all([this.waitForMessage(ws), this.waitForMessage(ws2)])
-    expect(msgP2).toBe(`["JOIN-LOBBY-ACCEPTED"]`)
+    expect(msgP2).toBe(`["JOIN-LOBBY-ACCEPTED",{"players":[{"name":"useloom"},{"name":"rataplan"}]}]`)
     expect(msgP1).toBe(`["JOINED-LOBBY",{"player":"rataplan"}]`)
   })
 
