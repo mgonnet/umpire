@@ -1,6 +1,5 @@
 const WebSocket = require(`ws`)
 const ConnectionHandlerFactory = require(`./ConnectionHandler`)
-const MessageTypes = require(`./entities/MessageTypes`)
 
 /**
  *
@@ -90,7 +89,4 @@ const Umpire = ({ port, game, server }) => {
   }
 }
 
-module.exports = {
-  Umpire,
-  MessageTypes
-}
+module.exports = Umpire

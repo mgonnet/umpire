@@ -1,4 +1,4 @@
-const Umpire = require(`../../src/umpire`).Umpire
+const Umpire = require(`../../src/umpire`)
 const Chess = require(`chess.js`).Chess
 
 describe(`game starting`, function () {
