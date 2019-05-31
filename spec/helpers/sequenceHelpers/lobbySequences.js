@@ -4,9 +4,9 @@ async function createLobby ({ ws, lobbyName, expectedMessage }) {
   const received = await this.waitForMessage(ws)
 
   if (!expectedMessage) {
-    expectedMessage = `["CREATE-LOBBY-ACCEPTED"]`
+    expectedMessage = `["CREATE-LOBBY-ACCEPTED",{"players":`
   }
-  expect(received).toBe(expectedMessage)
+  expect(received).toContain(expectedMessage)
 }
 
 async function joinLobby ({ ws, lobbyName, expectedMessage }) {

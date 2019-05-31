@@ -28,7 +28,10 @@ const LobbyHandlerFactory = (
           const newLobby = LobbyFactory({ lobbyName, creator: currentUser })
           addLobby(newLobby)
           currentUser.setLobby(newLobby)
-          currentUser.sendMessage([`${MessageTypes.CREATE_LOBBY}-ACCEPTED`])
+          currentUser.sendMessage([
+            `${MessageTypes.CREATE_LOBBY}-ACCEPTED`,
+            { players: newLobby.getPlayersInfo() }
+          ])
         }
       }
     },
