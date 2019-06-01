@@ -61,8 +61,9 @@ async function makeMove (mover, otherPlayer, moverName, move, nextTurn) {
     this.waitForMessage(mover)
   ])
 
-  const expectedMessage = `["MOVE-ACCEPTED",{"player":"${moverName}","move":"${move}","turn":"${nextTurn}"}]`
-  expect(otherPlayerMessage).toBe(expectedMessage)
+  const expectedMessage = `["MOVE-ACCEPTED",{"name":"${moverName}","move":"${move}","turn":"${nextTurn}"}]`
+  const expectedOtherPlayer = `["MOVED",{"name":"${moverName}","move":"${move}","turn":"${nextTurn}"}]`
+  expect(otherPlayerMessage).toBe(expectedOtherPlayer)
   expect(moverMessage).toBe(expectedMessage)
 }
 

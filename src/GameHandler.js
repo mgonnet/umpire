@@ -18,9 +18,18 @@ const GameHandlerFactory = (currentUser, { getLobby }) => {
           ])
         } else {
           lobby.broadcast([
+            MessageTypes.MOVED,
+            {
+              name: `${currentUser.getName()}`,
+              move: `${move}`,
+              turn: turn
+            }
+          ],
+          [currentUser.getName()])
+          currentUser.sendMessage([
             `${MessageTypes.MOVE}-ACCEPTED`,
             {
-              player: `${currentUser.getName()}`,
+              name: `${currentUser.getName()}`,
               move: `${move}`,
               turn: turn
             }

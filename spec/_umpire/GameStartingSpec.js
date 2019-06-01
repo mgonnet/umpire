@@ -86,7 +86,7 @@ describe(`game starting`, function () {
     joiner.send(JSON.stringify([`MOVE`, { move: `e4` }]))
     const received = await this.waitForMessage(joiner)
 
-    expect(received).toBe(`["MOVE-ACCEPTED",{"player":"rataplan","move":"e4","turn":"b"}]`)
+    expect(received).toBe(`["MOVE-ACCEPTED",{"name":"rataplan","move":"e4","turn":"b"}]`)
   })
 
   it(`should notify all players when someone makes a move`, async function () {
