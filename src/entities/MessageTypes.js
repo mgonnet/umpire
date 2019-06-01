@@ -12,7 +12,9 @@ const MessageTypes = {
   LEAVE_LOBBY: `LEAVE-LOBBY`,
   CHOOSE_ROL: `CHOOSE-ROL`,
   START_GAME: `START-GAME`,
-  MOVE: `MOVE`
+  MOVE: `MOVE`,
+  JOINED_LOBBY: `JOINED-LOBBY`,
+  CHOOSED_ROL: `CHOOSED-ROL`
 }
 
 module.exports = MessageTypes

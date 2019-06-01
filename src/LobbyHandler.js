@@ -59,7 +59,7 @@ const LobbyHandlerFactory = (
           const lobby = getLobby(lobbyName)
           if (lobby) {
             lobby.broadcast([
-              `JOINED-LOBBY`,
+              MessageTypes.JOINED_LOBBY,
               { name: currentUser.getName() }
             ])
             lobby.addPlayer(currentUser)
@@ -96,7 +96,7 @@ const LobbyHandlerFactory = (
         const lobby = currentUser.getLobby()
         lobby.setPlayerRol(currentUser, rol)
         lobby.broadcast([
-          `CHOOSED-ROL`,
+          MessageTypes.CHOOSED_ROL,
           {
             name: currentUser.getName(),
             rol: rol
