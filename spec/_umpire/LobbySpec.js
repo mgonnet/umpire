@@ -280,4 +280,19 @@ describe(`lobby creation`, function () {
       expectedMessage: JSON.stringify([`JOIN-LOBBY-REJECTED`, { "reason": `Player is not registered` }])
     })
   })
+
+  it(`should notify other player in the lobby when someone changes rol`, async function () {
+    spyOn(console, `log`)
+    await umpire.start()
+    const ws = await this.registerUser({ url: `ws://localhost`, port, userName: `useloom` })
+    const ws2 = await this.registerUser({ url: `ws://localhost`, port, userName: `rataplan` })
+
+    await this.createLobby({ ws, lobbyName: `myLobby` })
+    await this.joinLobby({ ws: ws2, lobbyName: `myLobby` })
+
+    const expectMessage = this.waitForMessage(ws)
+    await this.chooseRol({ ws: ws2, rol: `b`, playerName: `rataplan` })
+
+    expect(await expectMessage).toBe(JSON.stringify([`CHOOSED-ROL`, { name: `rataplan`, rol: `b` }]))
+  })
 })

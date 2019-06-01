@@ -96,6 +96,14 @@ const LobbyHandlerFactory = (
         const lobby = currentUser.getLobby()
         lobby.setPlayerRol(currentUser, rol)
         lobby.broadcast([
+          `CHOOSED-ROL`,
+          {
+            name: currentUser.getName(),
+            rol: rol
+          }
+        ],
+        [currentUser.getName()])
+        currentUser.sendMessage([
           `${MessageTypes.CHOOSE_ROL}-ACCEPTED`,
           {
             name: currentUser.getName(),

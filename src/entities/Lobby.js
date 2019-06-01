@@ -28,9 +28,16 @@ const LobbyFactory = ({ lobbyName, creator }) => {
       lobbyPlayers.splice(lobbyPlayers.indexOf(player))
     },
 
-    broadcast (message) {
+    /**
+     *
+     * @param {string} message
+     * @param {string[]} [exceptions] An array of players that shouldn't receive the message
+     */
+    broadcast (message, exceptions = []) {
       lobbyPlayers.forEach(({ player }) => {
-        player.sendMessage(message)
+        if (!exceptions.includes(player.getName())) {
+          player.sendMessage(message)
+        }
       })
     },
 
