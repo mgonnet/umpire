@@ -123,6 +123,14 @@ const LobbyHandlerFactory = (
         if (lobby.isTheCreator(currentUser)) {
           const turn = lobby.startGame(GameConstructor)
           lobby.broadcast([
+            MessageTypes.GAME_STARTED,
+            {
+              players: lobby.getPlayersInfo(),
+              turn
+            }
+          ],
+          [currentUser.getName()])
+          currentUser.sendMessage([
             `${MessageTypes.START_GAME}-ACCEPTED`,
             {
               players: lobby.getPlayersInfo(),

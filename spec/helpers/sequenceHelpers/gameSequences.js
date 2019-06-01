@@ -30,8 +30,18 @@ async function startTwoPlayersGame ({ creatorName, creatorRol, joinerName, joine
     }
   ])
 
+  const joinerMessage = JSON.stringify([
+    `GAME-STARTED`,
+    {
+      players: [
+        { name: creatorName, rol: creatorRol },
+        { name: joinerName, rol: joinerRol } ],
+      turn: `w`
+    }
+  ])
+
   expect(receivedCreator).toBe(startedMessage)
-  expect(receivedJoiner).toBe(startedMessage)
+  expect(receivedJoiner).toBe(joinerMessage)
 
   return { creator, joiner }
 }

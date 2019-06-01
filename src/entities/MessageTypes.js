@@ -14,7 +14,8 @@ const MessageTypes = {
   START_GAME: `START-GAME`,
   MOVE: `MOVE`,
   JOINED_LOBBY: `JOINED-LOBBY`,
-  CHOOSED_ROL: `CHOOSED-ROL`
+  CHOOSED_ROL: `CHOOSED-ROL`,
+  GAME_STARTED: `GAME-STARTED`
 }
 
 module.exports = MessageTypes
