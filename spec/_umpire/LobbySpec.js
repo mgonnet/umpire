@@ -188,7 +188,7 @@ describe(`lobby creation`, function () {
     ws2.send(joinLobbyMessage)
     const [msgP1, msgP2] = await Promise.all([this.waitForMessage(ws), this.waitForMessage(ws2)])
     expect(msgP2).toBe(`["JOIN-LOBBY-ACCEPTED",{"players":[{"name":"useloom"},{"name":"rataplan"}]}]`)
-    expect(msgP1).toBe(`["JOINED-LOBBY",{"player":"rataplan"}]`)
+    expect(msgP1).toBe(`["JOINED-LOBBY",{"name":"rataplan"}]`)
   })
 
   it(`should allow players to join other lobbies after the one they were in was closed`, async function () {

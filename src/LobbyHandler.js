@@ -60,7 +60,7 @@ const LobbyHandlerFactory = (
           if (lobby) {
             lobby.broadcast([
               `JOINED-LOBBY`,
-              { player: currentUser.getName() }
+              { name: currentUser.getName() }
             ])
             lobby.addPlayer(currentUser)
             currentUser.setLobby(lobby)
@@ -98,7 +98,7 @@ const LobbyHandlerFactory = (
         lobby.broadcast([
           `${MessageTypes.CHOOSE_ROL}-ACCEPTED`,
           {
-            player: currentUser.getName(),
+            name: currentUser.getName(),
             rol: rol
           }
         ])

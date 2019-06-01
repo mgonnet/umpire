@@ -39,7 +39,7 @@ async function chooseRol ({ ws, rol, playerName, expectedMessage }) {
   const received = await this.waitForMessage(ws)
 
   if (!expectedMessage) {
-    expectedMessage = `["CHOOSE-ROL-ACCEPTED",{"player":"${playerName}","rol":"${rol}"}]`
+    expectedMessage = `["CHOOSE-ROL-ACCEPTED",{"name":"${playerName}","rol":"${rol}"}]`
   }
 
   expect(received).toBe(expectedMessage)
