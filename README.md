@@ -22,7 +22,7 @@
 | LEAVE-SERVER  |                 | LEAVE-SERVER-ACCEPTED |               |
 | CREATE-LOBBY  | {name: 'lobby'} | CREATE-LOBBY-REJECTED | { reason: 'User already in lobby' } |
 |               |                 | CREATE-LOBBY-REJECTED | { reason: 'Lobby name already exists' } |
-|               |                 | CREATE-LOBBY-ACCEPTED | { players: [{ name: 'useloom'}] } |
+|               |                 | CREATE-LOBBY-ACCEPTED | { players: [{ name: 'useloom'}], creator: 'useloom' } |
 |               |                 | CREATE-LOBBY-REJECTED | { reason: 'Player is not registered' } |
 | CLOSE-LOBBY   |                 | CLOSE-LOBBY-REJECTED  | { reason: 'Player is not the lobby creator' } |
 |               |                 | CLOSE-LOBBY-REJECTED  | { reason: 'User is not in a lobby' } |
