@@ -6,6 +6,12 @@
  *
  */
 
+/**
+ *
+ * @param {Object} options
+ * @param {string} options.lobbyName
+ * @param {*} options.creator
+ */
 const LobbyFactory = ({ lobbyName, creator }) => {
   /** @type {LobbyPlayer[]} */
   const lobbyPlayers = [{ player: creator, rolSpecified: false, rol: undefined }]
@@ -64,6 +70,13 @@ const LobbyFactory = ({ lobbyName, creator }) => {
           rol: lobbyPlayer.rol
         }
       })
+    },
+
+    getLobbyInfo () {
+      return {
+        players: this.getPlayersInfo(),
+        creator: creator.getName()
+      }
     },
 
     /**

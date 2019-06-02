@@ -177,7 +177,7 @@ describe(`lobby creation`, function () {
   })
 
   it(`should notify to all the players of a lobby when a new player joins`, async function () {
-    spyOn(console, `log`)
+    // spyOn(console, `log`)
     await umpire.start()
     const ws = await this.registerUser({ url: `ws://localhost`, port, userName: `useloom` })
 
@@ -187,7 +187,7 @@ describe(`lobby creation`, function () {
     const joinLobbyMessage = JSON.stringify([`JOIN-LOBBY`, { name: `myLobby` }])
     ws2.send(joinLobbyMessage)
     const [msgP1, msgP2] = await Promise.all([this.waitForMessage(ws), this.waitForMessage(ws2)])
-    expect(msgP2).toBe(`["JOIN-LOBBY-ACCEPTED",{"players":[{"name":"useloom"},{"name":"rataplan"}]}]`)
+    expect(msgP2).toBe(`["JOIN-LOBBY-ACCEPTED",{"players":[{"name":"useloom"},{"name":"rataplan"}],"creator":"useloom"}]`)
     expect(msgP1).toBe(`["JOINED-LOBBY",{"name":"rataplan"}]`)
   })
 

@@ -30,7 +30,7 @@ const LobbyHandlerFactory = (
           currentUser.setLobby(newLobby)
           currentUser.sendMessage([
             `${MessageTypes.CREATE_LOBBY}-ACCEPTED`,
-            { players: newLobby.getPlayersInfo() }
+            newLobby.getLobbyInfo()
           ])
         }
       }
@@ -66,7 +66,7 @@ const LobbyHandlerFactory = (
             currentUser.setLobby(lobby)
             currentUser.sendMessage([
               `${MessageTypes.JOIN_LOBBY}-ACCEPTED`,
-              { players: lobby.getPlayersInfo() }
+              lobby.getLobbyInfo()
             ])
           } else {
             currentUser.sendMessage([
