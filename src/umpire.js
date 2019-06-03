@@ -75,6 +75,12 @@ const Umpire = ({ port, game, server }) => {
         )
 
         wss.on(`connection`, ConnectionHandlerFactory({ settersGetters }))
+
+        setInterval(() => {
+          wss.clients.forEach((ws) => {
+            ws.ping()
+          })
+        }, 30 * 1000)
       })
     },
 
