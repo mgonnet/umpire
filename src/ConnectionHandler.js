@@ -16,40 +16,36 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
 
     const [type, data] = JSON.parse(message)
 
-    if (type === MessageTypes.REGISTER) {
-      userHandler.register(data.name)
-    }
-
-    if (type === MessageTypes.LEAVE_SERVER) {
-      userHandler.leaveServer()
-    }
-
-    if (type === MessageTypes.CREATE_LOBBY) {
-      lobbyHandler.createLobby(data.name)
-    }
-
-    if (type === MessageTypes.CLOSE_LOBBY) {
-      lobbyHandler.closeLobby()
-    }
-
-    if (type === MessageTypes.JOIN_LOBBY) {
-      lobbyHandler.joinLobby(data.name)
-    }
-
-    if (type === MessageTypes.LEAVE_LOBBY) {
-      lobbyHandler.leaveLobby()
-    }
-
-    if (type === MessageTypes.CHOOSE_ROL) {
-      lobbyHandler.chooseRol(data.rol)
-    }
-
-    if (type === MessageTypes.START_GAME) {
-      lobbyHandler.startGame(settersGetters.game.getGameConstructor())
-    }
-
-    if (type === MessageTypes.MOVE) {
-      gameHandler.move(data.move)
+    switch (type) {
+      case MessageTypes.REGISTER:
+        userHandler.register(data.name)
+        break
+      case MessageTypes.LEAVE_SERVER:
+        userHandler.leaveServer()
+        break
+      case MessageTypes.CREATE_LOBBY:
+        lobbyHandler.createLobby(data.name)
+        break
+      case MessageTypes.CLOSE_LOBBY:
+        lobbyHandler.closeLobby()
+        break
+      case MessageTypes.JOIN_LOBBY:
+        lobbyHandler.joinLobby(data.name)
+        break
+      case MessageTypes.LEAVE_LOBBY:
+        lobbyHandler.leaveLobby()
+        break
+      case MessageTypes.CHOOSE_ROL:
+        lobbyHandler.chooseRol(data.rol)
+        break
+      case MessageTypes.START_GAME:
+        lobbyHandler.startGame(settersGetters.game.getGameConstructor())
+        break
+      case MessageTypes.MOVE:
+        gameHandler.move(data.move)
+        break
+      default:
+        break
     }
   })
 }
