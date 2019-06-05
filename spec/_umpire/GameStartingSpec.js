@@ -136,4 +136,21 @@ describe(`game starting`, function () {
 
     expect(received).toBe(`["MOVE-REJECTED",{"reason":"Invalid move"}]`)
   })
+
+  it(`should allow a player to make a complex move if it is his turn`, async function () {
+    spyOn(console, `log`)
+    await umpire.start()
+    const { joiner } = await this.startTwoPlayersGame({
+      creatorName: `useloom`,
+      creatorRol: `b`,
+      joinerName: `rataplan`,
+      joinerRol: `w`,
+      port
+    })
+
+    joiner.send(JSON.stringify([`MOVE`, { move: { from: `e2`, to: `e4` } }]))
+    const received = await this.waitForMessage(joiner)
+
+    expect(received).toBe(`["MOVE-ACCEPTED",{"name":"rataplan","move":{"from":"e2","to":"e4"},"turn":"b"}]`)
+  })
 })

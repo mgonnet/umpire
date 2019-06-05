@@ -21,7 +21,7 @@ const GameHandlerFactory = (currentUser, { getLobby }) => {
             MessageTypes.MOVED,
             {
               name: `${currentUser.getName()}`,
-              move: (typeof (move) === `string` ? move : JSON.stringify(move)),
+              move: move,
               turn: turn
             }
           ],
@@ -30,7 +30,7 @@ const GameHandlerFactory = (currentUser, { getLobby }) => {
             `${MessageTypes.MOVE}-ACCEPTED`,
             {
               name: `${currentUser.getName()}`,
-              move: (typeof (move) === `string` ? move : JSON.stringify(move)),
+              move: move,
               turn: turn
             }
           ])

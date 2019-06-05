@@ -177,7 +177,7 @@ describe(`lobby creation`, function () {
   })
 
   it(`should notify to all the players of a lobby when a new player joins`, async function () {
-    // spyOn(console, `log`)
+    spyOn(console, `log`)
     await umpire.start()
     const ws = await this.registerUser({ url: `ws://localhost`, port, userName: `useloom` })
 
