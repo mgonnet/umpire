@@ -105,6 +105,15 @@ const LobbyFactory = ({ lobbyName, creator }) => {
       } else {
         return null
       }
+    },
+
+    /**
+     * Returns true if the game started in this lobby
+     *
+     * @returns {boolean}
+     */
+    gameStarted () {
+      return !!game
     }
   }
 }

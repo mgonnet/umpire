@@ -29,6 +29,7 @@
 |               |                 | CLOSE-LOBBY-ACCEPTED  |               |
 | JOIN-LOBBY    | {name: 'lobby'} | JOIN-LOBBY-REJECTED   | { reason: 'User is already in a lobby' } |
 |               |                 | JOIN-LOBBY-REJECTED   | { reason: 'Lobby does not exist' } |
+|               |                 | JOIN-LOBBY-REJECTED   | { reason: 'Game already started' } |
 |               |                 | JOIN-LOBBY-ACCEPTED   |               |
 | LEAVE-LOBBY   |                 | LEAVE-LOBBY-ACCEPTED  |               |
 |               |                 | LEAVE-LOBBY-REJECTED  | { reason: 'Player is not inside a lobby' } |

@@ -153,4 +153,23 @@ describe(`game starting`, function () {
 
     expect(received).toBe(`["MOVE-ACCEPTED",{"name":"rataplan","move":{"from":"e2","to":"e4"},"turn":"b"}]`)
   })
+
+  it(`should not allow to join a lobby if the game already started`, async function () {
+    spyOn(console, `log`)
+    await umpire.start()
+    await this.startTwoPlayersGame({
+      creatorName: `useloom`,
+      creatorRol: `b`,
+      joinerName: `rataplan`,
+      joinerRol: `w`,
+      port
+    })
+
+    const outsider = await this.registerUser({ url: `ws://localhost`, port, userName: `peperone` })
+    await this.joinLobby({
+      ws: outsider,
+      lobbyName: `myLobby`,
+      expectedMessage: JSON.stringify([`JOIN-LOBBY-REJECTED`, { "reason": `Game already started` }])
+    })
+  })
 })

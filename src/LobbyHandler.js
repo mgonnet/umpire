@@ -58,16 +58,23 @@ const LobbyHandlerFactory = (
         } else {
           const lobby = getLobby(lobbyName)
           if (lobby) {
-            lobby.broadcast([
-              MessageTypes.JOINED_LOBBY,
-              { name: currentUser.getName() }
-            ])
-            lobby.addPlayer(currentUser)
-            currentUser.setLobby(lobby)
-            currentUser.sendMessage([
-              `${MessageTypes.JOIN_LOBBY}-ACCEPTED`,
-              lobby.getLobbyInfo()
-            ])
+            if (lobby.gameStarted()) {
+              currentUser.sendMessage([
+                `${MessageTypes.JOIN_LOBBY}-REJECTED`,
+                { reason: `Game already started` }
+              ])
+            } else {
+              lobby.broadcast([
+                MessageTypes.JOINED_LOBBY,
+                { name: currentUser.getName() }
+              ])
+              lobby.addPlayer(currentUser)
+              currentUser.setLobby(lobby)
+              currentUser.sendMessage([
+                `${MessageTypes.JOIN_LOBBY}-ACCEPTED`,
+                lobby.getLobbyInfo()
+              ])
+            }
           } else {
             currentUser.sendMessage([
               `${MessageTypes.JOIN_LOBBY}-REJECTED`,
