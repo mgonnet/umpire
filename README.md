@@ -50,6 +50,7 @@
 | CHOOSED-ROL          | { name: 'rataplan', rol: 'b' }                                                        | CHOOSE-ROL           | Broadcasted to lobby when a player chooses a rol |
 | GAME-STARTED         | { players: [{ name: 'useloom', rol: 'b' },{ name: 'rataplan', rol: 'w' } ],turn: 'w'} | START-GAME           | Broadcasted to lobby when the creator starts the game |
 | MOVED                | { name: 'rataplan', move: 'e4', turn: b }                                             | MOVE                 | Broadcasted to lobby when the creator starst the game |
+| LEFT-LOBBY           | { name: 'rataplan' }                                                                  | LEAVE-LOBBY          | Broadcasted to lobby when a player leaves |
 
 
 ## [Specification status](doc/specStatus.md)

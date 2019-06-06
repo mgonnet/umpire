@@ -295,4 +295,23 @@ describe(`lobby creation`, function () {
 
     expect(await expectMessage).toBe(JSON.stringify([`CHOOSED-ROL`, { name: `rataplan`, rol: `b` }]))
   })
+
+  it(`should notify other player in the lobby when someone leaves`, async function () {
+    spyOn(console, `log`)
+    await umpire.start()
+    const ws = await this.registerUser({ url: `ws://localhost`, port, userName: `useloom` })
+    const ws2 = await this.registerUser({ url: `ws://localhost`, port, userName: `rataplan` })
+
+    await this.createLobby({ ws, lobbyName: `myLobby` })
+    await this.joinLobby({ ws: ws2, lobbyName: `myLobby` })
+
+    const expectMessage = this.waitForMessage(ws)
+
+    const leaveMessage = JSON.stringify([`LEAVE-LOBBY`])
+    ws2.send(leaveMessage)
+    const received = await this.waitForMessage(ws2)
+    expect(received).toBe(`["LEAVE-LOBBY-ACCEPTED"]`)
+
+    expect(await expectMessage).toBe(JSON.stringify([`LEFT-LOBBY`, { name: `rataplan` }]))
+  })
 })
