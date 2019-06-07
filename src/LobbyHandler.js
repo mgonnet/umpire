@@ -92,7 +92,7 @@ const LobbyHandlerFactory = (
         currentUser.leaveLobby()
         currentUser.sendMessage([`${MessageTypes.LEAVE_LOBBY}-ACCEPTED`])
         lobby.broadcast([
-          `LEFT-LOBBY`,
+          MessageTypes.LEFT_LOBBY,
           { name: currentUser.getName() }
         ])
       }

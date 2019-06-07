@@ -27,7 +27,7 @@ const UserHandlerFactory = (currentUser, { addUser, removeUser, hasUser }) => {
           lobby.removePlayer(currentUser)
           currentUser.leaveLobby()
           lobby.broadcast([
-            `LEFT-LOBBY`,
+            MessageTypes.LEFT_LOBBY,
             { name: currentUser.getName() }
           ])
         }
