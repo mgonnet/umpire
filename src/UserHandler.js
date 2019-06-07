@@ -22,6 +22,15 @@ const UserHandlerFactory = (currentUser, { addUser, removeUser, hasUser }) => {
 
     leaveServer () {
       if (removeUser(currentUser)) {
+        if (currentUser.isInLobby()) {
+          const lobby = currentUser.getLobby()
+          lobby.removePlayer(currentUser)
+          currentUser.leaveLobby()
+          lobby.broadcast([
+            `LEFT-LOBBY`,
+            { name: currentUser.getName() }
+          ])
+        }
         currentUser.sendMessageAndClose([`${MessageTypes.LEAVE_SERVER}-ACCEPTED`])
       }
     }

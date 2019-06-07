@@ -314,4 +314,21 @@ describe(`lobby creation`, function () {
 
     expect(await expectMessage).toBe(JSON.stringify([`LEFT-LOBBY`, { name: `rataplan` }]))
   })
+
+  it(`if a player leaves the server, it leaves the lobby as well`, async function () {
+    spyOn(console, `log`)
+    await umpire.start()
+    const ws = await this.registerUser({ url: `ws://localhost`, port, userName: `useloom` })
+    const ws2 = await this.registerUser({ url: `ws://localhost`, port, userName: `rataplan` })
+
+    await this.createLobby({ ws, lobbyName: `myLobby` })
+    await this.joinLobby({ ws: ws2, lobbyName: `myLobby` })
+
+    const expectMessage = this.waitForMessage(ws)
+
+    const leaveMessage = JSON.stringify([`LEAVE-SERVER`])
+    ws2.send(leaveMessage)
+
+    expect(await expectMessage).toBe(JSON.stringify([`LEFT-LOBBY`, { name: `rataplan` }]))
+  })
 })
