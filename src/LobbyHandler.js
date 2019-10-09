@@ -131,24 +131,22 @@ const LobbyHandlerFactory = (
     startGame (GameConstructor) {
       if (checker.check(MessageTypes.START_GAME, { insideLobby: true, isLobbyCreator: true })) {
         const lobby = currentUser.getLobby()
-        if (lobby.isTheCreator(currentUser)) {
-          const turn = lobby.startGame(GameConstructor)
-          lobby.broadcast([
-            MessageTypes.GAME_STARTED,
-            {
-              players: lobby.getPlayersInfo(),
-              turn
-            }
-          ],
-          [currentUser.getName()])
-          currentUser.sendMessage([
-            `${MessageTypes.START_GAME}-ACCEPTED`,
-            {
-              players: lobby.getPlayersInfo(),
-              turn
-            }
-          ])
-        }
+        const turn = lobby.startGame(GameConstructor)
+        lobby.broadcast([
+          MessageTypes.GAME_STARTED,
+          {
+            players: lobby.getPlayersInfo(),
+            turn
+          }
+        ],
+        [currentUser.getName()])
+        currentUser.sendMessage([
+          `${MessageTypes.START_GAME}-ACCEPTED`,
+          {
+            players: lobby.getPlayersInfo(),
+            turn
+          }
+        ])
       }
     }
 
