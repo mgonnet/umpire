@@ -6,7 +6,7 @@ describe(`game starting`, function () {
   let umpire
 
   beforeEach(function () {
-    umpire = Umpire({ port, game: Chess })
+    umpire = Umpire({ port, game: Chess, requiredRoles: [`w`, `b`] })
   })
 
   afterEach(async function () {
@@ -171,5 +171,30 @@ describe(`game starting`, function () {
       lobbyName: `myLobby`,
       expectedMessage: JSON.stringify([`JOIN-LOBBY-REJECTED`, { "reason": `Game already started` }])
     })
+  })
+
+  it(`should not allow to start a game if there are roles with no players`, async function () {
+    spyOn(console, `log`)
+    await umpire.start()
+
+    const creator = await this.registerUser({ url: `ws://localhost`, port, userName: `useloom` })
+    const joiner = await this.registerUser({ url: `ws://localhost`, port, userName: `rataplan` })
+
+    await this.createLobby({ ws: creator, lobbyName: `myLobby` })
+    await this.joinLobby({ ws: joiner, lobbyName: `myLobby` })
+    await Promise.all([
+      this.chooseRol({ ws: creator, rol: `b`, playerName: `useloom` }),
+      this.waitForMessage(joiner) // The joiner is notified that the creator choosed rol
+    ])
+    await Promise.all([
+      this.chooseRol({ ws: joiner, rol: `b`, playerName: `rataplan` }),
+      this.waitForMessage(creator) // The creator is notified that the joiner choosed rol
+    ])
+
+    const startGameMessage = JSON.stringify([`START-GAME`])
+    creator.send(startGameMessage)
+    const received = await this.waitForMessage(creator)
+
+    expect(received).toBe(`["START-GAME-REJECTED",{"reason":"There are roles without player"}]`)
   })
 })

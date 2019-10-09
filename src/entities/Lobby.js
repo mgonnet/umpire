@@ -12,7 +12,7 @@
  * @param {string} options.lobbyName
  * @param {*} options.creator
  */
-const LobbyFactory = ({ lobbyName, creator }) => {
+const LobbyFactory = ({ lobbyName, creator, requiredRoles }) => {
   /** @type {LobbyPlayer[]} */
   const lobbyPlayers = [{ player: creator, rolSpecified: false, rol: undefined }]
   let game
@@ -77,6 +77,14 @@ const LobbyFactory = ({ lobbyName, creator }) => {
         players: this.getPlayersInfo(),
         creator: creator.getName()
       }
+    },
+
+    /**
+     * Returns true if the lobby has at least one player for each required rol
+     */
+    hasAllRoles () {
+      return !requiredRoles.map((rol) =>
+        lobbyPlayers.some((player) => player.rol === rol)).some((rol) => !rol)
     },
 
     /**

@@ -38,6 +38,7 @@
 | START-GAME    |                 | START-GAME-ACCEPTED   | { players: [{ name: 'useloom', rol: 'b' },{ name: 'rataplan', rol: 'w' } ],turn: 'w'} |
 |               |                 | START-GAME-REJECTED   | { reason: 'Player is not the lobby creator' } |
 |               |                 | START-GAME-REJECTED   | { reason: 'Player is not inside a lobby' } |
+|               |                 | START-GAME-REJECTED   | { reason: 'There are roles without player' } |
 | MOVE          | {move: 'e4'}    | MOVE-REJECTED         | { reason: 'Not your turn' } |
 |               |                 | MOVE-ACCEPTED         | { name: 'rataplan', move: 'e4', turn: b } |
 |               |                 | MOVE-REJECTED         | { reason: 'Invalid move' } |

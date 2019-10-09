@@ -7,7 +7,7 @@ describe(`lobby creation`, function () {
   let umpire
 
   beforeEach(function () {
-    umpire = Umpire({ port, game: Chess })
+    umpire = Umpire({ port, game: Chess, requiredRoles: [`w`, `b`] })
   })
 
   afterEach(async function () {

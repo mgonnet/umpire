@@ -7,13 +7,14 @@ const ConnectionHandlerFactory = require(`./ConnectionHandler`)
  * @property {Number} [options.port] The port where to bind the server
  * @property {*} options.game
  * @property {import('http').Server} [options.server] A pre-created HTTP/S server to use
+ * @property {*} options.requiredRoles
  */
 
 /**
  *
  * @param {UmpireServerOptions} Options
  */
-const Umpire = ({ port, game, server }) => {
+const Umpire = ({ port, game, server, requiredRoles }) => {
   let wss
   const users = new Map()
   const lobbies = new Map()
@@ -58,7 +59,8 @@ const Umpire = ({ port, game, server }) => {
     game: {
       getGameConstructor () {
         return game
-      }
+      },
+      requiredRoles
     }
   }
 

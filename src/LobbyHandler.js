@@ -12,7 +12,7 @@ const LobbyHandlerFactory = (
 
   return {
 
-    createLobby (lobbyName) {
+    createLobby (lobbyName, requiredRoles) {
       if (checker.check(MessageTypes.CREATE_LOBBY, { registeredPlayer: true })) {
         if (currentUser.isInLobby()) {
           currentUser.sendMessage([
@@ -25,7 +25,7 @@ const LobbyHandlerFactory = (
             { reason: `Lobby name already exists` }
           ])
         } else {
-          const newLobby = LobbyFactory({ lobbyName, creator: currentUser })
+          const newLobby = LobbyFactory({ lobbyName, creator: currentUser, requiredRoles })
           addLobby(newLobby)
           currentUser.setLobby(newLobby)
           currentUser.sendMessage([
@@ -131,22 +131,31 @@ const LobbyHandlerFactory = (
     startGame (GameConstructor) {
       if (checker.check(MessageTypes.START_GAME, { insideLobby: true, isLobbyCreator: true })) {
         const lobby = currentUser.getLobby()
-        const turn = lobby.startGame(GameConstructor)
-        lobby.broadcast([
-          MessageTypes.GAME_STARTED,
-          {
-            players: lobby.getPlayersInfo(),
-            turn
-          }
-        ],
-        [currentUser.getName()])
-        currentUser.sendMessage([
-          `${MessageTypes.START_GAME}-ACCEPTED`,
-          {
-            players: lobby.getPlayersInfo(),
-            turn
-          }
-        ])
+        console.log(`ropee`)
+        if (lobby.hasAllRoles()) {
+          const turn = lobby.startGame(GameConstructor)
+          lobby.broadcast([
+            MessageTypes.GAME_STARTED,
+            {
+              players: lobby.getPlayersInfo(),
+              turn
+            }
+          ],
+          [currentUser.getName()])
+          currentUser.sendMessage([
+            `${MessageTypes.START_GAME}-ACCEPTED`,
+            {
+              players: lobby.getPlayersInfo(),
+              turn
+            }
+          ])
+        } else {
+          console.log(`rope`)
+          currentUser.sendMessage([
+            `${MessageTypes.START_GAME}-REJECTED`,
+            { reason: `There are roles without player` }
+          ])
+        }
       }
     }
 

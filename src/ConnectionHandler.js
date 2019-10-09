@@ -24,7 +24,7 @@ const ConnectionHandlerFactory = ({ settersGetters }) => (ws) => {
         userHandler.leaveServer()
         break
       case MessageTypes.CREATE_LOBBY:
-        lobbyHandler.createLobby(data.name)
+        lobbyHandler.createLobby(data.name, settersGetters.game.requiredRoles)
         break
       case MessageTypes.CLOSE_LOBBY:
         lobbyHandler.closeLobby()
